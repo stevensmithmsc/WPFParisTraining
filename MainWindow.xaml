@@ -7,6 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="5">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="S" />
+                    <TextBlock Text="Staff"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Frame Grid.Column="1" Source="Staff.xaml"/>
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2" Height="20" />
     </Grid>
 </Window>
