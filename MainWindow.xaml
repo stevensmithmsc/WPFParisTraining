@@ -18,12 +18,28 @@
         <Border BorderThickness="5">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="S" />
+                    <Button Name="StaffButton" Content="S" Click="Button_Click" />
                     <TextBlock Text="Staff"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="TeamsButton" Content="T" Click="TeamsButton_Click"  />
+                    <TextBlock Text="Teams"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="SessionsButton" Content="E" Click="SessionsButton_Click"   />
+                    <TextBlock Text="Sessions"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="CoursesButton" Content="C" Click="CoursesButton_Click"   />
+                    <TextBlock Text="Courses"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="LocationsButton" Content="L" Click="LocationsButton_Click"   />
+                    <TextBlock Text="Locations"/>
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Frame Grid.Column="1" Source="Staff.xaml"/>
+        <Frame Name="MainFrame" Grid.Column="1" Source="StaffPage.xaml"/>
         <StatusBar Grid.Row="1" Grid.ColumnSpan="2" Height="20" />
     </Grid>
 </Window>

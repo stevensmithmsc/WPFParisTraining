@@ -24,5 +24,30 @@ namespace WPFParisTraining
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new StaffPage());
+        }
+
+        private void TeamsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new TeamsPage());
+        }
+
+        private void SessionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new SessionsPage());
+        }
+
+        private void CoursesButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new CoursesPage());
+        }
+
+        private void LocationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new LocationsPage());
+        }
     }
 }

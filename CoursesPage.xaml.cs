@@ -18,9 +18,9 @@ namespace WPFParisTraining
     /// <summary>
     /// Interaction logic for Courses.xaml
     /// </summary>
-    public partial class Courses : Page
+    public partial class CoursesPage : Page
     {
-        public Courses()
+        public CoursesPage()
         {
             InitializeComponent();
         }

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WPFParisTraining
 {
     /// <summary>
-    /// Interaction logic for Locations.xaml
+    /// Interaction logic for Staff.xaml
     /// </summary>
-    public partial class Locations : Page
+    public partial class StaffPage : Page
     {
-        public Locations()
+        public StaffPage()
         {
             InitializeComponent();
         }
