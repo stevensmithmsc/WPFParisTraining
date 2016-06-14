@@ -24,9 +24,50 @@
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2"></DataGrid>
         <ScrollViewer Grid.Row="2">
             <Border BorderThickness="5">
-                <StackPanel>
-                    
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3*" />
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="0.3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*" MaxWidth="200"/>
+                            <ColumnDefinition Width="0.6*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Team Name" />
+                        <TextBox Grid.Column="1"/>
+                        <TextBlock Text="Name in ESR" Grid.Row="1"/>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock Text="Cost Centre" Grid.Row="2"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"/>
+                        <TextBlock Text="Leader" Grid.Row="3"/>
+                        <TextBox Grid.Row="3" Grid.Column="1"/>
+                        <TextBlock Text="Cohort" Grid.Row="4"/>
+                        <TextBox Grid.Row="4" Grid.Column="1"/>
+                        <TextBlock Text="No Training Required" Grid.Row="5"/>
+                        <CheckBox Grid.Row="5" Grid.Column="1"/>
+                    </Grid>
+                    <TextBlock Text="MH/Community" Grid.Row="1" />
+                    <TextBlock Text="Service" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="Borough" Grid.Row="1" Grid.Column="2"/>
+                    <ListBox Grid.Row="2" />
+                    <ListBox Grid.Row="2" Grid.Column="1"/>
+                    <ListBox Grid.Row="2" Grid.Column="2"/>
+                </Grid>
             </Border>
         </ScrollViewer>
         <DataGrid Grid.Row="2" Grid.Column="1"></DataGrid>

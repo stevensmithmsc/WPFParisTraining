@@ -18,11 +18,29 @@
             <TextBlock Text="Hello"/>
         </Expander>
         <DataGrid Grid.Row="1"></DataGrid>
-        <ScrollViewer Grid.Row="2">
-            <Border BorderThickness="5">
-                
-            </Border>
-        </ScrollViewer>
+        <Border BorderThickness="5" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Search:" />
+                <TextBox Grid.Column="1" Margin="5,0,0,0"/>
+                <Button Content="S" Grid.Column="2" Margin="0,0,5,0" />
+                <TextBlock Text="Person:" Grid.Column="3" />
+                <TextBox Grid.Column="4" />
+                <Button Content="Book Person" Grid.Column="5" Margin="5,0"/>
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="6"></DataGrid>
+            </Grid>
+        </Border>
         <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" ShowsPreview="True" ResizeDirection="Rows" Height="5" />
     </Grid>
 </Page>
