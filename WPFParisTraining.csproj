@@ -35,8 +35,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,6 +69,63 @@
     <Compile Include="CoursesPage.xaml.cs">
       <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Borough.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BoroughMem.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Cohort.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Genders.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\RA.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Service.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\ServMem.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Staff.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Staff_List.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Team.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\TeamApprov.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\TeamMem.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Title.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\TNA.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\TrainDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\TrainDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\TrainDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainDB.edmx</DependentUpon>
+    </Compile>
     <Compile Include="LocationsPage.xaml.cs">
       <DependentUpon>LocationsPage.xaml</DependentUpon>
     </Compile>
@@ -70,6 +138,8 @@
     <Compile Include="TeamsPage.xaml.cs">
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\StaffViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="CoursesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +191,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="Entity\TrainDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TrainDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entity\TrainDB.edmx.diagram">
+      <DependentUpon>TrainDB.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -130,6 +208,22 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entity\TrainDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrainDB.edmx</DependentUpon>
+      <LastGenOutput>TrainDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entity\TrainDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrainDB.edmx</DependentUpon>
+      <LastGenOutput>TrainDB.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
