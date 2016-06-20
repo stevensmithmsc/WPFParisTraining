@@ -22,7 +22,15 @@
         <Expander Header="Search">
             <TextBlock Text="Hello"/>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}"></DataGrid>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Fname}" />
+                <DataGridTextColumn Header="Surname" Binding="{Binding Sname}" />
+                <DataGridTextColumn Header="Job Title" Binding="{Binding JobTitle}" />
+                <DataGridTextColumn Header="Line Manager" Binding="{Binding Line_Manager.Fname}" />
+                <DataGridTextColumn Header="Cohort" Binding="{Binding Cohort.Code}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <ScrollViewer Grid.Row="2">
             <Border BorderThickness="5">
                 <StackPanel>
@@ -79,7 +87,7 @@
                                     <TextBlock Text="Preferred Name" Grid.Row="4"/>
                                     <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedStaff.PName}"/>
                                     <TextBlock Text="Gender" Grid.Row="5"/>
-                                    <TextBox Grid.Row="5" Grid.Column="1"/>
+                                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding GenderList}" SelectedItem="{Binding SelectedStaff.Gender}"/>
                                     <TextBlock Text="Job Title" Grid.Row="6"/>
                                     <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SelectedStaff.JobTitle}"/>
                                     <TextBlock Text="Cost Code" Grid.Row="7"/>
@@ -101,7 +109,13 @@
                             <Border BorderThickness="5" Grid.Column="1">
                                 <StackPanel>
                                     <TextBlock Text="Teams" />
-                                    <ListBox MinHeight="75"/>
+                                    <ListBox MinHeight="75" ItemsSource="{Binding SelectedStaff.TeamMems}" >
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Team.TeamName}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="5" Grid.Column="1" Grid.Row="1">
@@ -165,7 +179,7 @@
                         </Grid>
                     </Expander>
                     <Expander Header="ESR">
-                        <DataGrid></DataGrid>
+                        <DataGrid ItemsSource="{Binding ESR}"></DataGrid>
                     </Expander>
                     <Expander Header="TNA">
                         <Grid>
@@ -182,15 +196,15 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Text="Date Received" />
-                            <DatePicker Grid.Column="1" Margin="5,0"/>
+                            <DatePicker Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Date_Received}" />
                             <TextBlock Text="Trainer" Grid.Row="1"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.TNA.Trainer.Fname}" />
                             <TextBlock Text="Contact Date" Grid.Row="2"/>
-                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="5,0"/>
+                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Contact_Date}" />
                             <TextBlock Text="Contact Outcome" Grid.Column="2"/>
-                            <TextBox Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5,0"/>
+                            <TextBox Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.TNA.Contact_Outcome}" />
                             <TextBlock Text="TNA Outcome" Grid.Row="2" Grid.Column="2"/>
-                            <TextBox Grid.Row="2" Grid.Column="3" Margin="5,0"/>
+                            <TextBox Grid.Row="2" Grid.Column="3" Margin="5,0" Text="{Binding SelectedStaff.TNA.TNA_Outcome}" />
                         </Grid>
                     </Expander>
                     <Expander Header="RA">
@@ -213,35 +227,35 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Text="UUID" />
-                            <TextBox Grid.Column="1" Margin="5,0"/>
+                            <TextBox Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.RA.UUID}" />
                             <TextBlock Text="PDS Role" Grid.Row="1"  />
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="5,0" />
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="5,0" Text="{Binding SelectedStaff.RA.PDS_Role}" />
                             <TextBlock Text="Plus Updated" Grid.Row="2" />
-                            <TextBox Grid.Column="1" Grid.Row="2" Margin="5,0"/>
+                            <TextBox Grid.Column="1" Grid.Row="2" Margin="5,0" Text="{Binding SelectedStaff.RA.PLUS_Updated}" />
                             <TextBlock Text="ESR Updated" Grid.Row="3"  />
-                            <TextBox Grid.Column="1" Grid.Row="3" Margin="5,0"/>
+                            <TextBox Grid.Column="1" Grid.Row="3" Margin="5,0" Text="{Binding SelectedStaff.RA.ESR_Updated}" />
                             <TextBlock Text="RA Comments" Grid.Row="4" />
-                            <TextBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" TextWrapping="Wrap" Margin="5,0" />
+                            <TextBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.RA.RAComments}" />
                             <TextBlock Text="E Gif L3/RA Complete:" Grid.Column="2"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" />
+                            <DatePicker Grid.Column="3" Margin="5,0" SelectedDate="{Binding SelectedStaff.RA.EGifL3}" />
                             <TextBlock Text="Paris Declaration Form Received:" Grid.Column="2" Grid.Row="1"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="1" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="1" SelectedDate="{Binding SelectedStaff.RA.Declaration}" />
                             <TextBlock Text="Go-Live Approved:" Grid.Column="2" Grid.Row="2"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="2" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="2" SelectedDate="{Binding SelectedStaff.RA.Go_Live_Approved}" />
                             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center">
-                                <CheckBox />
+                                <CheckBox IsChecked="{Binding SelectedStaff.RA.GLA_Locked}" />
                                 <TextBlock Text="Locked" />
                             </StackPanel>
                             <TextBlock Text="Paris Account Created:" Grid.Column="2" Grid.Row="3"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="3" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="3" SelectedDate="{Binding SelectedStaff.RA.Account_Created}" />
                             <TextBlock Text="Added to Live Citrix Group:" Grid.Column="2" Grid.Row="4"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="4" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="4" SelectedDate="{Binding SelectedStaff.RA.Add_CITRIX}" />
                             <TextBlock Text="Paris Password E-mailed:" Grid.Column="2" Grid.Row="5"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="5" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="5" SelectedDate="{Binding SelectedStaff.RA.Password_Emailed}"/>
                             <TextBlock Text="RA Granted Access to Plus:" Grid.Column="2" Grid.Row="6"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="6" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="6" SelectedDate="{Binding SelectedStaff.RA.Access_to_Plus}" />
                             <TextBlock Text="UUID added to ESR:" Grid.Column="2" Grid.Row="7"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="7" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="7" Text="{Binding SelectedStaff.RA.UUID_Add_ESR}" />
                         </Grid>
                     </Expander>
                     <Expander Header="Requirements">

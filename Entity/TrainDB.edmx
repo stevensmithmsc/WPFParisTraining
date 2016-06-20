@@ -5,19 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="StaffModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Boroughs">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="Borough" Type="varchar" MaxLength="15" />
-          <Property Name="Long" Type="varchar" MaxLength="50" />
-          <Property Name="Short" Type="varchar" MaxLength="3" />
-          <Property Name="Created" Type="datetime" />
-          <Property Name="Creator" Type="int" />
-          <Property Name="Modified" Type="datetime" />
-          <Property Name="Modifier" Type="int" />
-        </EntityType>
         <EntityType Name="Cohorts">
           <Key>
             <PropertyRef Name="ID" />
@@ -50,19 +37,6 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
         </EntityType>
-        <EntityType Name="BoroughMem">
-          <Key>
-            <PropertyRef Name="Key" />
-          </Key>
-          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Borough" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="Created" Type="datetime" />
-          <Property Name="Creator" Type="int" />
-          <Property Name="Modified" Type="datetime" />
-          <Property Name="Modifier" Type="int" />
-        </EntityType>
         <EntityType Name="RA">
           <Key>
             <PropertyRef Name="ID" />
@@ -83,35 +57,6 @@
           <Property Name="Password_Emailed" Type="datetime" />
           <Property Name="Access_to_Plus" Type="datetime" />
           <Property Name="UUID_Add_ESR" Type="datetime" />
-          <Property Name="Created" Type="datetime" />
-          <Property Name="Creator" Type="int" />
-          <Property Name="Modified" Type="datetime" />
-          <Property Name="Modifier" Type="int" />
-        </EntityType>
-        <EntityType Name="Services">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Service" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Level" Type="smallint" />
-          <Property Name="Display" Type="bit" Nullable="false" />
-          <Property Name="Parent" Type="int" />
-          <Property Name="Created" Type="datetime" />
-          <Property Name="Creator" Type="int" />
-          <Property Name="Modified" Type="datetime" />
-          <Property Name="Modifier" Type="int" />
-        </EntityType>
-        <EntityType Name="ServMem">
-          <Key>
-            <PropertyRef Name="Key" />
-          </Key>
-          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="ServID" Type="int" Nullable="false" />
-          <Property Name="Main" Type="bit" Nullable="false" />
-          <Property Name="Pri" Type="bit" Nullable="false" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Creator" Type="int" />
           <Property Name="Modified" Type="datetime" />
@@ -235,18 +180,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="Team Cohort" Type="nvarchar" MaxLength="50" />
           <Property Name="Cohort Code" Type="varchar" MaxLength="10" />
         </EntityType>
-        <Association Name="FK_BoroughMem_Boroughs">
-          <End Role="Boroughs" Type="Self.Boroughs" Multiplicity="1" />
-          <End Role="BoroughMem" Type="Self.BoroughMem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Boroughs">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="BoroughMem">
-              <PropertyRef Name="Borough" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RA_Staff">
           <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
           <End Role="RA" Type="Self.RA" Multiplicity="0..1" />
@@ -256,30 +189,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Principal>
             <Dependent Role="RA">
               <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Services_Services">
-          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
-          <End Role="Services1" Type="Self.Services" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Services1">
-              <PropertyRef Name="Parent" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ServMem_Services">
-          <End Role="Services" Type="Self.Services" Multiplicity="1" />
-          <End Role="ServMem" Type="Self.ServMem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ServMem">
-              <PropertyRef Name="ServID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -404,13 +313,9 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="StaffModelStoreContainer">
-          <EntitySet Name="Boroughs" EntityType="Self.Boroughs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cohorts" EntityType="Self.Cohorts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BoroughMem" EntityType="Self.BoroughMem" Schema="train" store:Type="Tables" />
           <EntitySet Name="RA" EntityType="Self.RA" Schema="train" store:Type="Tables" />
-          <EntitySet Name="Services" EntityType="Self.Services" Schema="train" store:Type="Tables" />
-          <EntitySet Name="ServMem" EntityType="Self.ServMem" Schema="train" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="train" store:Type="Tables" />
           <EntitySet Name="TeamApprov" EntityType="Self.TeamApprov" Schema="train" store:Type="Tables" />
           <EntitySet Name="TeamMem" EntityType="Self.TeamMem" Schema="train" store:Type="Tables" />
@@ -440,21 +345,9 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
     [Staff_List].[Cohort Code] AS [Cohort Code]
     FROM [ESR].[Staff_List] AS [Staff_List]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_BoroughMem_Boroughs" Association="Self.FK_BoroughMem_Boroughs">
-            <End Role="Boroughs" EntitySet="Boroughs" />
-            <End Role="BoroughMem" EntitySet="BoroughMem" />
-          </AssociationSet>
           <AssociationSet Name="FK_RA_Staff" Association="Self.FK_RA_Staff">
             <End Role="Staff" EntitySet="Staff" />
             <End Role="RA" EntitySet="RA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Services_Services" Association="Self.FK_Services_Services">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="Services1" EntitySet="Services" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ServMem_Services" Association="Self.FK_ServMem_Services">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="ServMem" EntitySet="ServMem" />
           </AssociationSet>
           <AssociationSet Name="FK_Staff_Cohorts" Association="Self.FK_Staff_Cohorts">
             <End Role="Cohorts" EntitySet="Cohorts" />
@@ -502,16 +395,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StaffModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Borough">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="BoroughName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="LongName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ShortName" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="BoroughMems" Relationship="Self.FK_BoroughMem_Boroughs" FromRole="Boroughs" ToRole="BoroughMem" />
-        </EntityType>
         <EntityType Name="Cohort">
           <Key>
             <PropertyRef Name="ID" />
@@ -533,22 +416,12 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="ESR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Code" Type="Int32" />
           <Property Name="LeaderID" Type="Int32" />
-          <Property Name="Cohort" Type="Int32" />
+          <Property Name="CohortID" Type="Int32" />
           <Property Name="NoTrain" Type="Boolean" />
           <Property Name="Dont_Migrate" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Cohort1" Relationship="Self.FK_Teams_Cohorts" FromRole="Teams" ToRole="Cohorts" />
+          <NavigationProperty Name="Cohort" Relationship="Self.FK_Teams_Cohorts" FromRole="Teams" ToRole="Cohorts" />
           <NavigationProperty Name="TeamMems" Relationship="Self.FK_TeamMem_Teams" FromRole="Teams" ToRole="TeamMem" />
           <NavigationProperty Name="Leader" Relationship="Self.FK_Teams_Leader" FromRole="Teams" ToRole="Staff" />
-        </EntityType>
-        <EntityType Name="BoroughMem">
-          <Key>
-            <PropertyRef Name="Key" />
-          </Key>
-          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="BoroughID" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Borough" Relationship="Self.FK_BoroughMem_Boroughs" FromRole="BoroughMem" ToRole="Boroughs" />
         </EntityType>
         <EntityType Name="RA">
           <Key>
@@ -571,31 +444,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="Access_to_Plus" Type="DateTime" Precision="3" />
           <Property Name="UUID_Add_ESR" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Staff" Relationship="Self.FK_RA_Staff" FromRole="RA" ToRole="Staff" />
-        </EntityType>
-        <EntityType Name="Service">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ServiceName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Level" Type="Int16" />
-          <Property Name="Display" Type="Boolean" Nullable="false" />
-          <Property Name="Parent" Type="Int32" />
-          <NavigationProperty Name="ChildServices" Relationship="Self.FK_Services_Services" FromRole="Services" ToRole="Services1" />
-          <NavigationProperty Name="ParentService" Relationship="Self.FK_Services_Services" FromRole="Services1" ToRole="Services" />
-          <NavigationProperty Name="ServMems" Relationship="Self.FK_ServMem_Services" FromRole="Services" ToRole="ServMem" />
-        </EntityType>
-        <EntityType Name="ServMem">
-          <Key>
-            <PropertyRef Name="Key" />
-          </Key>
-          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="ServID" Type="Int32" Nullable="false" />
-          <Property Name="Main" Type="Boolean" Nullable="false" />
-          <Property Name="Pri" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Service" Relationship="Self.FK_ServMem_Services" FromRole="ServMem" ToRole="Services" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -708,18 +556,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="Team_Cohort" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Cohort_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
-        <Association Name="FK_BoroughMem_Boroughs">
-          <End Role="Boroughs" Type="Self.Borough" Multiplicity="1" />
-          <End Role="BoroughMem" Type="Self.BoroughMem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Boroughs">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="BoroughMem">
-              <PropertyRef Name="BoroughID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Staff_Cohorts">
           <End Role="Cohorts" Type="Self.Cohort" Multiplicity="0..1" />
           <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
@@ -740,7 +576,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Teams">
-              <PropertyRef Name="Cohort" />
+              <PropertyRef Name="CohortID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -777,30 +613,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Principal>
             <Dependent Role="RA">
               <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Services_Services">
-          <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
-          <End Role="Services1" Type="Self.Service" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Services1">
-              <PropertyRef Name="Parent" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ServMem_Services">
-          <End Role="Services" Type="Self.Service" Multiplicity="1" />
-          <End Role="ServMem" Type="Self.ServMem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ServMem">
-              <PropertyRef Name="ServID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -877,23 +689,15 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="StaffEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Boroughs" EntityType="Self.Borough" />
           <EntitySet Name="Cohorts" EntityType="Self.Cohort" />
           <EntitySet Name="Teams" EntityType="Self.Team" />
-          <EntitySet Name="BoroughMems" EntityType="Self.BoroughMem" />
           <EntitySet Name="RAs" EntityType="Self.RA" />
-          <EntitySet Name="Services" EntityType="Self.Service" />
-          <EntitySet Name="ServMems" EntityType="Self.ServMem" />
           <EntitySet Name="Staffs" EntityType="Self.Staff" />
           <EntitySet Name="TeamApprovs" EntityType="Self.TeamApprov" />
           <EntitySet Name="TeamMems" EntityType="Self.TeamMem" />
           <EntitySet Name="Titles" EntityType="Self.Title" />
           <EntitySet Name="TNAs" EntityType="Self.TNA" />
           <EntitySet Name="Staff_List" EntityType="Self.Staff_List" />
-          <AssociationSet Name="FK_BoroughMem_Boroughs" Association="Self.FK_BoroughMem_Boroughs">
-            <End Role="Boroughs" EntitySet="Boroughs" />
-            <End Role="BoroughMem" EntitySet="BoroughMems" />
-          </AssociationSet>
           <AssociationSet Name="FK_Staff_Cohorts" Association="Self.FK_Staff_Cohorts">
             <End Role="Cohorts" EntitySet="Cohorts" />
             <End Role="Staff" EntitySet="Staffs" />
@@ -913,14 +717,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <AssociationSet Name="FK_RA_Staff" Association="Self.FK_RA_Staff">
             <End Role="Staff" EntitySet="Staffs" />
             <End Role="RA" EntitySet="RAs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Services_Services" Association="Self.FK_Services_Services">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="Services1" EntitySet="Services" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ServMem_Services" Association="Self.FK_ServMem_Services">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="ServMem" EntitySet="ServMems" />
           </AssociationSet>
           <AssociationSet Name="FK_Staff_LineMan" Association="Self.FK_Staff_LineMan">
             <End Role="Staff" EntitySet="Staffs" />
@@ -958,16 +754,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="StaffModelStoreContainer" CdmEntityContainer="StaffEntities">
-          <EntitySetMapping Name="Boroughs">
-            <EntityTypeMapping TypeName="StaffModel.Borough">
-              <MappingFragment StoreEntitySet="Boroughs">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BoroughName" ColumnName="Borough" />
-                <ScalarProperty Name="LongName" ColumnName="Long" />
-                <ScalarProperty Name="ShortName" ColumnName="Short" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Cohorts">
             <EntityTypeMapping TypeName="StaffModel.Cohort">
               <MappingFragment StoreEntitySet="Cohorts">
@@ -987,19 +773,9 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
                 <ScalarProperty Name="ESR" ColumnName="ESR" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="LeaderID" ColumnName="Leader" />
-                <ScalarProperty Name="Cohort" ColumnName="Cohort" />
+                <ScalarProperty Name="CohortID" ColumnName="Cohort" />
                 <ScalarProperty Name="NoTrain" ColumnName="NoTrain" />
                 <ScalarProperty Name="Dont_Migrate" ColumnName="Dont_Migrate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BoroughMems">
-            <EntityTypeMapping TypeName="StaffModel.BoroughMem">
-              <MappingFragment StoreEntitySet="BoroughMem">
-                <ScalarProperty Name="Key" ColumnName="Key" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BoroughID" ColumnName="Borough" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1022,29 +798,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
                 <ScalarProperty Name="Password_Emailed" ColumnName="Password_Emailed" />
                 <ScalarProperty Name="Access_to_Plus" ColumnName="Access_to_Plus" />
                 <ScalarProperty Name="UUID_Add_ESR" ColumnName="UUID_Add_ESR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Services">
-            <EntityTypeMapping TypeName="StaffModel.Service">
-              <MappingFragment StoreEntitySet="Services">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ServiceName" ColumnName="Service" />
-                <ScalarProperty Name="Level" ColumnName="Level" />
-                <ScalarProperty Name="Display" ColumnName="Display" />
-                <ScalarProperty Name="Parent" ColumnName="Parent" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ServMems">
-            <EntityTypeMapping TypeName="StaffModel.ServMem">
-              <MappingFragment StoreEntitySet="ServMem">
-                <ScalarProperty Name="Key" ColumnName="Key" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ServID" ColumnName="ServID" />
-                <ScalarProperty Name="Main" ColumnName="Main" />
-                <ScalarProperty Name="Pri" ColumnName="Pri" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

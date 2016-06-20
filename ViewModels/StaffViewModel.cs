@@ -17,9 +17,14 @@ namespace WPFParisTraining.ViewModels
         public ObservableCollection<Staff> StaffList { get { return _staffList; } set { _staffList = value;  NotifyPropertyChanged(); } }
 
         private Staff _selectedStaff;
-        public Staff SelectedStaff { get { return _selectedStaff; } set { _selectedStaff = value;  NotifyPropertyChanged(); } }
+        public Staff SelectedStaff { get { return _selectedStaff; } set { _selectedStaff = value;  NotifyPropertyChanged(); UpdateLinkedStuff(); } }
 
-        public List<Title> Titles { get; private set; } 
+        public IEnumerable<Title> Titles { get; private set; } 
+
+        public IEnumerable<Genders> GenderList { get; private set; }
+
+        private IEnumerable<Staff_List> _esr;
+        public IEnumerable<Staff_List> ESR { get { return _esr; } private set { _esr = value; NotifyPropertyChanged(); } }
 
         public StaffViewModel()
         {
@@ -30,6 +35,15 @@ namespace WPFParisTraining.ViewModels
             db.Titles.Load();
             Titles = db.Titles.Local.ToList();
             NotifyPropertyChanged("Titles");
+            GenderList = new List<Genders>(){ Genders.Male, Genders.Female, Genders.Not_Known };
+            
         }
+
+        private void UpdateLinkedStuff()
+        {
+            db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).Load();
+            ESR = db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).ToList();
+        }
+
     }
 }

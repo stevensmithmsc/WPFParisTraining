@@ -25,13 +25,9 @@ namespace WPFParisTraining.Entity
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Borough> Boroughs { get; set; }
         public virtual DbSet<Cohort> Cohorts { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
-        public virtual DbSet<BoroughMem> BoroughMems { get; set; }
         public virtual DbSet<RA> RAs { get; set; }
-        public virtual DbSet<Service> Services { get; set; }
-        public virtual DbSet<ServMem> ServMems { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<TeamApprov> TeamApprovs { get; set; }
         public virtual DbSet<TeamMem> TeamMems { get; set; }

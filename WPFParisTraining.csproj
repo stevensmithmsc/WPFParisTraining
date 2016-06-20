@@ -69,12 +69,6 @@
     <Compile Include="CoursesPage.xaml.cs">
       <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entity\Borough.cs">
-      <DependentUpon>TrainDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\BoroughMem.cs">
-      <DependentUpon>TrainDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entity\Cohort.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
@@ -82,12 +76,6 @@
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\RA.cs">
-      <DependentUpon>TrainDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\Service.cs">
-      <DependentUpon>TrainDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\ServMem.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Staff.cs">
@@ -139,6 +127,7 @@
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\StaffViewModel.cs" />
+    <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="CoursesPage.xaml">
       <SubType>Designer</SubType>

@@ -25,11 +25,11 @@ namespace WPFParisTraining.Entity
         public string ESR { get; set; }
         public Nullable<int> Code { get; set; }
         public Nullable<int> LeaderID { get; set; }
-        public Nullable<int> Cohort { get; set; }
+        public Nullable<int> CohortID { get; set; }
         public Nullable<bool> NoTrain { get; set; }
         public bool Dont_Migrate { get; set; }
     
-        public virtual Cohort Cohort1 { get; set; }
+        public virtual Cohort Cohort { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeamMem> TeamMems { get; set; }
         public virtual Staff Leader { get; set; }
