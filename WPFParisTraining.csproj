@@ -133,6 +133,7 @@
     <Compile Include="TeamsPage.xaml.cs">
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\LocationsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />

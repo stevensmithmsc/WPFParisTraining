@@ -285,6 +285,9 @@
                             <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="7" Text="{Binding SelectedStaff.RA.UUID_Add_ESR}" />
                         </Grid>
                     </Expander>
+                    <Expander Header="Team Approvals">
+                        <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}"></DataGrid>
+                    </Expander>
                     <Expander Header="Requirements">
                         <DataGrid></DataGrid>
                     </Expander>
