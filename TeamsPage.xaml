@@ -30,7 +30,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Team Name" Binding="{Binding TeamName}"/>
                 <DataGridTextColumn Header="Cost Code" Binding="{Binding Code}" />
-                <DataGridTextColumn Header="Team Leader" Binding="{Binding Leader.Fname}" />
+                <DataGridTextColumn Header="Team Leader" Binding="{Binding Leader.SimpleName}" />
                 <DataGridTextColumn Header="Members" Binding="{Binding TeamMems.Count}" />
                 <DataGridTextColumn Header="Cohort" Binding="{Binding Cohort.Code}" />
             </DataGrid.Columns>
@@ -70,7 +70,16 @@
                         <TextBlock Text="Leader" Grid.Row="3"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedTeam.Leader.Fname}" />
                         <TextBlock Text="Cohort" Grid.Row="4"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedTeam.Cohort.CohortDescription}" />
+                        <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding CohortList}" SelectedItem="{Binding SelectedTeam.Cohort}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Code}" FontWeight="Bold" Margin="0,0,5,0" />
+                                        <TextBlock Text="{Binding CohortDescription}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock Text="No Training Required" Grid.Row="5"/>
                         <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding SelectedTeam.NoTrain}" />
                     </Grid>
@@ -85,8 +94,8 @@
         </ScrollViewer>
         <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SelectedTeam.TeamMems}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Staff Member" Binding="{Binding Staff.Fname}" />
-                <DataGridTextColumn Header="Job Title" Binding="{Binding Staff.JobTitle}" />
+                <DataGridTextColumn Header="Staff Member" Binding="{Binding Staff.SimpleName}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Job Title" Binding="{Binding Staff.JobTitle}" IsReadOnly="True" />
                 <DataGridCheckBoxColumn Header="Active" Binding="{Binding Active}" />
             </DataGrid.Columns>
         </DataGrid>

@@ -81,6 +81,7 @@
     <Compile Include="Entity\Staff.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Staff_Extra.cs" />
     <Compile Include="Entity\Staff_List.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>

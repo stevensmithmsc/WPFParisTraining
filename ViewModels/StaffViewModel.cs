@@ -26,6 +26,8 @@ namespace WPFParisTraining.ViewModels
         private IEnumerable<Staff_List> _esr;
         public IEnumerable<Staff_List> ESR { get { return _esr; } private set { _esr = value; NotifyPropertyChanged(); } }
 
+        public IEnumerable<Cohort> CohortList { get; private set; }
+
         public StaffViewModel()
         {
             db = new StaffEntities();
@@ -36,7 +38,9 @@ namespace WPFParisTraining.ViewModels
             Titles = db.Titles.Local.ToList();
             NotifyPropertyChanged("Titles");
             GenderList = new List<Genders>(){ Genders.Male, Genders.Female, Genders.Not_Known };
-            
+            db.Cohorts.Load();
+            CohortList = db.Cohorts.Local.OrderBy(c => c.Number).ToList();
+            NotifyPropertyChanged("CohortList");
         }
 
         private void UpdateLinkedStuff()

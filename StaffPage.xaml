@@ -24,11 +24,11 @@
         </Expander>
         <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Fname}" />
-                <DataGridTextColumn Header="Surname" Binding="{Binding Sname}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding JobTitle}" />
-                <DataGridTextColumn Header="Line Manager" Binding="{Binding Line_Manager.Fname}" />
-                <DataGridTextColumn Header="Cohort" Binding="{Binding Cohort.Code}" />
+                <DataGridTextColumn Header="Main Team" Binding="{Binding MainTeam.TeamName}" />
+                <DataGridTextColumn Header="Line Manager" Binding="{Binding Line_Manager.SimpleName}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Cohort" Binding="{Binding CalculatedCohort.Code}" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
         <ScrollViewer Grid.Row="2">
@@ -101,7 +101,16 @@
                                     <TextBlock Text="Line Manager" Grid.Row="11"/>
                                     <TextBox Grid.Row="11" Grid.Column="1"/>
                                     <TextBlock Text="Cohort" Grid.Row="12"/>
-                                    <TextBox Grid.Row="12" Grid.Column="1"/>
+                                    <ComboBox Grid.Row="12" Grid.Column="1" ItemsSource="{Binding CohortList}" SelectedItem="{Binding SelectedStaff.Cohort}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Code}" FontWeight="Bold" Margin="0,0,5,0" />
+                                                    <TextBlock Text="{Binding CohortDescription}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                     <TextBlock Text="ESR ID" Grid.Row="13"/>
                                     <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding SelectedStaff.ESRID}"/>
                                 </Grid>
