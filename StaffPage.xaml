@@ -91,15 +91,33 @@
                                     <TextBlock Text="Job Title" Grid.Row="6"/>
                                     <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SelectedStaff.JobTitle}"/>
                                     <TextBlock Text="Cost Code" Grid.Row="7"/>
-                                    <TextBox Grid.Row="7" Grid.Column="1"/>
+                                    <ComboBox Grid.Row="7" Grid.Column="1" ItemsSource="{Binding CostCentres}" SelectedItem="{Binding SelectedStaff.Cost_Centres}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding CCName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                     <TextBlock Text="Subjective" Grid.Row="8"/>
-                                    <TextBox Grid.Row="8" Grid.Column="1"/>
+                                    <ComboBox Grid.Row="8" Grid.Column="1" ItemsSource="{Binding Subjectives}" SelectedItem="{Binding SelectedStaff.Subjective}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding SubName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                     <TextBlock Text="Phone" Grid.Row="9"/>
                                     <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding SelectedStaff.Phone}"/>
                                     <TextBlock Text="E-mail" Grid.Row="10"/>
                                     <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding SelectedStaff.Email}"/>
                                     <TextBlock Text="Line Manager" Grid.Row="11"/>
-                                    <TextBox Grid.Row="11" Grid.Column="1"/>
+                                    <ComboBox Grid.Row="11" Grid.Column="1" ItemsSource="{Binding Leaders}" SelectedItem="{Binding SelectedStaff.Line_Manager}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                     <TextBlock Text="Cohort" Grid.Row="12"/>
                                     <ComboBox Grid.Row="12" Grid.Column="1" ItemsSource="{Binding CohortList}" SelectedItem="{Binding SelectedStaff.Cohort}">
                                         <ComboBox.ItemTemplate>

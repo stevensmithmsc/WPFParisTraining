@@ -15,7 +15,7 @@ namespace WPFParisTraining.Entity
     public partial class Staff_List
     {
         public string Organisation__Team_ { get; set; }
-        public int Employee_Number { get; set; }
+        public Nullable<int> Employee_Number { get; set; }
         public string Forename { get; set; }
         public string Surname { get; set; }
         public string UUID { get; set; }

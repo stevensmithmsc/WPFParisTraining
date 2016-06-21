@@ -72,6 +72,9 @@
     <Compile Include="Entity\Cohort.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Cost_Centres.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Genders.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
@@ -83,6 +86,9 @@
     </Compile>
     <Compile Include="Entity\Staff_Extra.cs" />
     <Compile Include="Entity\Staff_List.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Subjective.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Team.cs">

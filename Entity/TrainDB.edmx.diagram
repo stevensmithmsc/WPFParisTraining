@@ -5,15 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="a0bf7d11b73b46daa2235cf2bf2f26f4" Name="Diagram1">
-        <EntityTypeShape EntityType="StaffModel.Cohort" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.Team" Width="1.5" PointX="8.25" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.RA" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.Staff" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.TeamApprov" Width="1.5" PointX="5.25" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.TeamMem" Width="1.5" PointX="10.5" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.Title" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.TNA" Width="1.5" PointX="5.25" PointY="18.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="StaffModel.Staff_List" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.Cohort" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.Team" Width="1.5" PointX="8.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.RA" Width="1.5" PointX="5.25" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.Staff" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.TeamApprov" Width="1.5" PointX="5.25" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.TeamMem" Width="1.5" PointX="10.5" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.Title" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.TNA" Width="1.5" PointX="5.25" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StaffModel.Staff_List" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="StaffModel.FK_Staff_Cohorts" ManuallyRouted="false" />
         <AssociationConnector Association="StaffModel.FK_Teams_Cohorts" ManuallyRouted="false" />
         <AssociationConnector Association="StaffModel.FK_TeamMem_Teams" ManuallyRouted="false" />
@@ -25,6 +25,10 @@
         <AssociationConnector Association="StaffModel.FK_TeamMem_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="StaffModel.FK_TNA_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="StaffModel.FK_TNA_Trainer" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="StaffModel.Cost_Centres" Width="1.5" PointX="1.125" PointY="11.625" />
+        <EntityTypeShape EntityType="StaffModel.Subjective" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="StaffModel.FK_Staff_Cost_Centres" />
+        <AssociationConnector Association="StaffModel.FK_Staff_Subjectives" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -64,5 +64,7 @@ namespace WPFParisTraining.Entity
         public virtual TNA TNA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TNA> TNAs { get; set; }
+        public virtual Cost_Centres Cost_Centres { get; set; }
+        public virtual Subjective Subjective { get; set; }
     }
 }

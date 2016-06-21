@@ -28,6 +28,12 @@ namespace WPFParisTraining.ViewModels
 
         public IEnumerable<Cohort> CohortList { get; private set; }
 
+        public IEnumerable<Cost_Centres> CostCentres { get; private set; }
+
+        public IEnumerable<Subjective> Subjectives { get; private set; }
+
+        public IEnumerable<Staff> Leaders { get; private set; }
+
         public StaffViewModel()
         {
             db = new StaffEntities();
@@ -41,6 +47,14 @@ namespace WPFParisTraining.ViewModels
             db.Cohorts.Load();
             CohortList = db.Cohorts.Local.OrderBy(c => c.Number).ToList();
             NotifyPropertyChanged("CohortList");
+            db.Cost_Centres.Where(cc => cc.Enbld).Load();
+            CostCentres = db.Cost_Centres.Local.ToList();
+            NotifyPropertyChanged("CostCentres");
+            db.Subjectives.Load();
+            Subjectives = db.Subjectives.Local.ToList();
+            NotifyPropertyChanged("Subjectives");
+            Leaders = db.Staffs.Local.Where(s => s.LM == true).OrderBy(s => s.Sname).ToList();
+            NotifyPropertyChanged("Leaders");
         }
 
         private void UpdateLinkedStuff()
