@@ -69,6 +69,20 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
         </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TLoc" Type="bit" Nullable="false" />
+          <Property Name="MaxP" Type="smallint" />
+          <Property Name="Comments" Type="text" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
         <EntityType Name="RA">
           <Key>
             <PropertyRef Name="ID" />
@@ -126,6 +140,23 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
           <Property Name="ADAccount" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Statuses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="Requirement" Type="bit" Nullable="false" />
+          <Property Name="Attendance" Type="bit" Nullable="false" />
+          <Property Name="RA_PDS" Type="bit" Nullable="false" />
+          <Property Name="TNA_OUT" Type="bit" Nullable="false" />
+          <Property Name="RA_PLUS" Type="bit" Nullable="false" />
+          <Property Name="RA_ESR" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
         </EntityType>
         <EntityType Name="TeamApprov">
           <Key>
@@ -213,6 +244,42 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="Team Cohort" Type="nvarchar" MaxLength="50" />
           <Property Name="Cohort Code" Type="varchar" MaxLength="10" />
         </EntityType>
+        <Association Name="FK_RA_ESR_Updated">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
+          <End Role="RA" Type="Self.RA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RA">
+              <PropertyRef Name="ESR_Updated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RA_PDS_Role">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
+          <End Role="RA" Type="Self.RA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RA">
+              <PropertyRef Name="PDS_Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RA_PLUS_Updated">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
+          <End Role="RA" Type="Self.RA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RA">
+              <PropertyRef Name="PLUS_Updated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RA_Staff">
           <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
           <End Role="RA" Type="Self.RA" Multiplicity="0..1" />
@@ -333,6 +400,18 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Teams_Cost_Centres">
+          <End Role="Cost_Centres" Type="Self.Cost_Centres" Multiplicity="0..1" />
+          <End Role="Teams" Type="Self.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cost_Centres">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Teams_Leader">
           <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
           <End Role="Teams" Type="Self.Teams" Multiplicity="*" />
@@ -357,6 +436,18 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TNA_Statuses">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
+          <End Role="TNA" Type="Self.TNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TNA">
+              <PropertyRef Name="TNA_Outcome" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TNA_Trainer">
           <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
           <End Role="TNA" Type="Self.TNA" Multiplicity="*" />
@@ -374,8 +465,10 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <EntitySet Name="Cost_Centres" EntityType="Self.Cost_Centres" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjectives" EntityType="Self.Subjectives" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="train" store:Type="Tables" />
           <EntitySet Name="RA" EntityType="Self.RA" Schema="train" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="train" store:Type="Tables" />
+          <EntitySet Name="Statuses" EntityType="Self.Statuses" Schema="train" store:Type="Tables" />
           <EntitySet Name="TeamApprov" EntityType="Self.TeamApprov" Schema="train" store:Type="Tables" />
           <EntitySet Name="TeamMem" EntityType="Self.TeamMem" Schema="train" store:Type="Tables" />
           <EntitySet Name="Titles" EntityType="Self.Titles" Schema="train" store:Type="Tables" />
@@ -404,6 +497,18 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
     [Staff_List].[Cohort Code] AS [Cohort Code]
     FROM [ESR].[Staff_List] AS [Staff_List]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_RA_ESR_Updated" Association="Self.FK_RA_ESR_Updated">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="RA" EntitySet="RA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RA_PDS_Role" Association="Self.FK_RA_PDS_Role">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="RA" EntitySet="RA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RA_PLUS_Updated" Association="Self.FK_RA_PLUS_Updated">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="RA" EntitySet="RA" />
+          </AssociationSet>
           <AssociationSet Name="FK_RA_Staff" Association="Self.FK_RA_Staff">
             <End Role="Staff" EntitySet="Staff" />
             <End Role="RA" EntitySet="RA" />
@@ -444,12 +549,20 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             <End Role="Cohorts" EntitySet="Cohorts" />
             <End Role="Teams" EntitySet="Teams" />
           </AssociationSet>
+          <AssociationSet Name="FK_Teams_Cost_Centres" Association="Self.FK_Teams_Cost_Centres">
+            <End Role="Cost_Centres" EntitySet="Cost_Centres" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
           <AssociationSet Name="FK_Teams_Leader" Association="Self.FK_Teams_Leader">
             <End Role="Staff" EntitySet="Staff" />
             <End Role="Teams" EntitySet="Teams" />
           </AssociationSet>
           <AssociationSet Name="FK_TNA_Staff" Association="Self.FK_TNA_Staff">
             <End Role="Staff" EntitySet="Staff" />
+            <End Role="TNA" EntitySet="TNA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TNA_Statuses" Association="Self.FK_TNA_Statuses">
+            <End Role="Statuses" EntitySet="Statuses" />
             <End Role="TNA" EntitySet="TNA" />
           </AssociationSet>
           <AssociationSet Name="FK_TNA_Trainer" Association="Self.FK_TNA_Trainer">
@@ -488,6 +601,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <NavigationProperty Name="Cohort" Relationship="Self.FK_Teams_Cohorts" FromRole="Teams" ToRole="Cohorts" />
           <NavigationProperty Name="TeamMems" Relationship="Self.FK_TeamMem_Teams" FromRole="Teams" ToRole="TeamMem" />
           <NavigationProperty Name="Leader" Relationship="Self.FK_Teams_Leader" FromRole="Teams" ToRole="Staff" />
+          <NavigationProperty Name="Cost_Centres" Relationship="StaffModel.FK_Teams_Cost_Centres" FromRole="Team" ToRole="Cost_Centres" />
         </EntityType>
         <EntityType Name="RA">
           <Key>
@@ -510,6 +624,9 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="Access_to_Plus" Type="DateTime" Precision="3" />
           <Property Name="UUID_Add_ESR" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Staff" Relationship="Self.FK_RA_Staff" FromRole="RA" ToRole="Staff" />
+          <NavigationProperty Name="Status_ESR_Up" Relationship="StaffModel.FK_RA_ESR_Updated" FromRole="RA" ToRole="Status" />
+          <NavigationProperty Name="Status_PDS_Role" Relationship="StaffModel.FK_RA_PDS_Role" FromRole="RA" ToRole="Status" />
+          <NavigationProperty Name="Status_Plus_Up" Relationship="StaffModel.FK_RA_PLUS_Updated" FromRole="RA" ToRole="Status" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -598,6 +715,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="TNA_Outcome" Type="Int16" />
           <NavigationProperty Name="Staff" Relationship="Self.FK_TNA_Staff" FromRole="TNA" ToRole="Staff" />
           <NavigationProperty Name="Trainer" Relationship="Self.FK_TNA_Trainer" FromRole="TNA" ToRole="Staff" />
+          <NavigationProperty Name="Status" Relationship="StaffModel.FK_TNA_Statuses" FromRole="TNA" ToRole="Status" />
         </EntityType>
         <EntityType Name="Staff_List">
           <Key>
@@ -820,6 +938,28 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             <End Role="Subjective" EntitySet="Subjectives" />
             <End Role="Staff" EntitySet="Staffs" />
           </AssociationSet>
+          <EntitySet Name="Locations" EntityType="StaffModel.Location" />
+          <AssociationSet Name="FK_Teams_Cost_Centres" Association="StaffModel.FK_Teams_Cost_Centres">
+            <End Role="Cost_Centres" EntitySet="Cost_Centres" />
+            <End Role="Team" EntitySet="Teams" />
+          </AssociationSet>
+          <EntitySet Name="Statuses" EntityType="StaffModel.Status" />
+          <AssociationSet Name="FK_RA_ESR_Updated" Association="StaffModel.FK_RA_ESR_Updated">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="RA" EntitySet="RAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RA_PDS_Role" Association="StaffModel.FK_RA_PDS_Role">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="RA" EntitySet="RAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RA_PLUS_Updated" Association="StaffModel.FK_RA_PLUS_Updated">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="RA" EntitySet="RAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TNA_Statuses" Association="StaffModel.FK_TNA_Statuses">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="TNA" EntitySet="TNAs" />
+          </AssociationSet>
         </EntityContainer>
         <EnumType Name="Genders" UnderlyingType="Byte">
           <Member Name="Male" Value="1" />
@@ -834,6 +974,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="CCName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Enbld" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Staffs" Relationship="StaffModel.FK_Staff_Cost_Centres" FromRole="Cost_Centres" ToRole="Staff" />
+          <NavigationProperty Name="Teams" Relationship="StaffModel.FK_Teams_Cost_Centres" FromRole="Cost_Centres" ToRole="Team" />
         </EntityType>
         <EntityType Name="Subjective">
           <Key>
@@ -864,6 +1005,89 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Principal>
             <Dependent Role="Staff">
               <PropertyRef Name="JobStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TLoc" Type="Boolean" Nullable="false" />
+          <Property Name="MaxP" Type="Int16" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Teams_Cost_Centres">
+          <End Type="StaffModel.Cost_Centres" Role="Cost_Centres" Multiplicity="0..1" />
+          <End Type="StaffModel.Team" Role="Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cost_Centres">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Requirement" Type="Boolean" Nullable="false" />
+          <Property Name="Attendance" Type="Boolean" Nullable="false" />
+          <Property Name="RA_PDS" Type="Boolean" Nullable="false" />
+          <Property Name="TNA_OUT" Type="Boolean" Nullable="false" />
+          <Property Name="RA_PLUS" Type="Boolean" Nullable="false" />
+          <Property Name="RA_ESR" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_RA_ESR_Updated">
+          <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="StaffModel.RA" Role="RA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RA">
+              <PropertyRef Name="ESR_Updated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RA_PDS_Role">
+          <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="StaffModel.RA" Role="RA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RA">
+              <PropertyRef Name="PDS_Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RA_PLUS_Updated">
+          <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="StaffModel.RA" Role="RA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RA">
+              <PropertyRef Name="PLUS_Updated" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TNA_Statuses">
+          <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="StaffModel.TNA" Role="TNA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TNA">
+              <PropertyRef Name="TNA_Outcome" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1036,6 +1260,31 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
               <MappingFragment StoreEntitySet="Subjectives">
                 <ScalarProperty Name="SubName" ColumnName="SubName" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="StaffModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="MaxP" ColumnName="MaxP" />
+                <ScalarProperty Name="TLoc" ColumnName="TLoc" />
+                <ScalarProperty Name="LocationName" ColumnName="Location" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statuses">
+            <EntityTypeMapping TypeName="StaffModel.Status">
+              <MappingFragment StoreEntitySet="Statuses">
+                <ScalarProperty Name="RA_ESR" ColumnName="RA_ESR" />
+                <ScalarProperty Name="RA_PLUS" ColumnName="RA_PLUS" />
+                <ScalarProperty Name="TNA_OUT" ColumnName="TNA_OUT" />
+                <ScalarProperty Name="RA_PDS" ColumnName="RA_PDS" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Requirement" ColumnName="Requirement" />
+                <ScalarProperty Name="StatusDesc" ColumnName="Status" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

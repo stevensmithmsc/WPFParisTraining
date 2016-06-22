@@ -12,17 +12,12 @@ namespace WPFParisTraining.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class TNA
+    public partial class Location
     {
-        public int ID { get; set; }
-        public Nullable<System.DateTime> Date_Received { get; set; }
-        public Nullable<int> TrainerID { get; set; }
-        public Nullable<System.DateTime> Contact_Date { get; set; }
-        public string Contact_Outcome { get; set; }
-        public Nullable<short> TNA_Outcome { get; set; }
-    
-        public virtual Staff Staff { get; set; }
-        public virtual Staff Trainer { get; set; }
-        public virtual Status Status { get; set; }
+        public short ID { get; set; }
+        public string LocationName { get; set; }
+        public bool TLoc { get; set; }
+        public Nullable<short> MaxP { get; set; }
+        public string Comments { get; set; }
     }
 }

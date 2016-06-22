@@ -34,6 +34,11 @@ namespace WPFParisTraining.ViewModels
 
         public IEnumerable<Staff> Leaders { get; private set; }
 
+        public IEnumerable<Status> TNAOutcomes { get; private set; }
+        public IEnumerable<Status> StatusESRUp { get; private set; }
+        public IEnumerable<Status> StatusPDSRole { get; private set; }
+        public IEnumerable<Status> StatusPlusUp { get; private set; }
+
         public StaffViewModel()
         {
             db = new StaffEntities();
@@ -55,6 +60,15 @@ namespace WPFParisTraining.ViewModels
             NotifyPropertyChanged("Subjectives");
             Leaders = db.Staffs.Local.Where(s => s.LM == true).OrderBy(s => s.Sname).ToList();
             NotifyPropertyChanged("Leaders");
+            db.Statuses.Load();
+            TNAOutcomes = db.Statuses.Local.Where(s => s.TNA_OUT).ToList();
+            NotifyPropertyChanged("TNAOutcomes");
+            StatusESRUp = db.Statuses.Local.Where(s => s.RA_ESR).ToList();
+            NotifyPropertyChanged("StatusESRUp");
+            StatusPDSRole = db.Statuses.Local.Where(s => s.RA_PDS).ToList();
+            NotifyPropertyChanged("StatusPDSRole");
+            StatusPlusUp = db.Statuses.Local.Where(s => s.RA_PLUS).ToList();
+            NotifyPropertyChanged("StatusPlusUp");
         }
 
         private void UpdateLinkedStuff()

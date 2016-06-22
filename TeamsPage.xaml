@@ -29,10 +29,10 @@
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Team Name" Binding="{Binding TeamName}"/>
-                <DataGridTextColumn Header="Cost Code" Binding="{Binding Code}" />
-                <DataGridTextColumn Header="Team Leader" Binding="{Binding Leader.SimpleName}" />
-                <DataGridTextColumn Header="Members" Binding="{Binding TeamMems.Count}" />
-                <DataGridTextColumn Header="Cohort" Binding="{Binding Cohort.Code}" />
+                <DataGridTextColumn Header="Cost Code" Binding="{Binding Cost_Centres.CCName}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Team Leader" Binding="{Binding Leader.SimpleName}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Members" Binding="{Binding TeamMems.Count}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Cohort" Binding="{Binding Cohort.Code}" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
         <ScrollViewer Grid.Row="2">
@@ -66,7 +66,13 @@
                         <TextBlock Text="Name in ESR" Grid.Row="1"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedTeam.ESR}" />
                         <TextBlock Text="Cost Centre" Grid.Row="2"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedTeam.Code}" />
+                        <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding CostCentres}" SelectedItem="{Binding SelectedTeam.Cost_Centres}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding CCName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock Text="Leader" Grid.Row="3"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedTeam.Leader.Fname}" />
                         <TextBlock Text="Cohort" Grid.Row="4"/>

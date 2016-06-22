@@ -29,6 +29,13 @@
         <EntityTypeShape EntityType="StaffModel.Subjective" Width="1.5" PointX="0.75" PointY="0.875" />
         <AssociationConnector Association="StaffModel.FK_Staff_Cost_Centres" />
         <AssociationConnector Association="StaffModel.FK_Staff_Subjectives" />
+        <EntityTypeShape EntityType="StaffModel.Location" Width="1.5" PointX="8.375" PointY="0.75" />
+        <AssociationConnector Association="StaffModel.FK_Teams_Cost_Centres" />
+        <EntityTypeShape EntityType="StaffModel.Status" Width="1.5" PointX="3" PointY="14.75" />
+        <AssociationConnector Association="StaffModel.FK_RA_ESR_Updated" />
+        <AssociationConnector Association="StaffModel.FK_RA_PDS_Role" />
+        <AssociationConnector Association="StaffModel.FK_RA_PLUS_Updated" />
+        <AssociationConnector Association="StaffModel.FK_TNA_Statuses" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

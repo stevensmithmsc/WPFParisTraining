@@ -32,5 +32,8 @@ namespace WPFParisTraining.Entity
         public Nullable<System.DateTime> UUID_Add_ESR { get; set; }
     
         public virtual Staff Staff { get; set; }
+        public virtual Status Status_ESR_Up { get; set; }
+        public virtual Status Status_PDS_Role { get; set; }
+        public virtual Status Status_Plus_Up { get; set; }
     }
 }

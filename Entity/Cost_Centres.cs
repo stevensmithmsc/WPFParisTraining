@@ -18,6 +18,7 @@ namespace WPFParisTraining.Entity
         public Cost_Centres()
         {
             this.Staffs = new HashSet<Staff>();
+            this.Teams = new HashSet<Team>();
         }
     
         public int Code { get; set; }
@@ -26,5 +27,7 @@ namespace WPFParisTraining.Entity
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Staff> Staffs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Team> Teams { get; set; }
     }
 }

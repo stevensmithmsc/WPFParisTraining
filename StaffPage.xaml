@@ -225,13 +225,19 @@
                             <TextBlock Text="Date Received" />
                             <DatePicker Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Date_Received}" />
                             <TextBlock Text="Trainer" Grid.Row="1"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.TNA.Trainer.Fname}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.TNA.Trainer.SimpleName}" />
                             <TextBlock Text="Contact Date" Grid.Row="2"/>
                             <DatePicker Grid.Row="2" Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Contact_Date}" />
                             <TextBlock Text="Contact Outcome" Grid.Column="2"/>
                             <TextBox Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.TNA.Contact_Outcome}" />
                             <TextBlock Text="TNA Outcome" Grid.Row="2" Grid.Column="2"/>
-                            <TextBox Grid.Row="2" Grid.Column="3" Margin="5,0" Text="{Binding SelectedStaff.TNA.TNA_Outcome}" />
+                            <ComboBox Grid.Row="2" Grid.Column="3" Margin="5,0" ItemsSource="{Binding TNAOutcomes}" SelectedItem="{Binding SelectedStaff.TNA.Status}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding StatusDesc}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </Grid>
                     </Expander>
                     <Expander Header="RA">
@@ -256,11 +262,29 @@
                             <TextBlock Text="UUID" />
                             <TextBox Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.RA.UUID}" />
                             <TextBlock Text="PDS Role" Grid.Row="1"  />
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="5,0" Text="{Binding SelectedStaff.RA.PDS_Role}" />
+                            <ComboBox Grid.Column="1" Grid.Row="1" Margin="5,0" ItemsSource="{Binding StatusPDSRole}" SelectedItem="{Binding SelectedStaff.RA.Status_PDS_Role}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding StatusDesc}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <TextBlock Text="Plus Updated" Grid.Row="2" />
-                            <TextBox Grid.Column="1" Grid.Row="2" Margin="5,0" Text="{Binding SelectedStaff.RA.PLUS_Updated}" />
+                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="5,0" ItemsSource="{Binding StatusPlusUp}" SelectedItem="{Binding SelectedStaff.RA.Status_Plus_Up}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding StatusDesc}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <TextBlock Text="ESR Updated" Grid.Row="3"  />
-                            <TextBox Grid.Column="1" Grid.Row="3" Margin="5,0" Text="{Binding SelectedStaff.RA.ESR_Updated}" />
+                            <ComboBox Grid.Column="1" Grid.Row="3" Margin="5,0" ItemsSource="{Binding StatusESRUp}" SelectedItem="{Binding SelectedStaff.RA.Status_ESR_Up}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding StatusDesc}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <TextBlock Text="RA Comments" Grid.Row="4" />
                             <TextBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.RA.RAComments}" />
                             <TextBlock Text="E Gif L3/RA Complete:" Grid.Column="2"/>

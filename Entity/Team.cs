@@ -33,5 +33,6 @@ namespace WPFParisTraining.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeamMem> TeamMems { get; set; }
         public virtual Staff Leader { get; set; }
+        public virtual Cost_Centres Cost_Centres { get; set; }
     }
 }
