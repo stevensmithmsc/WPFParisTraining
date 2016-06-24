@@ -23,6 +23,8 @@ namespace WPFParisTraining.ViewModels
 
         public IEnumerable<Cost_Centres> CostCentres { get; private set; }
 
+        public IEnumerable<Staff> Members { get; private set; }
+
         public TeamViewModel()
         {
             db = new StaffEntities();
@@ -39,7 +41,7 @@ namespace WPFParisTraining.ViewModels
 
         private void UpdateLinkedStuff()
         {
-
+              //db.Staffs.Where(s => s.TeamMems.Where(m => m.TeamID == SelectedTeam.ID)).Load();
         }
     }
 }

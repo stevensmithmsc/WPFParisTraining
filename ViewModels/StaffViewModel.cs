@@ -33,6 +33,7 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Subjective> Subjectives { get; private set; }
 
         public IEnumerable<Staff> Leaders { get; private set; }
+        public IEnumerable<Staff> Trainers { get; private set; }
 
         public IEnumerable<Status> TNAOutcomes { get; private set; }
         public IEnumerable<Status> StatusESRUp { get; private set; }
@@ -69,6 +70,8 @@ namespace WPFParisTraining.ViewModels
             NotifyPropertyChanged("StatusPDSRole");
             StatusPlusUp = db.Statuses.Local.Where(s => s.RA_PLUS).ToList();
             NotifyPropertyChanged("StatusPlusUp");
+            Trainers = db.Staffs.Local.Where(s => s.Trainer == true && s.External == false).OrderBy(s => s.Sname).ToList();
+            NotifyPropertyChanged("Trainers");
         }
 
         private void UpdateLinkedStuff()

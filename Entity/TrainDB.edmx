@@ -69,6 +69,54 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
         </EntityType>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Staff" Type="int" Nullable="false" />
+          <Property Name="Sess" Type="int" Nullable="false" />
+          <Property Name="Outcome" Type="smallint" />
+          <Property Name="Comments" Type="text" />
+          <Property Name="BookedBy" Type="int" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+          <Property Name="CancelledBy" Type="int" />
+        </EntityType>
+        <EntityType Name="CourseReq">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Course" Type="int" Nullable="false" />
+          <Property Name="PreReq" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Course" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Length" Type="smallint" />
+          <Property Name="Notes" Type="text" />
+          <Property Name="External" Type="bit" Nullable="false" />
+          <Property Name="Paris" Type="bit" />
+          <Property Name="Template" Type="smallint" Nullable="false" />
+          <Property Name="FullColour" Type="int" />
+          <Property Name="BookedColour" Type="int" />
+          <Property Name="EmptyColour" Type="int" />
+          <Property Name="Obselete" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
         <EntityType Name="Locations">
           <Key>
             <PropertyRef Name="ID" />
@@ -103,6 +151,37 @@
           <Property Name="Password_Emailed" Type="datetime" />
           <Property Name="Access_to_Plus" Type="datetime" />
           <Property Name="UUID_Add_ESR" Type="datetime" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
+        <EntityType Name="Req">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Staff" Type="int" Nullable="false" />
+          <Property Name="Course" Type="int" Nullable="false" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="Comments" Type="text" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
+        <EntityType Name="Sess">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Course" Type="int" Nullable="false" />
+          <Property Name="Trainer" Type="int" />
+          <Property Name="Location" Type="smallint" />
+          <Property Name="Strt" Type="datetime" />
+          <Property Name="Endt" Type="datetime" />
+          <Property Name="MaxP" Type="smallint" Nullable="false" />
+          <Property Name="Notes" Type="text" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Creator" Type="int" />
           <Property Name="Modified" Type="datetime" />
@@ -244,6 +323,78 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="Team Cohort" Type="nvarchar" MaxLength="50" />
           <Property Name="Cohort Code" Type="varchar" MaxLength="10" />
         </EntityType>
+        <Association Name="FK_Attendance_Booked_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="BookedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Cancelled_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="CancelledBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Sess">
+          <End Role="Sess" Type="Self.Sess" Multiplicity="1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sess">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="Sess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="Staff" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseReq_Course_PreReq">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="CourseReq" Type="Self.CourseReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CourseReq">
+              <PropertyRef Name="PreReq" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseReq_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="CourseReq" Type="Self.CourseReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CourseReq">
+              <PropertyRef Name="Course" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RA_ESR_Updated">
           <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
           <End Role="RA" Type="Self.RA" Multiplicity="*" />
@@ -289,6 +440,78 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Principal>
             <Dependent Role="RA">
               <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="Course" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="Staff" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Statuses">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
+          <End Role="Req" Type="Self.Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sess_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Sess" Type="Self.Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sess">
+              <PropertyRef Name="Course" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sess_Locations">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
+          <End Role="Sess" Type="Self.Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sess">
+              <PropertyRef Name="Location" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sess_Trainer">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Sess" Type="Self.Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sess">
+              <PropertyRef Name="Trainer" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -465,8 +688,13 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <EntitySet Name="Cost_Centres" EntityType="Self.Cost_Centres" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjectives" EntityType="Self.Subjectives" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="train" store:Type="Tables" />
+          <EntitySet Name="CourseReq" EntityType="Self.CourseReq" Schema="train" store:Type="Tables" />
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="train" store:Type="Tables" />
           <EntitySet Name="Locations" EntityType="Self.Locations" Schema="train" store:Type="Tables" />
           <EntitySet Name="RA" EntityType="Self.RA" Schema="train" store:Type="Tables" />
+          <EntitySet Name="Req" EntityType="Self.Req" Schema="train" store:Type="Tables" />
+          <EntitySet Name="Sess" EntityType="Self.Sess" Schema="train" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="train" store:Type="Tables" />
           <EntitySet Name="Statuses" EntityType="Self.Statuses" Schema="train" store:Type="Tables" />
           <EntitySet Name="TeamApprov" EntityType="Self.TeamApprov" Schema="train" store:Type="Tables" />
@@ -497,6 +725,30 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
     [Staff_List].[Cohort Code] AS [Cohort Code]
     FROM [ESR].[Staff_List] AS [Staff_List]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Attendance_Booked_Staff" Association="Self.FK_Attendance_Booked_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Cancelled_Staff" Association="Self.FK_Attendance_Cancelled_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Sess" Association="Self.FK_Attendance_Sess">
+            <End Role="Sess" EntitySet="Sess" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Staff" Association="Self.FK_Attendance_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseReq_Course_PreReq" Association="Self.FK_CourseReq_Course_PreReq">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="CourseReq" EntitySet="CourseReq" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseReq_Courses" Association="Self.FK_CourseReq_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="CourseReq" EntitySet="CourseReq" />
+          </AssociationSet>
           <AssociationSet Name="FK_RA_ESR_Updated" Association="Self.FK_RA_ESR_Updated">
             <End Role="Statuses" EntitySet="Statuses" />
             <End Role="RA" EntitySet="RA" />
@@ -512,6 +764,30 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <AssociationSet Name="FK_RA_Staff" Association="Self.FK_RA_Staff">
             <End Role="Staff" EntitySet="Staff" />
             <End Role="RA" EntitySet="RA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Courses" Association="Self.FK_Req_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Staff" Association="Self.FK_Req_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Statuses" Association="Self.FK_Req_Statuses">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sess_Courses" Association="Self.FK_Sess_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Sess" EntitySet="Sess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sess_Locations" Association="Self.FK_Sess_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Sess" EntitySet="Sess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sess_Trainer" Association="Self.FK_Sess_Trainer">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Sess" EntitySet="Sess" />
           </AssociationSet>
           <AssociationSet Name="FK_Staff_Cohorts" Association="Self.FK_Staff_Cohorts">
             <End Role="Cohorts" EntitySet="Cohorts" />
@@ -668,6 +944,11 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <NavigationProperty Name="TNAs" Relationship="Self.FK_TNA_Trainer" FromRole="Staff" ToRole="TNA" />
           <NavigationProperty Name="Cost_Centres" Relationship="StaffModel.FK_Staff_Cost_Centres" FromRole="Staff" ToRole="Cost_Centres" />
           <NavigationProperty Name="Subjective" Relationship="StaffModel.FK_Staff_Subjectives" FromRole="Staff" ToRole="Subjective" />
+          <NavigationProperty Name="Bookings" Relationship="StaffModel.FK_Attendance_Booked_Staff" FromRole="Staff" ToRole="Attendance" />
+          <NavigationProperty Name="Cancelations" Relationship="StaffModel.FK_Attendance_Cancelled_Staff" FromRole="Staff" ToRole="Attendance" />
+          <NavigationProperty Name="Attendances" Relationship="StaffModel.FK_Attendance_Staff" FromRole="Staff" ToRole="Attendance" />
+          <NavigationProperty Name="Reqs" Relationship="StaffModel.FK_Req_Staff" FromRole="Staff" ToRole="Req" />
+          <NavigationProperty Name="Sesses" Relationship="StaffModel.FK_Sess_Trainer" FromRole="Staff" ToRole="Sess" />
         </EntityType>
         <EntityType Name="TeamApprov">
           <Key>
@@ -960,6 +1241,59 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             <End Role="Status" EntitySet="Statuses" />
             <End Role="TNA" EntitySet="TNAs" />
           </AssociationSet>
+          <EntitySet Name="Attendances" EntityType="StaffModel.Attendance" />
+          <EntitySet Name="CourseReqs" EntityType="StaffModel.CourseReq" />
+          <EntitySet Name="Courses" EntityType="StaffModel.Course" />
+          <EntitySet Name="Reqs" EntityType="StaffModel.Req" />
+          <EntitySet Name="Sesses" EntityType="StaffModel.Sess" />
+          <AssociationSet Name="FK_Attendance_Booked_Staff" Association="StaffModel.FK_Attendance_Booked_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Cancelled_Staff" Association="StaffModel.FK_Attendance_Cancelled_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Sess" Association="StaffModel.FK_Attendance_Sess">
+            <End Role="Sess" EntitySet="Sesses" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Staff" Association="StaffModel.FK_Attendance_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseReq_Course_PreReq" Association="StaffModel.FK_CourseReq_Course_PreReq">
+            <End Role="Cours" EntitySet="Courses" />
+            <End Role="CourseReq" EntitySet="CourseReqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseReq_Courses" Association="StaffModel.FK_CourseReq_Courses">
+            <End Role="Cours" EntitySet="Courses" />
+            <End Role="CourseReq" EntitySet="CourseReqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Courses" Association="StaffModel.FK_Req_Courses">
+            <End Role="Cours" EntitySet="Courses" />
+            <End Role="Req" EntitySet="Reqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sess_Courses" Association="StaffModel.FK_Sess_Courses">
+            <End Role="Cours" EntitySet="Courses" />
+            <End Role="Sess" EntitySet="Sesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sess_Locations" Association="StaffModel.FK_Sess_Locations">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Sess" EntitySet="Sesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Staff" Association="StaffModel.FK_Req_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Req" EntitySet="Reqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Req_Statuses" Association="StaffModel.FK_Req_Statuses">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="Req" EntitySet="Reqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sess_Trainer" Association="StaffModel.FK_Sess_Trainer">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Sess" EntitySet="Sesses" />
+          </AssociationSet>
         </EntityContainer>
         <EnumType Name="Genders" UnderlyingType="Byte">
           <Member Name="Male" Value="1" />
@@ -1017,6 +1351,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="TLoc" Type="Boolean" Nullable="false" />
           <Property Name="MaxP" Type="Int16" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Sesses" Relationship="StaffModel.FK_Sess_Locations" FromRole="Location" ToRole="Sess" />
         </EntityType>
         <Association Name="FK_Teams_Cost_Centres">
           <End Type="StaffModel.Cost_Centres" Role="Cost_Centres" Multiplicity="0..1" />
@@ -1042,6 +1377,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="TNA_OUT" Type="Boolean" Nullable="false" />
           <Property Name="RA_PLUS" Type="Boolean" Nullable="false" />
           <Property Name="RA_ESR" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Reqs" Relationship="StaffModel.FK_Req_Statuses" FromRole="Status" ToRole="Req" />
         </EntityType>
         <Association Name="FK_RA_ESR_Updated">
           <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
@@ -1088,6 +1424,228 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Principal>
             <Dependent Role="TNA">
               <PropertyRef Name="TNA_Outcome" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffID" Type="Int32" Nullable="false" />
+          <Property Name="SessID" Type="Int32" Nullable="false" />
+          <Property Name="Outcome" Type="Int16" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BookedBy" Type="Int32" />
+          <Property Name="Created" Precision="3" Type="DateTime" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="CancelledBy" Type="Int32" />
+          <NavigationProperty Name="Booker" Relationship="StaffModel.FK_Attendance_Booked_Staff" FromRole="Attendance" ToRole="Staff" />
+          <NavigationProperty Name="Canceller" Relationship="StaffModel.FK_Attendance_Cancelled_Staff" FromRole="Attendance" ToRole="Staff" />
+          <NavigationProperty Name="Sess" Relationship="StaffModel.FK_Attendance_Sess" FromRole="Attendance" ToRole="Sess" />
+          <NavigationProperty Name="Staff" Relationship="StaffModel.FK_Attendance_Staff" FromRole="Attendance" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="CourseReq">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="PreReqID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PreReq" Relationship="StaffModel.FK_CourseReq_Course_PreReq" FromRole="CourseReq" ToRole="Cours" />
+          <NavigationProperty Name="Course" Relationship="StaffModel.FK_CourseReq_Courses" FromRole="CourseReq" ToRole="Cours" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="Int16" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="External" Type="Boolean" Nullable="false" />
+          <Property Name="Paris" Type="Boolean" />
+          <Property Name="Template" Type="Int16" Nullable="false" />
+          <Property Name="FullColour" Type="Int32" />
+          <Property Name="BookedColour" Type="Int32" />
+          <Property Name="EmptyColour" Type="Int32" />
+          <Property Name="Obselete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ReqFor" Relationship="StaffModel.FK_CourseReq_Course_PreReq" FromRole="Cours" ToRole="CourseReq" />
+          <NavigationProperty Name="PreReqs" Relationship="StaffModel.FK_CourseReq_Courses" FromRole="Cours" ToRole="CourseReq" />
+          <NavigationProperty Name="StaffReqs" Relationship="StaffModel.FK_Req_Courses" FromRole="Cours" ToRole="Req" />
+          <NavigationProperty Name="Sesses" Relationship="StaffModel.FK_Sess_Courses" FromRole="Cours" ToRole="Sess" />
+        </EntityType>
+        <EntityType Name="Req">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffID" Type="Int32" Nullable="false" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="StatusID" Type="Int16" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Course" Relationship="StaffModel.FK_Req_Courses" FromRole="Req" ToRole="Cours" />
+          <NavigationProperty Name="Staff" Relationship="StaffModel.FK_Req_Staff" FromRole="Req" ToRole="Staff" />
+          <NavigationProperty Name="Status" Relationship="StaffModel.FK_Req_Statuses" FromRole="Req" ToRole="Status" />
+        </EntityType>
+        <EntityType Name="Sess">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="TrainerID" Type="Int32" />
+          <Property Name="LocationID" Type="Int16" />
+          <Property Name="Strt" Type="DateTime" Precision="3" />
+          <Property Name="Endt" Type="DateTime" Precision="3" />
+          <Property Name="MaxP" Type="Int16" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Attendances" Relationship="StaffModel.FK_Attendance_Sess" FromRole="Sess" ToRole="Attendance" />
+          <NavigationProperty Name="Course" Relationship="StaffModel.FK_Sess_Courses" FromRole="Sess" ToRole="Cours" />
+          <NavigationProperty Name="Location" Relationship="StaffModel.FK_Sess_Locations" FromRole="Sess" ToRole="Location" />
+          <NavigationProperty Name="Trainer" Relationship="StaffModel.FK_Sess_Trainer" FromRole="Sess" ToRole="Staff" />
+        </EntityType>
+        <Association Name="FK_Attendance_Booked_Staff">
+          <End Type="StaffModel.Staff" Role="Staff" Multiplicity="0..1" />
+          <End Type="StaffModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="BookedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Cancelled_Staff">
+          <End Type="StaffModel.Staff" Role="Staff" Multiplicity="0..1" />
+          <End Type="StaffModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="CancelledBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Sess">
+          <End Type="StaffModel.Sess" Role="Sess" Multiplicity="1" />
+          <End Type="StaffModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sess">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="SessID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Staff">
+          <End Type="StaffModel.Staff" Role="Staff" Multiplicity="1" />
+          <End Type="StaffModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseReq_Course_PreReq">
+          <End Type="StaffModel.Course" Role="Cours" Multiplicity="1" />
+          <End Type="StaffModel.CourseReq" Role="CourseReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cours">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CourseReq">
+              <PropertyRef Name="PreReqID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseReq_Courses">
+          <End Type="StaffModel.Course" Role="Cours" Multiplicity="1" />
+          <End Type="StaffModel.CourseReq" Role="CourseReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cours">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CourseReq">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Courses">
+          <End Type="StaffModel.Course" Role="Cours" Multiplicity="1" />
+          <End Type="StaffModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cours">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sess_Courses">
+          <End Type="StaffModel.Course" Role="Cours" Multiplicity="1" />
+          <End Type="StaffModel.Sess" Role="Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cours">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sess">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sess_Locations">
+          <End Type="StaffModel.Location" Role="Location" Multiplicity="0..1" />
+          <End Type="StaffModel.Sess" Role="Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sess">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Staff">
+          <End Type="StaffModel.Staff" Role="Staff" Multiplicity="1" />
+          <End Type="StaffModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Req_Statuses">
+          <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="StaffModel.Req" Role="Req" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Req">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sess_Trainer">
+          <End Type="StaffModel.Staff" Role="Staff" Multiplicity="0..1" />
+          <End Type="StaffModel.Sess" Role="Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sess">
+              <PropertyRef Name="TrainerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1284,6 +1842,72 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
                 <ScalarProperty Name="Attendance" ColumnName="Attendance" />
                 <ScalarProperty Name="Requirement" ColumnName="Requirement" />
                 <ScalarProperty Name="StatusDesc" ColumnName="Status" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attendances">
+            <EntityTypeMapping TypeName="StaffModel.Attendance">
+              <MappingFragment StoreEntitySet="Attendance">
+                <ScalarProperty Name="CancelledBy" ColumnName="CancelledBy" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="BookedBy" ColumnName="BookedBy" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+                <ScalarProperty Name="SessID" ColumnName="Sess" />
+                <ScalarProperty Name="StaffID" ColumnName="Staff" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseReqs">
+            <EntityTypeMapping TypeName="StaffModel.CourseReq">
+              <MappingFragment StoreEntitySet="CourseReq">
+                <ScalarProperty Name="PreReqID" ColumnName="PreReq" />
+                <ScalarProperty Name="CourseID" ColumnName="Course" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="StaffModel.Course">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="Obselete" ColumnName="Obselete" />
+                <ScalarProperty Name="EmptyColour" ColumnName="EmptyColour" />
+                <ScalarProperty Name="BookedColour" ColumnName="BookedColour" />
+                <ScalarProperty Name="FullColour" ColumnName="FullColour" />
+                <ScalarProperty Name="Template" ColumnName="Template" />
+                <ScalarProperty Name="Paris" ColumnName="Paris" />
+                <ScalarProperty Name="External" ColumnName="External" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="CourseName" ColumnName="Course" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reqs">
+            <EntityTypeMapping TypeName="StaffModel.Req">
+              <MappingFragment StoreEntitySet="Req">
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="StatusID" ColumnName="Status" />
+                <ScalarProperty Name="CourseID" ColumnName="Course" />
+                <ScalarProperty Name="StaffID" ColumnName="Staff" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sesses">
+            <EntityTypeMapping TypeName="StaffModel.Sess">
+              <MappingFragment StoreEntitySet="Sess">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="MaxP" ColumnName="MaxP" />
+                <ScalarProperty Name="Endt" ColumnName="Endt" />
+                <ScalarProperty Name="Strt" ColumnName="Strt" />
+                <ScalarProperty Name="LocationID" ColumnName="Location" />
+                <ScalarProperty Name="TrainerID" ColumnName="Trainer" />
+                <ScalarProperty Name="CourseID" ColumnName="Course" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

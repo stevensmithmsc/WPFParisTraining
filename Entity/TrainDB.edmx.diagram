@@ -36,6 +36,23 @@
         <AssociationConnector Association="StaffModel.FK_RA_PDS_Role" />
         <AssociationConnector Association="StaffModel.FK_RA_PLUS_Updated" />
         <AssociationConnector Association="StaffModel.FK_TNA_Statuses" />
+        <EntityTypeShape EntityType="StaffModel.Attendance" Width="1.5" PointX="12.875" PointY="7.5" />
+        <EntityTypeShape EntityType="StaffModel.CourseReq" Width="1.5" PointX="9.625" PointY="20.25" />
+        <EntityTypeShape EntityType="StaffModel.Course" Width="1.5" PointX="7.375" PointY="15.875" />
+        <EntityTypeShape EntityType="StaffModel.Req" Width="1.5" PointX="13.625" PointY="12.25" />
+        <EntityTypeShape EntityType="StaffModel.Sess" Width="1.5" PointX="10.625" PointY="11.625" />
+        <AssociationConnector Association="StaffModel.FK_Attendance_Booked_Staff" />
+        <AssociationConnector Association="StaffModel.FK_Attendance_Cancelled_Staff" />
+        <AssociationConnector Association="StaffModel.FK_Attendance_Sess" />
+        <AssociationConnector Association="StaffModel.FK_Attendance_Staff" />
+        <AssociationConnector Association="StaffModel.FK_CourseReq_Course_PreReq" />
+        <AssociationConnector Association="StaffModel.FK_CourseReq_Courses" />
+        <AssociationConnector Association="StaffModel.FK_Req_Courses" />
+        <AssociationConnector Association="StaffModel.FK_Sess_Courses" />
+        <AssociationConnector Association="StaffModel.FK_Sess_Locations" />
+        <AssociationConnector Association="StaffModel.FK_Req_Staff" />
+        <AssociationConnector Association="StaffModel.FK_Req_Statuses" />
+        <AssociationConnector Association="StaffModel.FK_Sess_Trainer" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

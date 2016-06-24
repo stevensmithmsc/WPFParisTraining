@@ -12,21 +12,27 @@ namespace WPFParisTraining.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Location
+    public partial class Sess
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Location()
+        public Sess()
         {
-            this.Sesses = new HashSet<Sess>();
+            this.Attendances = new HashSet<Attendance>();
         }
     
-        public short ID { get; set; }
-        public string LocationName { get; set; }
-        public bool TLoc { get; set; }
-        public Nullable<short> MaxP { get; set; }
-        public string Comments { get; set; }
+        public int ID { get; set; }
+        public int CourseID { get; set; }
+        public Nullable<int> TrainerID { get; set; }
+        public Nullable<short> LocationID { get; set; }
+        public Nullable<System.DateTime> Strt { get; set; }
+        public Nullable<System.DateTime> Endt { get; set; }
+        public short MaxP { get; set; }
+        public string Notes { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sess> Sesses { get; set; }
+        public virtual ICollection<Attendance> Attendances { get; set; }
+        public virtual Course Course { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Staff Trainer { get; set; }
     }
 }

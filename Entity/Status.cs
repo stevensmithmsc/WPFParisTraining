@@ -14,6 +14,12 @@ namespace WPFParisTraining.Entity
     
     public partial class Status
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Status()
+        {
+            this.Reqs = new HashSet<Req>();
+        }
+    
         public short ID { get; set; }
         public string StatusDesc { get; set; }
         public bool Requirement { get; set; }
@@ -22,5 +28,8 @@ namespace WPFParisTraining.Entity
         public bool TNA_OUT { get; set; }
         public bool RA_PLUS { get; set; }
         public bool RA_ESR { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Req> Reqs { get; set; }
     }
 }

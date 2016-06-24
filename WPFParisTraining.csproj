@@ -69,10 +69,19 @@
     <Compile Include="CoursesPage.xaml.cs">
       <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Attendance.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Cohort.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Cost_Centres.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Course.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CourseReq.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Genders.cs">
@@ -82,6 +91,12 @@
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\RA.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Req.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Sess.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Staff.cs">
@@ -140,6 +155,7 @@
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LocationsViewModel.cs" />
+    <Compile Include="ViewModels\SessionsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />

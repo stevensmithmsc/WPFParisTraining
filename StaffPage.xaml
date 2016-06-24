@@ -206,7 +206,7 @@
                         </Grid>
                     </Expander>
                     <Expander Header="ESR">
-                        <DataGrid ItemsSource="{Binding ESR}"></DataGrid>
+                        <DataGrid ItemsSource="{Binding ESR}" IsReadOnly="True"></DataGrid>
                     </Expander>
                     <Expander Header="TNA">
                         <Grid>
@@ -225,7 +225,13 @@
                             <TextBlock Text="Date Received" />
                             <DatePicker Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Date_Received}" />
                             <TextBlock Text="Trainer" Grid.Row="1"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.TNA.Trainer.SimpleName}" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" Margin="5,0" ItemsSource="{Binding Trainers}" SelectedItem="{Binding SelectedStaff.TNA.Trainer}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding SimpleName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <TextBlock Text="Contact Date" Grid.Row="2"/>
                             <DatePicker Grid.Row="2" Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Contact_Date}" />
                             <TextBlock Text="Contact Outcome" Grid.Column="2"/>
@@ -313,10 +319,10 @@
                         <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}"></DataGrid>
                     </Expander>
                     <Expander Header="Requirements">
-                        <DataGrid></DataGrid>
+                        <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}"></DataGrid>
                     </Expander>
                     <Expander Header="Attendances">
-                        <DataGrid></DataGrid>
+                        <DataGrid ItemsSource="{Binding SelectedStaff.Attendances}"></DataGrid>
                     </Expander>
                 </StackPanel>
             </Border>

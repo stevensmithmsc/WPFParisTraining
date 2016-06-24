@@ -4,9 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFParisTraining"
+      xmlns:vm="clr-namespace:WPFParisTraining.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Sessions">
+
+    <Page.DataContext>
+        <vm:SessionsViewModel />
+    </Page.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,7 +22,27 @@
         <Expander Header="Search">
             <TextBlock Text="Hello"/>
         </Expander>
-        <DataGrid Grid.Row="1"></DataGrid>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />
+                <DataGridTextColumn Header="Trainer" Binding="{Binding Trainer.SimpleName}" />
+                <DataGridTextColumn Header="Location" Binding="{Binding Location.LocationName}" />
+                <DataGridTextColumn Header="Start" Binding="{Binding Strt}" />
+                <DataGridTextColumn Header="End" Binding="{Binding Endt}" />
+                <DataGridTextColumn Header="Places" Binding="{Binding MaxP}" />
+                <DataGridTextColumn Header="Bookings" Binding="{Binding Attendances.Count}" />
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="5">
+                        <StackPanel>
+                            <TextBlock Text="Notes:" />
+                            <TextBox Text="{Binding Notes}" TextWrapping="Wrap" MinHeight="30" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
         <Border BorderThickness="5" Grid.Row="2">
             <Grid>
                 <Grid.RowDefinitions>
@@ -38,7 +63,17 @@
                 <TextBlock Text="Person:" Grid.Column="3" />
                 <TextBox Grid.Column="4" />
                 <Button Content="Book Person" Grid.Column="5" Margin="5,0"/>
-                <DataGrid Grid.Row="1" Grid.ColumnSpan="6"></DataGrid>
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="6" ItemsSource="{Binding SelectedSession.Attendances}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Staff" Binding="{Binding Staff.SimpleName}" />
+                        <DataGridTextColumn Header="Outcome" Binding="{Binding Outcome}" />
+                        <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+                        <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" />
+                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created}" />
+                        <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" />
+                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Border>
         <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" ShowsPreview="True" ResizeDirection="Rows" Height="5" />

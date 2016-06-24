@@ -38,5 +38,10 @@ namespace WPFParisTraining.Entity
         public virtual DbSet<Subjective> Subjectives { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
+        public virtual DbSet<Attendance> Attendances { get; set; }
+        public virtual DbSet<CourseReq> CourseReqs { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<Req> Reqs { get; set; }
+        public virtual DbSet<Sess> Sesses { get; set; }
     }
 }

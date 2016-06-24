@@ -22,6 +22,11 @@ namespace WPFParisTraining.Entity
             this.TeamApprovs = new HashSet<TeamApprov>();
             this.TeamMems = new HashSet<TeamMem>();
             this.TNAs = new HashSet<TNA>();
+            this.Bookings = new HashSet<Attendance>();
+            this.Cancelations = new HashSet<Attendance>();
+            this.Attendances = new HashSet<Attendance>();
+            this.Reqs = new HashSet<Req>();
+            this.Sesses = new HashSet<Sess>();
         }
     
         public int ID { get; set; }
@@ -66,5 +71,15 @@ namespace WPFParisTraining.Entity
         public virtual ICollection<TNA> TNAs { get; set; }
         public virtual Cost_Centres Cost_Centres { get; set; }
         public virtual Subjective Subjective { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attendance> Bookings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attendance> Cancelations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attendance> Attendances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Req> Reqs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sess> Sesses { get; set; }
     }
 }

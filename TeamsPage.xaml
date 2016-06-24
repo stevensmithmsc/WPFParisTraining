@@ -98,11 +98,12 @@
                 </Grid>
             </Border>
         </ScrollViewer>
-        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SelectedTeam.TeamMems}">
+        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SelectedTeam.TeamMems}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Staff Member" Binding="{Binding Staff.SimpleName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding Staff.JobTitle}" IsReadOnly="True" />
                 <DataGridCheckBoxColumn Header="Active" Binding="{Binding Active}" />
+                <DataGridCheckBoxColumn Header="Main" Binding="{Binding Main}" />
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" ShowsPreview="True" ResizeDirection="Rows" Height="5" />
