@@ -316,13 +316,43 @@
                         </Grid>
                     </Expander>
                     <Expander Header="Team Approvals">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}"></DataGrid>
+                        <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Team" Binding="{Binding Team}" />
+                                <DataGridTextColumn Header="Start Date" Binding="{Binding Start_Date}" />
+                                <DataGridTextColumn Header="End Date" Binding="{Binding End_Date}" />
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="5">
+                                        <StackPanel>
+                                            <TextBlock Text="Details:" />
+                                            <TextBox Text="{Binding Details}" TextWrapping="Wrap" MinHeight="40" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                        </DataGrid>
                     </Expander>
                     <Expander Header="Requirements">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}"></DataGrid>
+                        <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status.StatusDesc}" />
+                                <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Expander>
                     <Expander Header="Attendances">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.Attendances}"></DataGrid>
+                        <DataGrid ItemsSource="{Binding SelectedStaff.Attendances}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" />
+                                <DataGridTextColumn Header="Outcome" Binding="{Binding Outcome}" />
+                                <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+                                <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" />
+                                <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Expander>
                 </StackPanel>
             </Border>

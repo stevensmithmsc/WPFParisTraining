@@ -1377,7 +1377,6 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Name="TNA_OUT" Type="Boolean" Nullable="false" />
           <Property Name="RA_PLUS" Type="Boolean" Nullable="false" />
           <Property Name="RA_ESR" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Reqs" Relationship="StaffModel.FK_Req_Statuses" FromRole="Status" ToRole="Req" />
         </EntityType>
         <Association Name="FK_RA_ESR_Updated">
           <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
