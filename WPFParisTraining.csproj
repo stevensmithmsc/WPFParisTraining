@@ -99,6 +99,7 @@
     <Compile Include="Entity\Sess.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Sess_Extra.cs" />
     <Compile Include="Entity\Staff.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>

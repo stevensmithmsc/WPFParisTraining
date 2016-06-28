@@ -27,8 +27,22 @@
                 <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />
                 <DataGridTextColumn Header="Trainer" Binding="{Binding Trainer.SimpleName}" />
                 <DataGridTextColumn Header="Location" Binding="{Binding Location.LocationName}" />
-                <DataGridTextColumn Header="Start" Binding="{Binding Strt}" />
-                <DataGridTextColumn Header="End" Binding="{Binding Endt}" />
+                <DataGridTemplateColumn Header="Start">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Strt, StringFormat='dd/MM/yyyy hh:mm tt (ddd)'}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <DatePicker SelectedDate="{Binding StartDate}" />
+                                <TextBox Text="{Binding StartTime}" HorizontalAlignment="Right" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="End" Binding="{Binding Endt, StringFormat='hh:mm tt'}" />
                 <DataGridTextColumn Header="Places" Binding="{Binding MaxP}" />
                 <DataGridTextColumn Header="Bookings" Binding="{Binding Attendances.Count}" />
             </DataGrid.Columns>
@@ -68,10 +82,10 @@
                         <DataGridTextColumn Header="Staff" Binding="{Binding Staff.SimpleName}" />
                         <DataGridTextColumn Header="Outcome" Binding="{Binding Outcome}" />
                         <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
-                        <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" />
-                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created}" />
-                        <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" />
-                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified}" />
+                        <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
