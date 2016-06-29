@@ -53,6 +53,7 @@
         <AssociationConnector Association="StaffModel.FK_Req_Staff" />
         <AssociationConnector Association="StaffModel.FK_Req_Statuses" />
         <AssociationConnector Association="StaffModel.FK_Sess_Trainer" />
+        <AssociationConnector Association="StaffModel.FK_Attendance_Statuses" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

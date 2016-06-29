@@ -371,6 +371,18 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Attendance_Statuses">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="Outcome" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CourseReq_Course_PreReq">
           <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
           <End Role="CourseReq" Type="Self.CourseReq" Multiplicity="*" />
@@ -683,6 +695,46 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="search_course" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="paris" Type="bit" Mode="In" />
+          <Parameter Name="ext" Type="bit" Mode="In" />
+          <Parameter Name="obs" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="search_session" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train">
+          <Parameter Name="course" Type="int" Mode="In" />
+          <Parameter Name="trainer" Type="int" Mode="In" />
+          <Parameter Name="location" Type="int" Mode="In" />
+          <Parameter Name="from" Type="date" Mode="In" />
+          <Parameter Name="to" Type="date" Mode="In" />
+          <Parameter Name="ext" Type="bit" Mode="In" />
+          <Parameter Name="obs" Type="bit" Mode="In" />
+          <Parameter Name="paris" Type="bit" Mode="In" />
+          <Parameter Name="avail" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="search_staff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train">
+          <Parameter Name="staff_code" Type="char" Mode="In" />
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="job_Title" Type="varchar" Mode="In" />
+          <Parameter Name="mhc" Type="int" Mode="In" />
+          <Parameter Name="borough" Type="char" Mode="In" />
+          <Parameter Name="service" Type="int" Mode="In" />
+          <Parameter Name="team" Type="int" Mode="In" />
+          <Parameter Name="line_man" Type="int" Mode="In" />
+          <Parameter Name="cohort" Type="int" Mode="In" />
+          <Parameter Name="left" Type="bit" Mode="In" />
+          <Parameter Name="ext" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="search_team" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="mhc" Type="int" Mode="In" />
+          <Parameter Name="borough" Type="char" Mode="In" />
+          <Parameter Name="service" Type="int" Mode="In" />
+          <Parameter Name="leader" Type="int" Mode="In" />
+          <Parameter Name="cohort" Type="int" Mode="In" />
+          <Parameter Name="notrain" Type="int" Mode="In" />
+          <Parameter Name="hasMembers" Type="bit" Mode="In" />
+        </Function>
         <EntityContainer Name="StaffModelStoreContainer">
           <EntitySet Name="Cohorts" EntityType="Self.Cohorts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cost_Centres" EntityType="Self.Cost_Centres" Schema="dbo" store:Type="Tables" />
@@ -739,6 +791,10 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           </AssociationSet>
           <AssociationSet Name="FK_Attendance_Staff" Association="Self.FK_Attendance_Staff">
             <End Role="Staff" EntitySet="Staff" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Statuses" Association="Self.FK_Attendance_Statuses">
+            <End Role="Statuses" EntitySet="Statuses" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
           <AssociationSet Name="FK_CourseReq_Course_PreReq" Association="Self.FK_CourseReq_Course_PreReq">
@@ -1294,6 +1350,50 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             <End Role="Staff" EntitySet="Staffs" />
             <End Role="Sess" EntitySet="Sesses" />
           </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Statuses" Association="StaffModel.FK_Attendance_Statuses">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <FunctionImport Name="search_course" EntitySet="Courses" ReturnType="Collection(StaffModel.Course)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="paris" Mode="In" Type="Boolean" />
+            <Parameter Name="ext" Mode="In" Type="Boolean" />
+            <Parameter Name="obs" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="search_session" EntitySet="Sesses" ReturnType="Collection(StaffModel.Sess)">
+            <Parameter Name="course" Mode="In" Type="Int32" />
+            <Parameter Name="trainer" Mode="In" Type="Int32" />
+            <Parameter Name="location" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="DateTime" />
+            <Parameter Name="to" Mode="In" Type="DateTime" />
+            <Parameter Name="ext" Mode="In" Type="Boolean" />
+            <Parameter Name="obs" Mode="In" Type="Boolean" />
+            <Parameter Name="paris" Mode="In" Type="Boolean" />
+            <Parameter Name="avail" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="search_staff" EntitySet="Staffs" ReturnType="Collection(StaffModel.Staff)">
+            <Parameter Name="staff_code" Mode="In" Type="String" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="job_Title" Mode="In" Type="String" />
+            <Parameter Name="mhc" Mode="In" Type="Int32" />
+            <Parameter Name="borough" Mode="In" Type="String" />
+            <Parameter Name="service" Mode="In" Type="Int32" />
+            <Parameter Name="team" Mode="In" Type="Int32" />
+            <Parameter Name="line_man" Mode="In" Type="Int32" />
+            <Parameter Name="cohort" Mode="In" Type="Int32" />
+            <Parameter Name="left" Mode="In" Type="Boolean" />
+            <Parameter Name="ext" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="search_team" EntitySet="Teams" ReturnType="Collection(StaffModel.Team)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="mhc" Mode="In" Type="Int32" />
+            <Parameter Name="borough" Mode="In" Type="String" />
+            <Parameter Name="service" Mode="In" Type="Int32" />
+            <Parameter Name="leader" Mode="In" Type="Int32" />
+            <Parameter Name="cohort" Mode="In" Type="Int32" />
+            <Parameter Name="notrain" Mode="In" Type="Int32" />
+            <Parameter Name="hasMembers" Mode="In" Type="Boolean" />
+          </FunctionImport>
         </EntityContainer>
         <EnumType Name="Genders" UnderlyingType="Byte">
           <Member Name="Male" Value="1" />
@@ -1443,6 +1543,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <NavigationProperty Name="Canceller" Relationship="StaffModel.FK_Attendance_Cancelled_Staff" FromRole="Attendance" ToRole="Staff" />
           <NavigationProperty Name="Sess" Relationship="StaffModel.FK_Attendance_Sess" FromRole="Attendance" ToRole="Sess" />
           <NavigationProperty Name="Staff" Relationship="StaffModel.FK_Attendance_Staff" FromRole="Attendance" ToRole="Staff" />
+          <NavigationProperty Name="Status" Relationship="StaffModel.FK_Attendance_Statuses" FromRole="Attendance" ToRole="Status" />
         </EntityType>
         <EntityType Name="CourseReq">
           <Key>
@@ -1648,6 +1749,77 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Attendance_Statuses">
+          <End Type="StaffModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="StaffModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="Outcome" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="search_course_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Course" Nullable="false" MaxLength="80" />
+          <Property Type="Int16" Name="Length" Nullable="true" />
+          <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="External" Nullable="false" />
+          <Property Type="Boolean" Name="Paris" Nullable="true" />
+          <Property Type="Boolean" Name="Obselete" Nullable="false" />
+          <Property Type="Int16" Name="Template" Nullable="false" />
+          <Property Type="Int32" Name="FullColour" Nullable="true" />
+          <Property Type="Int32" Name="BookedColour" Nullable="true" />
+          <Property Type="Int32" Name="EmptyColour" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="search_session_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="Course" Nullable="false" />
+          <Property Type="Int32" Name="Trainer" Nullable="true" />
+          <Property Type="Int16" Name="Location" Nullable="true" />
+          <Property Type="DateTime" Name="Strt" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Endt" Nullable="true" Precision="23" />
+          <Property Type="Int16" Name="MaxP" Nullable="false" />
+          <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" />
+        </ComplexType>
+        <ComplexType Name="search_staff_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int16" Name="Title" Nullable="true" />
+          <Property Type="String" Name="Fname" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Sname" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="PName" Nullable="true" MaxLength="70" />
+          <Property Type="Byte" Name="Gender" Nullable="true" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Finance" Nullable="true" />
+          <Property Type="Int32" Name="JobStatus" Nullable="true" />
+          <Property Type="Int32" Name="LineMan" Nullable="true" />
+          <Property Type="Int32" Name="Cohort" Nullable="true" />
+          <Property Type="String" Name="UUID" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="80" />
+          <Property Type="Boolean" Name="LM" Nullable="true" />
+          <Property Type="Boolean" Name="Trainer" Nullable="true" />
+          <Property Type="Boolean" Name="LeftTrust" Nullable="true" />
+          <Property Type="Boolean" Name="NoTraining" Nullable="true" />
+          <Property Type="Boolean" Name="Bank" Nullable="true" />
+          <Property Type="Boolean" Name="External" Nullable="true" />
+          <Property Type="Int32" Name="ESRID" Nullable="true" />
+          <Property Type="String" Name="MName" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Comments" Nullable="true" MaxLength="Max" />
+          <Property Type="String" Name="ADAccount" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="search_team_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Team" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ESR" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Code" Nullable="true" />
+          <Property Type="Int32" Name="Leader" Nullable="true" />
+          <Property Type="Int32" Name="Cohort" Nullable="true" />
+          <Property Type="Boolean" Name="NoTrain" Nullable="true" />
+          <Property Type="Boolean" Name="Dont_Migrate" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1911,6 +2083,14 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="search_course" FunctionName="StaffModel.Store.search_course">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="search_session" FunctionName="StaffModel.Store.search_session">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="search_staff" FunctionName="StaffModel.Store.search_staff">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="search_team" FunctionName="StaffModel.Store.search_team">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -28,5 +28,6 @@ namespace WPFParisTraining.Entity
         public virtual Staff Canceller { get; set; }
         public virtual Sess Sess { get; set; }
         public virtual Staff Staff { get; set; }
+        public virtual Status Status { get; set; }
     }
 }

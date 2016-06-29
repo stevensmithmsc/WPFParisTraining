@@ -96,6 +96,18 @@
     <Compile Include="Entity\Req.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\search_course_Result.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\search_session_Result.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\search_staff_Result.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\search_team_Result.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Sess.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
@@ -156,6 +168,7 @@
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\LocationsViewModel.cs" />
     <Compile Include="ViewModels\SessionsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />

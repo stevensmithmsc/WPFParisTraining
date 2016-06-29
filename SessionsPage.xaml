@@ -20,13 +20,70 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Expander Header="Search">
-            <TextBlock Text="Hello"/>
+            <ComboBox ItemsSource="{Binding Trainers}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding SimpleName}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Expander>
         <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />
-                <DataGridTextColumn Header="Trainer" Binding="{Binding Trainer.SimpleName}" />
-                <DataGridTextColumn Header="Location" Binding="{Binding Location.LocationName}" />
+                <DataGridTemplateColumn Header="Course">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Course.CourseName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DataContext.Courses, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Course}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding CourseName}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Trainer">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Trainer.SimpleName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DataContext.Trainers, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Trainer}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding SimpleName}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Location">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Location.LocationName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DataContext.Locations, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Location}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding LocationName}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Start">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
