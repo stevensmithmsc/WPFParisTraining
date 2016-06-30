@@ -268,7 +268,7 @@ namespace WPFParisTraining.Entity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Staff>("search_staff", mergeOption, staff_codeParameter, nameParameter, job_TitleParameter, mhcParameter, boroughParameter, serviceParameter, teamParameter, line_manParameter, cohortParameter, leftParameter, extParameter);
         }
     
-        public virtual ObjectResult<Team> search_team(string name, Nullable<int> mhc, string borough, Nullable<int> service, Nullable<int> leader, Nullable<int> cohort, Nullable<int> notrain, Nullable<bool> hasMembers)
+        public virtual ObjectResult<Team> search_team(string name, Nullable<int> mhc, string borough, Nullable<int> service, Nullable<int> leader, Nullable<int> cohort, Nullable<bool> notrain, Nullable<bool> hasMembers)
         {
             var nameParameter = name != null ?
                 new ObjectParameter("name", name) :
@@ -296,7 +296,7 @@ namespace WPFParisTraining.Entity
     
             var notrainParameter = notrain.HasValue ?
                 new ObjectParameter("notrain", notrain) :
-                new ObjectParameter("notrain", typeof(int));
+                new ObjectParameter("notrain", typeof(bool));
     
             var hasMembersParameter = hasMembers.HasValue ?
                 new ObjectParameter("hasMembers", hasMembers) :
@@ -305,7 +305,7 @@ namespace WPFParisTraining.Entity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Team>("search_team", nameParameter, mhcParameter, boroughParameter, serviceParameter, leaderParameter, cohortParameter, notrainParameter, hasMembersParameter);
         }
     
-        public virtual ObjectResult<Team> search_team(string name, Nullable<int> mhc, string borough, Nullable<int> service, Nullable<int> leader, Nullable<int> cohort, Nullable<int> notrain, Nullable<bool> hasMembers, MergeOption mergeOption)
+        public virtual ObjectResult<Team> search_team(string name, Nullable<int> mhc, string borough, Nullable<int> service, Nullable<int> leader, Nullable<int> cohort, Nullable<bool> notrain, Nullable<bool> hasMembers, MergeOption mergeOption)
         {
             var nameParameter = name != null ?
                 new ObjectParameter("name", name) :
@@ -333,7 +333,7 @@ namespace WPFParisTraining.Entity
     
             var notrainParameter = notrain.HasValue ?
                 new ObjectParameter("notrain", notrain) :
-                new ObjectParameter("notrain", typeof(int));
+                new ObjectParameter("notrain", typeof(bool));
     
             var hasMembersParameter = hasMembers.HasValue ?
                 new ObjectParameter("hasMembers", hasMembers) :

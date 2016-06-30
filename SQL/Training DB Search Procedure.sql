@@ -12,7 +12,7 @@ create procedure train.search_staff(
 	@ext bit = 0)
 as	
 begin
-	select ID, Title, Fname, Sname, PName, Gender, JobTitle, Finance, JobStatus, LineMan, Cohort, UUID, Phone, Email,
+	select ID, Title TitleID, Fname, Sname, PName, Gender, JobTitle, Finance, JobStatus, LineMan, Cohort CohortID, UUID, Phone, Email,
 		LM, Trainer, LeftTrust, NoTraining, Bank, [External], ESRID, MName, Comments, ADAccount 
 	from train.Staff
 	where (@staff_code is null or @staff_code = '' or ESRID in (select cEmployee from ESR.Staff where Staff_Code = @staff_code))

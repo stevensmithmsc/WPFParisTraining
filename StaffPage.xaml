@@ -20,9 +20,68 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Expander Header="Search">
-            <TextBlock Text="Hello"/>
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Staff Code:"/>
+                    <TextBox Text="{Binding StaffCodeSearch}" MinWidth="50" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name:"/>
+                    <TextBox Text="{Binding NameSearch}" MinWidth="150" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Job Title:"/>
+                    <TextBox Text="{Binding JobTitleSearch}" MinWidth="150" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Mental Health/Community:"/>
+                    <TextBox Text="{Binding MHCSearch}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Borough:"/>
+                    <TextBox Text="{Binding BoroughSearch}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Service:"/>
+                    <TextBox Text="{Binding ServiceSearch}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Team:"/>
+                    <ComboBox ItemsSource="{Binding Teams}" SelectedItem="{Binding TeamSearch}" MinWidth="150" Margin="5,0,10,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TeamName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Line Manager:"/>
+                    <ComboBox ItemsSource="{Binding Leaders}" SelectedItem="{Binding LineManSearch}" MinWidth="150" Margin="5,0,10,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding SimpleName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Cohort:"/>
+                    <ComboBox ItemsSource="{Binding CohortList}" SelectedItem="{Binding CohortSearch}" MinWidth="80" Margin="5,0,10,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Code}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <CheckBox IsChecked="{Binding LeftTrustSearch}" Content="Left Trust" Margin="0,0,10,0" IsThreeState="True" />
+                <CheckBox IsChecked="{Binding ExternalSearch}" Content="External" Margin="0,0,10,0" IsThreeState="True" />
+                <Button Content="Go !" Command="{Binding SearchCommand, Mode=OneWay}" />
+                <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
+            </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding JobTitle}" />
@@ -316,7 +375,7 @@
                         </Grid>
                     </Expander>
                     <Expander Header="Team Approvals">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}">
+                        <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Team" Binding="{Binding Team}" />
                                 <DataGridTextColumn Header="Start Date" Binding="{Binding Start_Date}" />
@@ -335,7 +394,7 @@
                         </DataGrid>
                     </Expander>
                     <Expander Header="Requirements">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}">
+                        <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />
                                 <DataGridTextColumn Header="Status" Binding="{Binding Status.StatusDesc}" />
@@ -344,10 +403,10 @@
                         </DataGrid>
                     </Expander>
                     <Expander Header="Attendances">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.Attendances}">
+                        <DataGrid ItemsSource="{Binding SelectedStaff.Attendances}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" />
-                                <DataGridTextColumn Header="Outcome" Binding="{Binding Outcome}" />
+                                <DataGridTextColumn Header="Outcome" Binding="{Binding Status.StatusDesc}" />
                                 <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
                                 <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" />
                                 <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" />

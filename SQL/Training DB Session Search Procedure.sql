@@ -10,7 +10,7 @@ create procedure train.search_session(
 	@avail bit = null)
 as	
 begin
-	select ID, Course, Trainer, Location, Strt, Endt, MaxP, Notes
+	select ID, Course CourseID, Trainer TrainerID, Location LocationID, Strt, Endt, MaxP, Notes
 	from train.Sess
 	where (@course is null or @course=0 or Course = @course)
 		and (@trainer is null or @trainer=0 or Trainer = @trainer)

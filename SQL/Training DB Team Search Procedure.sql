@@ -5,11 +5,11 @@ create procedure train.search_team(
 	@service int = null,
 	@leader int = null,
 	@cohort int = null,
-	@notrain int = 0,
+	@notrain bit = 0,
 	@hasMembers bit = 1)
 as	
 begin
-	select ID, Team, ESR, Code, Leader, Cohort, NoTrain, Dont_Migrate
+	select ID, Team TeamName, ESR, Code, Leader LeaderID, Cohort CohortID, NoTrain, Dont_Migrate
 	from dbo.Teams
 	where (@name is null or @name = ''  or Team = @name or Team like '%'+@name+'%')
 		and (@mhc is null or @mhc = 0 or ID in (select ID from Train.ServMem where [Type] = 'T' and ServID = @mhc))

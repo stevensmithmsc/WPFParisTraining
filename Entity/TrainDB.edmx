@@ -732,7 +732,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Parameter Name="service" Type="int" Mode="In" />
           <Parameter Name="leader" Type="int" Mode="In" />
           <Parameter Name="cohort" Type="int" Mode="In" />
-          <Parameter Name="notrain" Type="int" Mode="In" />
+          <Parameter Name="notrain" Type="bit" Mode="In" />
           <Parameter Name="hasMembers" Type="bit" Mode="In" />
         </Function>
         <EntityContainer Name="StaffModelStoreContainer">
@@ -1391,7 +1391,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             <Parameter Name="service" Mode="In" Type="Int32" />
             <Parameter Name="leader" Mode="In" Type="Int32" />
             <Parameter Name="cohort" Mode="In" Type="Int32" />
-            <Parameter Name="notrain" Mode="In" Type="Int32" />
+            <Parameter Name="notrain" Mode="In" Type="Boolean" />
             <Parameter Name="hasMembers" Mode="In" Type="Boolean" />
           </FunctionImport>
         </EntityContainer>

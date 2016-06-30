@@ -24,7 +24,42 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Expander Grid.ColumnSpan="2" Header="Search">
-            <TextBlock Text="Hello"/>
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name:"/>
+                    <TextBox Text="{Binding SearchName}" MinWidth="150" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Mental Health/Community:"/>
+                    <TextBox Text="{Binding SearchMHC}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Borough:"/>
+                    <TextBox Text="{Binding SearchBorough}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Service:"/>
+                    <TextBox Text="{Binding SearchService}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Leader:"/>
+                    <TextBox Text="{Binding SearchLeader}" MinWidth="20" Margin="5,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Cohort:"/>
+                    <ComboBox ItemsSource="{Binding CohortList}" SelectedItem="{Binding SearchCohort}" MinWidth="80" Margin="5,0,10,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Code}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <CheckBox IsChecked="{Binding SearchNoTrain}" Content="No Training Required" Margin="0,0,10,0" IsThreeState="True" />
+                <CheckBox IsChecked="{Binding SearchHasMem}" Content="Has Members?" Margin="0,0,10,0" IsThreeState="True" />
+                <Button Content="Go !" Command="{Binding SearchCommand, Mode=OneWay}"  />
+                <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}"  />
+            </WrapPanel>
         </Expander>
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}">
             <DataGrid.Columns>
