@@ -19,9 +19,15 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Locations"/>
+        <DockPanel>
+            <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" />
+            <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" />
+            <Button Content="Save Changes" DockPanel.Dock="Right" />
+            <TextBlock Text="Locations" DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding Stupid}" />
+        </DockPanel>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding LocationList}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding LocationList}" SelectedItem="{Binding SelectedLocation}" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Location Name" Binding="{Binding LocationName}" />
                 <DataGridTextColumn Header="Maximum People" Binding="{Binding MaxP}" />

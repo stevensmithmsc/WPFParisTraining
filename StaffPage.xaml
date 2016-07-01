@@ -13,6 +13,12 @@
         <vm:StaffViewModel />
     </Page.DataContext>
 
+    <Page.Resources>
+        <DataTemplate x:Key="StatusDataTemplate">
+            <TextBlock Text="{Binding StatusDesc}"/>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -93,7 +99,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding JobTitle}" />
-                <DataGridTextColumn Header="Main Team" Binding="{Binding MainTeam.TeamName}" />
+                <DataGridTextColumn Header="Main Team" Binding="{Binding MainTeam.TeamName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Line Manager" Binding="{Binding Line_Manager.SimpleName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Cohort" Binding="{Binding CalculatedCohort.Code}" IsReadOnly="True" />
             </DataGrid.Columns>
@@ -206,7 +212,7 @@
                                     <ListBox MinHeight="75" ItemsSource="{Binding SelectedStaff.TeamMems}" >
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Team.TeamName}" />
+                                                <TextBlock Text="{Binding Team.TeamName}" FontWeight="Normal" FontStyle="Normal" />
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
@@ -234,7 +240,7 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <TextBlock Text="No Training Required?" />
-                                        <CheckBox IsChecked="{Binding Mode=OneWay}" />
+                                        <CheckBox IsChecked="{Binding SelectedStaff.NoTraining}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <TextBlock Text="Bank?" />
@@ -304,13 +310,7 @@
                             <TextBlock Text="Contact Outcome" Grid.Column="2"/>
                             <TextBox Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.TNA.Contact_Outcome}" />
                             <TextBlock Text="TNA Outcome" Grid.Row="2" Grid.Column="2"/>
-                            <ComboBox Grid.Row="2" Grid.Column="3" Margin="5,0" ItemsSource="{Binding TNAOutcomes}" SelectedItem="{Binding SelectedStaff.TNA.Status}" >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding StatusDesc}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <ComboBox Grid.Row="2" Grid.Column="3" Margin="5,0" ItemsSource="{Binding TNAOutcomes}" SelectedItem="{Binding SelectedStaff.TNA.Status}" ItemTemplate="{StaticResource StatusDataTemplate}" />
                         </Grid>
                     </Expander>
                     <Expander Header="RA">
@@ -333,53 +333,35 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Text="UUID" />
-                            <TextBox Grid.Column="1" Margin="5,0" Text="{Binding SelectedStaff.RA.UUID}" />
+                            <TextBox Grid.Column="1" Margin="5,0" Text="{Binding StaffRA.UUID}" />
                             <TextBlock Text="PDS Role" Grid.Row="1"  />
-                            <ComboBox Grid.Column="1" Grid.Row="1" Margin="5,0" ItemsSource="{Binding StatusPDSRole}" SelectedItem="{Binding SelectedStaff.RA.Status_PDS_Role}" >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding StatusDesc}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <ComboBox Grid.Column="1" Grid.Row="1" Margin="5,0" ItemsSource="{Binding StatusPDSRole}" SelectedItem="{Binding StaffRA.Status_PDS_Role}" ItemTemplate="{StaticResource StatusDataTemplate}" />
                             <TextBlock Text="Plus Updated" Grid.Row="2" />
-                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="5,0" ItemsSource="{Binding StatusPlusUp}" SelectedItem="{Binding SelectedStaff.RA.Status_Plus_Up}" >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding StatusDesc}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="5,0" ItemsSource="{Binding StatusPlusUp}" SelectedItem="{Binding StaffRA.Status_Plus_Up}" ItemTemplate="{StaticResource StatusDataTemplate}" />
                             <TextBlock Text="ESR Updated" Grid.Row="3"  />
-                            <ComboBox Grid.Column="1" Grid.Row="3" Margin="5,0" ItemsSource="{Binding StatusESRUp}" SelectedItem="{Binding SelectedStaff.RA.Status_ESR_Up}" >
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding StatusDesc}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <ComboBox Grid.Column="1" Grid.Row="3" Margin="5,0" ItemsSource="{Binding StatusESRUp}" SelectedItem="{Binding StaffRA.Status_ESR_Up}" ItemTemplate="{StaticResource StatusDataTemplate}" />
                             <TextBlock Text="RA Comments" Grid.Row="4" />
-                            <TextBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.RA.RAComments}" />
+                            <TextBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" TextWrapping="Wrap" Margin="5,0" Text="{Binding StaffRA.RAComments}" />
                             <TextBlock Text="E Gif L3/RA Complete:" Grid.Column="2"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" SelectedDate="{Binding SelectedStaff.RA.EGifL3}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" SelectedDate="{Binding StaffRA.EGifL3}" />
                             <TextBlock Text="Paris Declaration Form Received:" Grid.Column="2" Grid.Row="1"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="1" SelectedDate="{Binding SelectedStaff.RA.Declaration}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="1" SelectedDate="{Binding StaffRA.Declaration}" />
                             <TextBlock Text="Go-Live Approved:" Grid.Column="2" Grid.Row="2"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="2" SelectedDate="{Binding SelectedStaff.RA.Go_Live_Approved}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="2" SelectedDate="{Binding StaffRA.Go_Live_Approved}" />
                             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center">
-                                <CheckBox IsChecked="{Binding SelectedStaff.RA.GLA_Locked}" />
+                                <CheckBox IsChecked="{Binding StaffRA.GLA_Locked}" />
                                 <TextBlock Text="Locked" />
                             </StackPanel>
                             <TextBlock Text="Paris Account Created:" Grid.Column="2" Grid.Row="3"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="3" SelectedDate="{Binding SelectedStaff.RA.Account_Created}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="3" SelectedDate="{Binding StaffRA.Account_Created}" />
                             <TextBlock Text="Added to Live Citrix Group:" Grid.Column="2" Grid.Row="4"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="4" SelectedDate="{Binding SelectedStaff.RA.Add_CITRIX}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="4" SelectedDate="{Binding StaffRA.Add_CITRIX}" />
                             <TextBlock Text="Paris Password E-mailed:" Grid.Column="2" Grid.Row="5"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="5" SelectedDate="{Binding SelectedStaff.RA.Password_Emailed}"/>
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="5" SelectedDate="{Binding StaffRA.Password_Emailed}"/>
                             <TextBlock Text="RA Granted Access to Plus:" Grid.Column="2" Grid.Row="6"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="6" SelectedDate="{Binding SelectedStaff.RA.Access_to_Plus}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="6" SelectedDate="{Binding StaffRA.Access_to_Plus}" />
                             <TextBlock Text="UUID added to ESR:" Grid.Column="2" Grid.Row="7"/>
-                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="7" Text="{Binding SelectedStaff.RA.UUID_Add_ESR}" />
+                            <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="7" Text="{Binding StaffRA.UUID_Add_ESR}" />
                         </Grid>
                     </Expander>
                     <Expander>

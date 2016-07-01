@@ -18,7 +18,10 @@ namespace WPFParisTraining.ViewModels
         public List<Staff> StaffList { get { return _staffList; } set { _staffList = value;  NotifyPropertyChanged(); } }
 
         private Staff _selectedStaff;
-        public Staff SelectedStaff { get { return _selectedStaff; } set { _selectedStaff = value;  NotifyPropertyChanged(); UpdateLinkedStuff(); } }
+        public Staff SelectedStaff { get { return _selectedStaff; } set { CheckLinkedEntities(); _selectedStaff = value;  NotifyPropertyChanged(); UpdateLinkedStuff(); } }
+
+        private RA _staffRA;
+        public RA StaffRA { get { return _staffRA; } set { _staffRA = value;  NotifyPropertyChanged(); } }
 
         public IEnumerable<Title> Titles { get; private set; } 
         public IEnumerable<Genders> GenderList { get; private set; }
@@ -114,6 +117,26 @@ namespace WPFParisTraining.ViewModels
             {
                 db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).Load();
                 ESR = db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).ToList();
+                db.RAs.Where(r => r.ID == SelectedStaff.ID).Load();
+                StaffRA = db.RAs.Where(r => r.ID == SelectedStaff.ID).SingleOrDefault();  //not finding newly created RA records
+                if (StaffRA == null) StaffRA = new RA();
+            }
+        }
+
+        private void CheckLinkedEntities()
+        {
+            if (SelectedStaff != null && StaffRA.Staff == null)
+            {
+                if (StaffRA.UUID != null || StaffRA.PDS_Role.HasValue || StaffRA.PLUS_Updated.HasValue ||
+                    StaffRA.ESR_Updated.HasValue || StaffRA.RAComments != null || StaffRA.EGifL3.HasValue ||
+                    StaffRA.PA1Rec.HasValue || StaffRA.Declaration.HasValue || StaffRA.Go_Live_Approved.HasValue ||
+                    StaffRA.Account_Created.HasValue || StaffRA.Add_CITRIX.HasValue || StaffRA.Password_Emailed.HasValue ||
+                    StaffRA.Access_to_Plus.HasValue || StaffRA.UUID_Add_ESR.HasValue)
+                {
+                    StaffRA.Staff = SelectedStaff;
+                    SelectedStaff.RA = StaffRA;
+                    db.RAs.Add(StaffRA);
+                }
             }
         }
 
