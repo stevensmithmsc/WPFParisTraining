@@ -19,7 +19,15 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Expander Header="Search">
+        <Expander>
+            <Expander.Header>
+                <DockPanel>
+                    <Button Content="Add" DockPanel.Dock="Right" />
+                    <Button Content="Remove" DockPanel.Dock="Right" />
+                    <Button Content="Save Changes" DockPanel.Dock="Right" />
+                    <TextBlock Text="Search Courses" DockPanel.Dock="Left" MinWidth="1200"/>
+                </DockPanel>
+            </Expander.Header>
             <WrapPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Course Name:"/>

@@ -25,7 +25,7 @@
                     <Button Content="Add" DockPanel.Dock="Right" />
                     <Button Content="Remove" DockPanel.Dock="Right" />
                     <Button Content="Save Changes" DockPanel.Dock="Right" />
-                    <TextBlock Text="Search" DockPanel.Dock="Left" MinWidth="800"/>
+                    <TextBlock Text="Search Staff" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
             <WrapPanel>
@@ -382,7 +382,14 @@
                             <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="7" Text="{Binding SelectedStaff.RA.UUID_Add_ESR}" />
                         </Grid>
                     </Expander>
-                    <Expander Header="Team Approvals">
+                    <Expander>
+                        <Expander.Header>
+                            <DockPanel>
+                                <Button Content="Add" DockPanel.Dock="Right" />
+                                <Button Content="Remove" DockPanel.Dock="Right" />
+                                <TextBlock Text="Team Approvals" DockPanel.Dock="Left" MinWidth="1200"/>
+                            </DockPanel>
+                        </Expander.Header>
                         <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Team" Binding="{Binding Team}" />
@@ -401,7 +408,14 @@
                             </DataGrid.RowDetailsTemplate>
                         </DataGrid>
                     </Expander>
-                    <Expander Header="Requirements">
+                    <Expander>
+                        <Expander.Header>
+                            <DockPanel>
+                                <Button Content="Add" DockPanel.Dock="Right" />
+                                <Button Content="Remove" DockPanel.Dock="Right" />
+                                <TextBlock Text="Requirements" DockPanel.Dock="Left" MinWidth="1200"/>
+                            </DockPanel>
+                        </Expander.Header>
                         <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />

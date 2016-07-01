@@ -18,9 +18,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <TextBlock Text="Locations"/>
-        
+
         <DataGrid Grid.Row="1" ItemsSource="{Binding LocationList}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Location Name" Binding="{Binding LocationName}" />
@@ -30,10 +30,9 @@
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Border BorderThickness="5">
-                        <StackPanel>
-                            <TextBlock Text="Comments:" />
+                        <GroupBox Header="Comments">
                             <TextBox Text="{Binding Comments}" TextWrapping="Wrap" MinHeight="40" />
-                        </StackPanel>
+                        </GroupBox>
                     </Border>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>

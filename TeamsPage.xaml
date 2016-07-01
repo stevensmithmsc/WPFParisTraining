@@ -23,7 +23,15 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Expander Grid.ColumnSpan="2" Header="Search">
+        <Expander Grid.ColumnSpan="2">
+            <Expander.Header>
+                <DockPanel>
+                    <Button Content="Add" DockPanel.Dock="Right" />
+                    <Button Content="Remove" DockPanel.Dock="Right" />
+                    <Button Content="Save Changes" DockPanel.Dock="Right" />
+                    <TextBlock Text="Search Teams" DockPanel.Dock="Left" MinWidth="1200"/>
+                </DockPanel>
+            </Expander.Header>
             <WrapPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Name:"/>
