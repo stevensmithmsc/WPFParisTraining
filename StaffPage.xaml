@@ -149,7 +149,7 @@
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding TitleValue}"/>
                                             </DataTemplate>
-                                        </ComboBox.ItemTemplate> 
+                                        </ComboBox.ItemTemplate>
                                     </ComboBox>
                                     <TextBlock Text="Forename" Grid.Row="1"/>
                                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedStaff.Fname}" />
@@ -208,14 +208,37 @@
                             </Border>
                             <Border BorderThickness="5" Grid.Column="1">
                                 <StackPanel>
-                                    <TextBlock Text="Teams" />
-                                    <ListBox MinHeight="75" ItemsSource="{Binding SelectedStaff.TeamMems}" >
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Team.TeamName}" FontWeight="Normal" FontStyle="Normal" />
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                    <DockPanel>
+                                        <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddTeamCommand, Mode=OneWay}" />
+                                        <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" />
+                                        <TextBlock Text="Teams" />
+                                    </DockPanel>
+                                    <DataGrid MinHeight="75" ItemsSource="{Binding TeamMemberships}" SelectedItem="{Binding SelectedTeam}" HeadersVisibility="None" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn MinWidth="250">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Team.TeamName}" FontWeight="Normal" FontStyle="Normal" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <DockPanel>
+                                                            <CheckBox IsChecked="{Binding Active}" Content="Active"  DockPanel.Dock="Right"/>
+                                                            <CheckBox IsChecked="{Binding Main}" Content="Main" DockPanel.Dock="Right"/>
+                                                            <ComboBox ItemsSource="{Binding DataContext.Teams, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Team}" >
+                                                                <ComboBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding TeamName}" />
+                                                                    </DataTemplate>
+                                                                </ComboBox.ItemTemplate>
+                                                            </ComboBox>
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="5" Grid.Column="1" Grid.Row="1">

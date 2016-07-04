@@ -21,6 +21,11 @@ namespace WPFParisTraining.ViewModels
         private Staff _selectedStaff;
         public Staff SelectedStaff { get { return _selectedStaff; } set { CheckLinkedEntities(); _selectedStaff = value;  NotifyPropertyChanged(); UpdateLinkedStuff(); } }
 
+        private IEnumerable<TeamMem> _teamMemberships;
+        public IEnumerable<TeamMem> TeamMemberships { get { return _teamMemberships; } set { _teamMemberships = value;  NotifyPropertyChanged(); } }
+        private TeamMem _selectedTeam;
+        public TeamMem SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value;  NotifyPropertyChanged(); } }
+
         private RA _staffRA;
         public RA StaffRA { get { return _staffRA; } set { _staffRA = value;  NotifyPropertyChanged(); } }
 
@@ -95,6 +100,8 @@ namespace WPFParisTraining.ViewModels
         public ICommand RemoveTeamApprovCommand { get; private set; }
         public ICommand AddReqCommand { get; private set; }
         public ICommand RemoveReqCommand { get; private set; }
+        public ICommand AddTeamCommand { get; private set; }
+        public ICommand RemoveTeamCommand { get; private set; }
 
 
         public StaffViewModel()
@@ -150,12 +157,16 @@ namespace WPFParisTraining.ViewModels
             RemoveTeamApprovCommand = new DelegateCommand<object>(RemoveTeamApprov);
             AddReqCommand = new DelegateCommand<object>(AddReq);
             RemoveReqCommand = new DelegateCommand<object>(RemoveReq);
+            AddTeamCommand = new DelegateCommand<object>(AddTeamMembership);
+            RemoveTeamCommand = new DelegateCommand<object>(RemoveTeamMembership);
         }
 
         private void UpdateLinkedStuff()
         {
             if (SelectedStaff != null)
             {
+                db.TeamMems.Where(t => t.StaffID == SelectedStaff.ID).Load();
+                TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
                 db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).Load();
                 ESR = db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).ToList();
                 db.RAs.Where(r => r.ID == SelectedStaff.ID).Load();
@@ -263,6 +274,27 @@ namespace WPFParisTraining.ViewModels
                 db.Reqs.Remove(SelectedReq);
                 StaffReqs = db.Reqs.Local.Where(r => r.StaffID == SelectedStaff.ID).ToList();
                 SelectedReq = StaffReqs.FirstOrDefault();
+            }
+        }
+
+        private void AddTeamMembership(object parameter)
+        {
+            TeamMem newTeamMem = new TeamMem();
+            newTeamMem.StaffID = SelectedStaff.ID;
+            newTeamMem.Active = true;
+            newTeamMem.Main = SelectedStaff.TeamMems.Count() == 0 ? true : false;
+            db.TeamMems.Add(newTeamMem);
+            TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
+            SelectedTeam = newTeamMem;
+        }
+
+        private void RemoveTeamMembership(object parameter)
+        {
+            if (SelectedTeam != null && MessageBox.Show("Are you sure you want to delete membership of " + SelectedTeam.Team.TeamName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                db.TeamMems.Remove(SelectedTeam);
+                TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
+                SelectedTeam = null;
             }
         }
     }
