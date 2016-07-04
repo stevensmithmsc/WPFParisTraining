@@ -296,9 +296,9 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Text="Date Received" />
-                            <DatePicker Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Date_Received}" />
+                            <DatePicker Grid.Column="1" Margin="5,0" SelectedDate="{Binding StaffTNA.Date_Received}" />
                             <TextBlock Text="Trainer" Grid.Row="1"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1" Margin="5,0" ItemsSource="{Binding Trainers}" SelectedItem="{Binding SelectedStaff.TNA.Trainer}" >
+                            <ComboBox Grid.Row="1" Grid.Column="1" Margin="5,0" ItemsSource="{Binding Trainers}" SelectedItem="{Binding StaffTNA.Trainer}" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding SimpleName}"/>
@@ -306,11 +306,11 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                             <TextBlock Text="Contact Date" Grid.Row="2"/>
-                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="5,0" SelectedDate="{Binding SelectedStaff.TNA.Contact_Date}" />
+                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="5,0" SelectedDate="{Binding StaffTNA.Contact_Date}" />
                             <TextBlock Text="Contact Outcome" Grid.Column="2"/>
-                            <TextBox Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5,0" Text="{Binding SelectedStaff.TNA.Contact_Outcome}" />
+                            <TextBox Grid.RowSpan="2" Grid.Column="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5,0" Text="{Binding StaffTNA.Contact_Outcome}" />
                             <TextBlock Text="TNA Outcome" Grid.Row="2" Grid.Column="2"/>
-                            <ComboBox Grid.Row="2" Grid.Column="3" Margin="5,0" ItemsSource="{Binding TNAOutcomes}" SelectedItem="{Binding SelectedStaff.TNA.Status}" ItemTemplate="{StaticResource StatusDataTemplate}" />
+                            <ComboBox Grid.Row="2" Grid.Column="3" Margin="5,0" ItemsSource="{Binding TNAOutcomes}" SelectedItem="{Binding StaffTNA.Status}" ItemTemplate="{StaticResource StatusDataTemplate}" />
                         </Grid>
                     </Expander>
                     <Expander Header="RA">
@@ -367,16 +367,38 @@
                     <Expander>
                         <Expander.Header>
                             <DockPanel>
-                                <Button Content="Add" DockPanel.Dock="Right" />
-                                <Button Content="Remove" DockPanel.Dock="Right" />
+                                <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddTeamApprovCommand, Mode=OneWay}" />
+                                <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveTeamApprovCommand, Mode=OneWay}" />
                                 <TextBlock Text="Team Approvals" DockPanel.Dock="Left" MinWidth="1200"/>
                             </DockPanel>
                         </Expander.Header>
-                        <DataGrid ItemsSource="{Binding SelectedStaff.TeamApprovs}" AutoGenerateColumns="False">
+                        <DataGrid ItemsSource="{Binding TeamApprovals}" SelectedItem="{Binding SelectedTeamApprov}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Team" Binding="{Binding Team}" />
-                                <DataGridTextColumn Header="Start Date" Binding="{Binding Start_Date}" />
-                                <DataGridTextColumn Header="End Date" Binding="{Binding End_Date}" />
+                                <DataGridTextColumn Header="Team" Binding="{Binding Team}" MinWidth="200"/>
+                                <DataGridTemplateColumn Header="Start Date">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Start_Date, StringFormat='dd/MM/yyyy'}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding Start_Date}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="End Date">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding End_Date, StringFormat='dd/MM/yyyy'}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding End_Date}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                             <DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
@@ -393,27 +415,78 @@
                     <Expander>
                         <Expander.Header>
                             <DockPanel>
-                                <Button Content="Add" DockPanel.Dock="Right" />
-                                <Button Content="Remove" DockPanel.Dock="Right" />
+                                <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddReqCommand, Mode=OneWay}" />
+                                <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveReqCommand, Mode=OneWay}" />
                                 <TextBlock Text="Requirements" DockPanel.Dock="Left" MinWidth="1200"/>
                             </DockPanel>
                         </Expander.Header>
-                        <DataGrid ItemsSource="{Binding SelectedStaff.Reqs}" AutoGenerateColumns="False">
+                        <DataGrid ItemsSource="{Binding StaffReqs}" SelectedItem="{Binding SelectedReq}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Course" Binding="{Binding Course.CourseName}" />
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status.StatusDesc}" />
-                                <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+                                <DataGridTemplateColumn Header="Course">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Course.CourseName}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.Courses, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Course}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding CourseName}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Status">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status.StatusDesc}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.ReqStatus, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Status}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding StatusDesc}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" MinWidth="500"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Expander>
                     <Expander Header="Attendances">
-                        <DataGrid ItemsSource="{Binding SelectedStaff.Attendances}" AutoGenerateColumns="False">
+                        <DataGrid ItemsSource="{Binding StaffAttendances}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" />
-                                <DataGridTextColumn Header="Outcome" Binding="{Binding Status.StatusDesc}" />
-                                <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
-                                <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" />
-                                <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" />
+                                <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" IsReadOnly="True"/>
+                                <DataGridTemplateColumn Header="Outcome">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status.StatusDesc}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.AttendanceOutcome, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Status}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding StatusDesc}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" MinWidth="400"/>
+                                <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" IsReadOnly="True"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Expander>

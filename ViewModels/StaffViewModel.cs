@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using WPFParisTraining.Entity;
 
@@ -23,6 +24,22 @@ namespace WPFParisTraining.ViewModels
         private RA _staffRA;
         public RA StaffRA { get { return _staffRA; } set { _staffRA = value;  NotifyPropertyChanged(); } }
 
+        private TNA _staffTNA;
+        public TNA StaffTNA { get { return _staffTNA; }  set { _staffTNA = value;  NotifyPropertyChanged(); } }
+
+        private IEnumerable<TeamApprov> _teamApprovals;
+        public IEnumerable<TeamApprov> TeamApprovals { get { return _teamApprovals; } set { _teamApprovals = value;  NotifyPropertyChanged(); } }
+        private TeamApprov _selectedTeamApprov;
+        public TeamApprov SelectedTeamApprov { get { return _selectedTeamApprov; } set { _selectedTeamApprov = value;  NotifyPropertyChanged(); } }
+
+        private IEnumerable<Req> _staffReqs;
+        public IEnumerable<Req> StaffReqs { get { return _staffReqs; } set { _staffReqs = value;  NotifyPropertyChanged(); } }
+        private Req _selectedReq;
+        public Req SelectedReq { get { return _selectedReq; } set { _selectedReq = value;  NotifyPropertyChanged(); } }
+
+        private IEnumerable<Attendance> _staffAttendances;
+        public IEnumerable<Attendance> StaffAttendances { get { return _staffAttendances; } set { _staffAttendances = value;  NotifyPropertyChanged(); } }
+
         public IEnumerable<Title> Titles { get; private set; } 
         public IEnumerable<Genders> GenderList { get; private set; }
 
@@ -35,11 +52,14 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Staff> Leaders { get; private set; }
         public IEnumerable<Staff> Trainers { get; private set; }
         public IEnumerable<Team> Teams { get; private set; }
+        public IEnumerable<Course> Courses { get; private set; }
 
         public IEnumerable<Status> TNAOutcomes { get; private set; }
         public IEnumerable<Status> StatusESRUp { get; private set; }
         public IEnumerable<Status> StatusPDSRole { get; private set; }
         public IEnumerable<Status> StatusPlusUp { get; private set; }
+        public IEnumerable<Status> ReqStatus { get; private set; }
+        public IEnumerable<Status> AttendanceOutcome { get; private set; }
 
         //Search Fields:
         private string _staffCodeSearch;
@@ -68,11 +88,24 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+        public ICommand AddCommand { get; private set; }
+        public ICommand RemoveCommand { get; private set; }
+        public ICommand AddTeamApprovCommand { get; private set; }
+        public ICommand RemoveTeamApprovCommand { get; private set; }
+        public ICommand AddReqCommand { get; private set; }
+        public ICommand RemoveReqCommand { get; private set; }
+
 
         public StaffViewModel()
         {
             db = new StaffEntities();
-            db.Staffs.Load();
+            db.Staffs.Where(s => s.LM == true || s.Trainer == true).Load();
+            Leaders = db.Staffs.Local.Where(s => s.LM == true).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+            NotifyPropertyChanged("Leaders");
+            Trainers = db.Staffs.Local.Where(s => s.Trainer == true && s.External == false).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+            NotifyPropertyChanged("Trainers");
+            db.Staffs.Take(50).Load();
             StaffList = db.Staffs.Local.ToList();
             SelectedStaff = StaffList.First();
             db.Titles.Load();
@@ -88,8 +121,6 @@ namespace WPFParisTraining.ViewModels
             db.Subjectives.Load();
             Subjectives = db.Subjectives.Local.ToList();
             NotifyPropertyChanged("Subjectives");
-            Leaders = db.Staffs.Local.Where(s => s.LM == true).OrderBy(s => s.Sname).ToList();
-            NotifyPropertyChanged("Leaders");
             db.Statuses.Load();
             TNAOutcomes = db.Statuses.Local.Where(s => s.TNA_OUT).ToList();
             NotifyPropertyChanged("TNAOutcomes");
@@ -99,16 +130,26 @@ namespace WPFParisTraining.ViewModels
             NotifyPropertyChanged("StatusPDSRole");
             StatusPlusUp = db.Statuses.Local.Where(s => s.RA_PLUS).ToList();
             NotifyPropertyChanged("StatusPlusUp");
-            Trainers = db.Staffs.Local.Where(s => s.Trainer == true && s.External == false).OrderBy(s => s.Sname).ToList();
-            NotifyPropertyChanged("Trainers");
+            ReqStatus = db.Statuses.Local.Where(s => s.Requirement).ToList();
+            NotifyPropertyChanged("ReqStatus");
+            AttendanceOutcome = db.Statuses.Local.Where(s => s.Attendance).ToList();
+            NotifyPropertyChanged("AttendanceOutcome");
             db.Teams.Where(t => t.TeamMems.Count > 0 || t.ESR == null).Load();
             Teams = db.Teams.Local.OrderBy(t => t.TeamName).ToList();
             NotifyPropertyChanged("Teams");
+            db.Courses.Load();
+            Courses = db.Courses.Local.OrderBy(c => c.CourseName);
+            NotifyPropertyChanged("Courses");
+
 
             ResetSearch(null);
 
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
+            AddTeamApprovCommand = new DelegateCommand<object>(AddTeamApprov);
+            RemoveTeamApprovCommand = new DelegateCommand<object>(RemoveTeamApprov);
+            AddReqCommand = new DelegateCommand<object>(AddReq);
+            RemoveReqCommand = new DelegateCommand<object>(RemoveReq);
         }
 
         private void UpdateLinkedStuff()
@@ -118,8 +159,19 @@ namespace WPFParisTraining.ViewModels
                 db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).Load();
                 ESR = db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).ToList();
                 db.RAs.Where(r => r.ID == SelectedStaff.ID).Load();
-                StaffRA = db.RAs.Where(r => r.ID == SelectedStaff.ID).SingleOrDefault();  //not finding newly created RA records
+                StaffRA = db.RAs.Local.SingleOrDefault(r => r.ID == SelectedStaff.ID);  
                 if (StaffRA == null) StaffRA = new RA();
+                db.TNAs.Where(t => t.ID == SelectedStaff.ID).Load();
+                StaffTNA = db.TNAs.Local.SingleOrDefault(t => t.ID == SelectedStaff.ID);
+                if (StaffTNA == null) StaffTNA = new TNA();
+                db.TeamApprovs.Where(t => t.StaffID == SelectedStaff.ID).Load();
+                TeamApprovals = db.TeamApprovs.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
+                SelectedTeamApprov = TeamApprovals.FirstOrDefault();
+                db.Reqs.Where(r => r.StaffID == SelectedStaff.ID).Load();
+                StaffReqs = db.Reqs.Local.Where(r => r.StaffID == SelectedStaff.ID).ToList();
+                SelectedReq = StaffReqs.FirstOrDefault();
+                db.Attendances.Where(a => a.StaffID == SelectedStaff.ID).Load();
+                StaffAttendances = db.Attendances.Local.Where(a => a.StaffID == SelectedStaff.ID).ToList();
             }
         }
 
@@ -133,9 +185,20 @@ namespace WPFParisTraining.ViewModels
                     StaffRA.Account_Created.HasValue || StaffRA.Add_CITRIX.HasValue || StaffRA.Password_Emailed.HasValue ||
                     StaffRA.Access_to_Plus.HasValue || StaffRA.UUID_Add_ESR.HasValue)
                 {
-                    StaffRA.Staff = SelectedStaff;
+                    StaffRA.ID = SelectedStaff.ID;
                     SelectedStaff.RA = StaffRA;
                     db.RAs.Add(StaffRA);
+                }
+            }
+
+            if (SelectedStaff != null && StaffTNA.Staff == null)
+            {
+                if (StaffTNA.Date_Received.HasValue || StaffTNA.TrainerID.HasValue || StaffTNA.Contact_Date.HasValue ||
+                    StaffTNA.Contact_Outcome != null || StaffTNA.TNA_Outcome.HasValue )
+                {
+                    StaffTNA.ID = SelectedStaff.ID;
+                    SelectedStaff.TNA = StaffTNA;
+                    db.TNAs.Add(StaffTNA);
                 }
             }
         }
@@ -145,7 +208,7 @@ namespace WPFParisTraining.ViewModels
             int? TeamSearchID = (TeamSearch == null) ? 0 : TeamSearch.ID;
             int? LineManSearchID = (LineManSearch == null) ? 0 : LineManSearch.ID;
             int? CohortSearchID = (CohortSearch == null) ? 0 : CohortSearch.ID;
-            StaffList = db.search_staff(StaffCodeSearch, NameSearch, JobTitleSearch, MHCSearch, BoroughSearch, ServiceSearch, TeamSearchID, LineManSearchID, CohortSearchID, LeftTrustSearch, ExternalSearch).OrderBy(s => s.Sname).ToList();
+            StaffList = db.search_staff(StaffCodeSearch, NameSearch, JobTitleSearch, MHCSearch, BoroughSearch, ServiceSearch, TeamSearchID, LineManSearchID, CohortSearchID, LeftTrustSearch, ExternalSearch).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
             SelectedStaff = StaffList.FirstOrDefault();
         }
 
@@ -162,6 +225,45 @@ namespace WPFParisTraining.ViewModels
             CohortSearch = null;
             LeftTrustSearch = false;
             ExternalSearch = false;
+        }
+
+        private void AddTeamApprov(object parameter)
+        {
+            TeamApprov newTeamApprov = new TeamApprov();
+            newTeamApprov.StaffID = SelectedStaff.ID;
+            db.TeamApprovs.Add(newTeamApprov);
+            TeamApprovals = db.TeamApprovs.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
+            SelectedTeamApprov = newTeamApprov;
+        }
+
+        private void RemoveTeamApprov(object parameter)
+        {
+            if (SelectedTeamApprov != null && MessageBox.Show("Are you sure you want to delete approval for " + SelectedTeamApprov.Team, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                db.TeamApprovs.Remove(SelectedTeamApprov);
+                TeamApprovals = db.TeamApprovs.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
+                SelectedTeamApprov = TeamApprovals.FirstOrDefault();
+            }
+        }
+
+        private void AddReq(object parameter)
+        {
+            Req newReq = new Req();
+            newReq.StaffID = SelectedStaff.ID;
+            newReq.StatusID = 1;
+            db.Reqs.Add(newReq);
+            StaffReqs = db.Reqs.Local.Where(r => r.StaffID == SelectedStaff.ID).ToList();
+            SelectedReq = newReq;
+        }
+
+        private void RemoveReq(object parameter)
+        {
+            if (SelectedReq != null && MessageBox.Show("Are you sure you want to delete requirement for " + SelectedReq.Course.CourseName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                db.Reqs.Remove(SelectedReq);
+                StaffReqs = db.Reqs.Local.Where(r => r.StaffID == SelectedStaff.ID).ToList();
+                SelectedReq = StaffReqs.FirstOrDefault();
+            }
         }
     }
 }

@@ -20,6 +20,9 @@ namespace WPFParisTraining.ViewModels
         private Team _selectedTeam;
         public Team SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value; NotifyPropertyChanged(); UpdateLinkedStuff(); } }
 
+        private IEnumerable<TeamMem> _membership;
+        public IEnumerable<TeamMem> Membership { get { return _membership; } set { _membership = value; NotifyPropertyChanged(); } }
+
         public IEnumerable<Cohort> CohortList { get; private set; }
         public IEnumerable<Cost_Centres> CostCentres { get; private set; }
         public IEnumerable<Staff> Members { get; private set; }
@@ -45,19 +48,24 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+        public ICommand AddCommand { get; private set; }
+        public ICommand RemoveCommand { get; private set; }
 
         public TeamViewModel()
         {
             db = new StaffEntities();
-            db.Teams.Load();
-            TeamList = db.Teams.Local.ToList();
-            SelectedTeam = TeamList.First();
+
             db.Cohorts.Load();
             CohortList = db.Cohorts.Local.OrderBy(c => c.Number).ToList();
             NotifyPropertyChanged("CohortList");
             db.Cost_Centres.Where(cc => cc.Enbld).Load();
             CostCentres = db.Cost_Centres.Local.ToList();
             NotifyPropertyChanged("CostCentres");
+
+            db.Teams.Take(50).Load();
+            TeamList = db.Teams.Local.OrderBy(t => t.TeamName).ToList();
+            SelectedTeam = TeamList.FirstOrDefault();
 
             ResetSearch(null);
 
@@ -67,7 +75,13 @@ namespace WPFParisTraining.ViewModels
 
         private void UpdateLinkedStuff()
         {
-              //db.Staffs.Where(s => s.TeamMems.Where(m => m.TeamID == SelectedTeam.ID)).Load();
+            if (SelectedTeam != null)
+            {
+                db.TeamMems.Where(m => m.TeamID == SelectedTeam.ID).Include("Staff").Load();
+                Membership = db.TeamMems.Local.Where(m => m.TeamID == SelectedTeam.ID).OrderBy(m => m.Staff.Sname).ThenBy(m => m.Staff.Fname).ToList();
+                Members = db.TeamMems.Local.Where(m => m.TeamID == SelectedTeam.ID && m.Active).Select(m => m.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+                NotifyPropertyChanged("Members");
+            }
         }
 
         private void Search(object parameter)

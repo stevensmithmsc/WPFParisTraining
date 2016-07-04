@@ -117,7 +117,13 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <TextBlock Text="Leader" Grid.Row="3"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedTeam.Leader.Fname}" />
+                        <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Members}" SelectedItem="{Binding SelectedTeam.Leader}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SimpleName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock Text="Cohort" Grid.Row="4"/>
                         <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding CohortList}" SelectedItem="{Binding SelectedTeam.Cohort}">
                             <ComboBox.ItemTemplate>
@@ -141,7 +147,7 @@
                 </Grid>
             </Border>
         </ScrollViewer>
-        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SelectedTeam.TeamMems}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Membership}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Staff Member" Binding="{Binding Staff.SimpleName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding Staff.JobTitle}" IsReadOnly="True" />
