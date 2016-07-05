@@ -75,7 +75,7 @@
                 <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
             </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Course">
                     <DataGridTemplateColumn.CellTemplate>
@@ -177,20 +177,43 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Search:" />
-                <TextBox Grid.Column="1" Margin="5,0,0,0"/>
-                <Button Content="S" Grid.Column="2" Margin="0,0,5,0" />
+                <TextBox Grid.Column="1" Margin="5,0,0,0" Text="{Binding NameFilter}"/>
+                <Button Content="S" Grid.Column="2" Margin="0,0,5,0" Command="{Binding FilterCommand, Mode=OneWay}"  />
                 <TextBlock Text="Person:" Grid.Column="3" />
-                <TextBox Grid.Column="4" />
-                <Button Content="Book Person" Grid.Column="5" Margin="5,0"/>
-                <DataGrid Grid.Row="1" Grid.ColumnSpan="6" ItemsSource="{Binding SelectedSession.Attendances}">
+                <ComboBox Grid.Column="4" ItemsSource="{Binding StaffRequiring}" SelectedItem="{Binding BookStaff}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding SimpleName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="Book Person" Grid.Column="5" Margin="5,0" Command="{Binding BookCommand, Mode=OneWay}"/>
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="6" ItemsSource="{Binding Bookings}" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Staff" Binding="{Binding Staff.SimpleName}" />
-                        <DataGridTextColumn Header="Outcome" Binding="{Binding Status.StatusDesc}" />
-                        <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+                        <DataGridTextColumn Header="Staff" Binding="{Binding Staff.SimpleName}" IsReadOnly="True" SortMemberPath="Staff.Sname"/>
+                        <DataGridTemplateColumn Header="Outcome">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Status.StatusDesc}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataContext.Outcomes, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Status}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding StatusDesc}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" MinWidth="200"/>
                         <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created, StringFormat='{}{0:dd/MM/yyyy}'}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified, StringFormat='{}{0:dd/MM/yyyy}'}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

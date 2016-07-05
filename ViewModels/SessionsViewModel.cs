@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using WPFParisTraining.Entity;
 
@@ -26,10 +27,18 @@ namespace WPFParisTraining.ViewModels
 
         public IEnumerable<Location> Locations { get; private set; }
 
-        public List<Staff> StaffRequiring { get; private set; }
+        private IEnumerable<Staff> _staffRequiring;
+        public IEnumerable<Staff> StaffRequiring { get { return _staffRequiring; } private set { _staffRequiring = value;  NotifyPropertyChanged(); } }
+        private Staff _bookStaff;
+        public Staff BookStaff { get { return _bookStaff; } set { _bookStaff = value;  NotifyPropertyChanged(); } }
 
         private IEnumerable<Attendance> _bookings;
         public IEnumerable<Attendance> Bookings { get { return _bookings; } set { _bookings = value;  NotifyPropertyChanged(); } }
+
+        private string _nameFilter;
+        public string NameFilter { get { return _nameFilter; } set { _nameFilter = value; NotifyPropertyChanged(); } }
+
+        public IEnumerable<Status> Outcomes { get; private set; }
 
         //Search Fields
         private Course _searchCourse;
@@ -55,6 +64,7 @@ namespace WPFParisTraining.ViewModels
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
         public ICommand BookCommand { get; private set; }
+        public ICommand FilterCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
@@ -73,11 +83,16 @@ namespace WPFParisTraining.ViewModels
             db.Locations.Where(l => l.TLoc).Load();
             Locations = db.Locations.Local.OrderBy(l => l.LocationName).ToList();
             NotifyPropertyChanged("Locations");
+            db.Statuses.Where(s => s.Attendance).Load();
+            Outcomes = db.Statuses.Local.ToList();
+            NotifyPropertyChanged("Outcomes");
 
             ResetSearch(null);
 
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
+            BookCommand = new DelegateCommand<object>(MakeBooking);
+            FilterCommand = new DelegateCommand<object>(FilterStaffList);
         }
 
         private void UpdateLinked()
@@ -86,6 +101,8 @@ namespace WPFParisTraining.ViewModels
             Bookings = db.Attendances.Local.Where(a => a.SessID == SelectedSession.ID).OrderBy(a => a.Created).ToList();
             db.Reqs.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Include("Staff").Load();
             StaffRequiring = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+            BookStaff = null;
+            NameFilter = null;
         }
 
         private void Search(object parameter)
@@ -108,6 +125,52 @@ namespace WPFParisTraining.ViewModels
             SearchObselete = null;
             SearchParis = null;
             SearchAvailable = null;
+        }
+
+        private void MakeBooking(object parameter)
+        {
+            if (BookStaff != null)
+            {
+                if (SelectedSession.AvailablePlaces > 0 || MessageBox.Show("These course session is already full booked, do you want to overbook?", "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Attendance booking = new Attendance();
+                    booking.StaffID = BookStaff.ID;
+                    booking.SessID = SelectedSession.ID;
+                    booking.Outcome = 0;
+                    db.Attendances.Add(booking);
+                    Req requirement = db.Reqs.Local.FirstOrDefault(r => r.StaffID == BookStaff.ID && r.CourseID == SelectedSession.CourseID);
+                    if (requirement != null) requirement.StatusID = 2;
+                    Bookings = db.Attendances.Local.Where(a => a.SessID == SelectedSession.ID).OrderBy(a => a.Created).ToList();
+                    StaffRequiring = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+                    BookStaff = null;
+                    NameFilter = null;
+                }
+            }
+        }
+
+        private void FilterStaffList(object parameter)
+        {
+            if (NameFilter != null)
+            {
+                IEnumerable<Staff> AllStaff = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff);
+                StaffRequiring = AllStaff.Where(s => s.Sname.Contains(NameFilter) || s.Fname.Contains(NameFilter) || (s.PName != null && s.PName.Contains(NameFilter)) || (s.FullName.Contains(NameFilter))).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+                if (StaffRequiring.Count() == 1)
+                {
+                    BookStaff = StaffRequiring.First();
+                }
+                else if (StaffRequiring.Count() == 0)
+                {
+                    MessageBox.Show("No matches found!", "Training Database");
+                    StaffRequiring = AllStaff.OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+                    BookStaff = null;
+                    NameFilter = null;
+                }
+                else
+                {
+                    BookStaff = null;
+                }
+            }
+            
         }
     }
 }
