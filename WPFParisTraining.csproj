@@ -84,6 +84,7 @@
     <Compile Include="Entity\CourseReq.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Course_Extra.cs" />
     <Compile Include="Entity\Genders.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>

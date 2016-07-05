@@ -20,6 +20,8 @@ namespace WPFParisTraining.ViewModels
         private Course _selectedCourse;
         public Course SelectedCourse { get { return _selectedCourse; } set { _selectedCourse = value; NotifyPropertyChanged(); } }
 
+
+        //Search Fields
         private string _searchName;
         private bool? _searchParis;
         private bool? _searchExternal;
@@ -31,6 +33,9 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+        public ICommand AddCommand { get; private set; }
+        public ICommand RemoveCommand { get; private set; }
 
         public CourseViewModel()
         {

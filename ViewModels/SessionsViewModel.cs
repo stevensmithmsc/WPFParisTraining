@@ -18,7 +18,7 @@ namespace WPFParisTraining.ViewModels
         public List<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
 
         private Sess _selectedSession;
-        public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value; NotifyPropertyChanged(); } }
+        public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value; NotifyPropertyChanged(); UpdateLinked(); } }
 
         public IEnumerable<Staff> Trainers { get; private set; }
 
@@ -26,6 +26,12 @@ namespace WPFParisTraining.ViewModels
 
         public IEnumerable<Location> Locations { get; private set; }
 
+        public List<Staff> StaffRequiring { get; private set; }
+
+        private IEnumerable<Attendance> _bookings;
+        public IEnumerable<Attendance> Bookings { get { return _bookings; } set { _bookings = value;  NotifyPropertyChanged(); } }
+
+        //Search Fields
         private Course _searchCourse;
         private Staff _searchTrainer;
         private Location _searchLocation;
@@ -48,6 +54,10 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
+        public ICommand BookCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+        public ICommand AddCommand { get; private set; }
+        public ICommand RemoveCommand { get; private set; }
 
         public SessionsViewModel()
         {
@@ -68,6 +78,14 @@ namespace WPFParisTraining.ViewModels
 
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
+        }
+
+        private void UpdateLinked()
+        {
+            db.Attendances.Where(a => a.SessID == SelectedSession.ID).Load();
+            Bookings = db.Attendances.Local.Where(a => a.SessID == SelectedSession.ID).OrderBy(a => a.Created).ToList();
+            db.Reqs.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Include("Staff").Load();
+            StaffRequiring = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
         }
 
         private void Search(object parameter)

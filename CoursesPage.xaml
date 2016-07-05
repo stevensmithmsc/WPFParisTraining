@@ -40,14 +40,17 @@
                 <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
             </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding CourseList}" SelectedItem="{Binding SelectedCourse}">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding CourseList}" SelectedItem="{Binding SelectedCourse}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Course" Binding="{Binding CourseName}" />
                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" />
+                <DataGridTextColumn Header="Required" Binding="{Binding NumberRequired}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Available" Binding="{Binding PlacesAvailable}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Booked" Binding="{Binding PlacesBooked}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Completed" Binding="{Binding NumberCompleted}" IsReadOnly="True" />
                 <DataGridCheckBoxColumn Header="Paris" Binding="{Binding Paris}" />
                 <DataGridCheckBoxColumn Header="External" Binding="{Binding External}" />
                 <DataGridCheckBoxColumn Header="Obselete" Binding="{Binding Obselete}" />
-                <DataGridTextColumn Header="Required" Binding="{Binding StaffReqs.Count}" />
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>

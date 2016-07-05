@@ -75,7 +75,7 @@
                 <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
             </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Course">
                     <DataGridTemplateColumn.CellTemplate>
@@ -146,9 +146,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="End" Binding="{Binding Endt, StringFormat='hh:mm tt'}" />
+                <DataGridTextColumn Header="End" Binding="{Binding EndTime}" />
                 <DataGridTextColumn Header="Places" Binding="{Binding MaxP}" />
-                <DataGridTextColumn Header="Bookings" Binding="{Binding Attendances.Count}" />
+                <DataGridTextColumn Header="Bookings" Binding="{Binding Bookings }" IsReadOnly="True" />
+                <DataGridTextColumn Header="Available" Binding="{Binding AvailablePlaces }" IsReadOnly="True" />
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
