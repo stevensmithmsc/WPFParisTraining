@@ -22,9 +22,7 @@ namespace WPFParisTraining.ViewModels
         public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value; NotifyPropertyChanged(); UpdateLinked(); } }
 
         public IEnumerable<Staff> Trainers { get; private set; }
-
         public IEnumerable<Course> Courses { get; private set; }
-
         public IEnumerable<Location> Locations { get; private set; }
 
         private IEnumerable<Staff> _staffRequiring;
