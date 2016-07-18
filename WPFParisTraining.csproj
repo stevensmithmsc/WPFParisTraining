@@ -156,6 +156,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TrainDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BooltoFontStyle.cs" />
+    <Compile Include="Helpers\BooltoFontWeight.cs" />
     <Compile Include="LocationsPage.xaml.cs">
       <DependentUpon>LocationsPage.xaml</DependentUpon>
     </Compile>

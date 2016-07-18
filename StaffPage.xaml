@@ -15,6 +15,8 @@
     </Page.DataContext>
 
     <Page.Resources>
+        <h:BooltoFontWeight x:Key="BooltoFontWeight"/>
+        <h:BooltoFontStyle x:Key="BooltoFontStyle"/>
         <h:BooltoVis x:Key="BooltoVis"/>
         <DataTemplate x:Key="StatusDataTemplate">
             <TextBlock Text="{Binding StatusDesc}"/>
@@ -220,7 +222,7 @@
                                             <DataGridTemplateColumn MinWidth="250">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Team.TeamName}" FontWeight="Normal" FontStyle="Normal" />
+                                                        <TextBlock Text="{Binding Team.TeamName}" FontWeight="{Binding Main, Converter={StaticResource BooltoFontWeight}, Mode=OneWay}" FontStyle="{Binding Active, Converter={StaticResource BooltoFontStyle}, Mode=OneWay}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                                 <DataGridTemplateColumn.CellEditingTemplate>
