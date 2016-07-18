@@ -11,10 +11,8 @@ using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels
 {
-    class StaffViewModel : ViewModel
+    class StaffViewModel : DBViewModel
     {
-        private StaffEntities db;
-
         private List<Staff> _staffList;
         public List<Staff> StaffList { get { return _staffList; } set { _staffList = value;  NotifyPropertyChanged(); } }
 
@@ -212,6 +210,8 @@ namespace WPFParisTraining.ViewModels
                     db.TNAs.Add(StaffTNA);
                 }
             }
+
+            NotifyPropertyChanged("Changed");
         }
 
         private void Search(object parameter)
@@ -290,7 +290,7 @@ namespace WPFParisTraining.ViewModels
 
         private void RemoveTeamMembership(object parameter)
         {
-            if (SelectedTeam != null && MessageBox.Show("Are you sure you want to delete membership of " + SelectedTeam.Team.TeamName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (SelectedTeam != null && (SelectedTeam.Team == null || MessageBox.Show("Are you sure you want to delete membership of " + SelectedTeam.Team.TeamName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
             {
                 db.TeamMems.Remove(SelectedTeam);
                 TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();

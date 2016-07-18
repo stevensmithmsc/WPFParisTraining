@@ -11,10 +11,8 @@ using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels
 {
-    class SessionsViewModel : ViewModel
+    class SessionsViewModel : DBViewModel
     {
-        private StaffEntities db;
-
         private List<Sess> _sessionList;
         public List<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
 

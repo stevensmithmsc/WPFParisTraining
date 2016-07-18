@@ -168,7 +168,9 @@
     <Compile Include="TeamsPage.xaml.cs">
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BooltoVis.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\DBViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\LocationsViewModel.cs" />
     <Compile Include="ViewModels\SessionsViewModel.cs" />

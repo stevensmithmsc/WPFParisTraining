@@ -10,10 +10,8 @@ using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels 
 {
-    class TeamViewModel : ViewModel
+    class TeamViewModel : DBViewModel
     {
-        private StaffEntities db;
-
         private List<Team> _teamList;
         public List<Team> TeamList { get { return _teamList; } set { _teamList = value; NotifyPropertyChanged(); } }
 

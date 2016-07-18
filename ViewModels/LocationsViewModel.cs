@@ -11,10 +11,8 @@ using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels
 {
-    class LocationsViewModel : ViewModel
+    class LocationsViewModel : DBViewModel
     {
-        private StaffEntities db;
-
         private ObservableCollection<Location> _locationList;
         public ObservableCollection<Location> LocationList { get { return _locationList; } set { _locationList = value; NotifyPropertyChanged(); } }
 

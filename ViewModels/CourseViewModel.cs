@@ -10,10 +10,8 @@ using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels
 {
-    class CourseViewModel : ViewModel
+    class CourseViewModel : DBViewModel
     {
-        private StaffEntities db;
-
         private List<Course> _courseList;
         public List<Course> CourseList { get { return _courseList; } set { _courseList = value; NotifyPropertyChanged(); } }
 
@@ -70,10 +68,13 @@ namespace WPFParisTraining.ViewModels
 
         private void UpdateLinked()
         {
-            db.Sesses.Where(s => s.CourseID == SelectedCourse.ID).Load();
-            SessionList = db.Sesses.Local.Where(s => s.CourseID == SelectedCourse.ID).OrderBy(s => s.Strt).ToList();
-            db.Reqs.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).Include("Staff").Load();
-            StaffList = db.Reqs.Local.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).OrderBy(r => r.StatusID).ThenBy(r => r.Staff.Sname).ToList();
+            if (SelectedCourse != null)
+            {
+                db.Sesses.Where(s => s.CourseID == SelectedCourse.ID).Load();
+                SessionList = db.Sesses.Local.Where(s => s.CourseID == SelectedCourse.ID).OrderBy(s => s.Strt).ToList();
+                db.Reqs.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).Include("Staff").Load();
+                StaffList = db.Reqs.Local.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).OrderBy(r => r.StatusID).ThenBy(r => r.Staff.Sname).ToList();
+            }
         }
 
         private void Search(object parameter)
