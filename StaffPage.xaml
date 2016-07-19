@@ -32,7 +32,7 @@
         <Expander>
             <Expander.Header>
                 <DockPanel>
-                    <Button Content="Add" DockPanel.Dock="Right" />
+                    <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" />
                     <Button Content="Remove" DockPanel.Dock="Right" />
                     <Button Content="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" />
                     <TextBlock Text="Search Staff" DockPanel.Dock="Left" MinWidth="1200"/>
@@ -99,7 +99,7 @@
                 <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
             </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding JobTitle}" />

@@ -80,6 +80,7 @@ namespace WPFParisTraining.ViewModels
                 Members = db.TeamMems.Local.Where(m => m.TeamID == SelectedTeam.ID && m.Active).Select(m => m.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
                 NotifyPropertyChanged("Members");
             }
+            NotifyPropertyChanged("Changed");
         }
 
         private void Search(object parameter)

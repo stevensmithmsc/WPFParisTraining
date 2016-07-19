@@ -157,6 +157,7 @@ namespace WPFParisTraining.ViewModels
             RemoveReqCommand = new DelegateCommand<object>(RemoveReq);
             AddTeamCommand = new DelegateCommand<object>(AddTeamMembership);
             RemoveTeamCommand = new DelegateCommand<object>(RemoveTeamMembership);
+            AddCommand = new DelegateCommand<object>(AddStaff);
         }
 
         private void UpdateLinkedStuff()
@@ -245,6 +246,7 @@ namespace WPFParisTraining.ViewModels
             db.TeamApprovs.Add(newTeamApprov);
             TeamApprovals = db.TeamApprovs.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
             SelectedTeamApprov = newTeamApprov;
+            NotifyPropertyChanged("Changed");
         }
 
         private void RemoveTeamApprov(object parameter)
@@ -254,6 +256,7 @@ namespace WPFParisTraining.ViewModels
                 db.TeamApprovs.Remove(SelectedTeamApprov);
                 TeamApprovals = db.TeamApprovs.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
                 SelectedTeamApprov = TeamApprovals.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
             }
         }
 
@@ -265,6 +268,7 @@ namespace WPFParisTraining.ViewModels
             db.Reqs.Add(newReq);
             StaffReqs = db.Reqs.Local.Where(r => r.StaffID == SelectedStaff.ID).ToList();
             SelectedReq = newReq;
+            NotifyPropertyChanged("Changed");
         }
 
         private void RemoveReq(object parameter)
@@ -274,6 +278,7 @@ namespace WPFParisTraining.ViewModels
                 db.Reqs.Remove(SelectedReq);
                 StaffReqs = db.Reqs.Local.Where(r => r.StaffID == SelectedStaff.ID).ToList();
                 SelectedReq = StaffReqs.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
             }
         }
 
@@ -286,6 +291,7 @@ namespace WPFParisTraining.ViewModels
             db.TeamMems.Add(newTeamMem);
             TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
             SelectedTeam = newTeamMem;
+            NotifyPropertyChanged("Changed");
         }
 
         private void RemoveTeamMembership(object parameter)
@@ -295,7 +301,15 @@ namespace WPFParisTraining.ViewModels
                 db.TeamMems.Remove(SelectedTeam);
                 TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
                 SelectedTeam = null;
+                NotifyPropertyChanged("Changed");
             }
+        }
+
+        private void AddStaff(object parameter)
+        {
+            Staff newStaff = new Staff();
+            StaffList.Add(newStaff);
+            SelectedStaff = newStaff;
         }
     }
 }

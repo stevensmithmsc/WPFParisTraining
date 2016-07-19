@@ -1,13 +1,18 @@
-﻿<Page x:Class="WPFParisTraining.SessionsPage"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFParisTraining"
       xmlns:vm="clr-namespace:WPFParisTraining.ViewModels"
+      xmlns:Helpers="clr-namespace:WPFParisTraining.Helpers" x:Class="WPFParisTraining.SessionsPage"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Sessions">
+
+    <Page.Resources>
+        <Helpers:BooltoVis x:Key="BooltoVis"/>
+    </Page.Resources>
 
     <Page.DataContext>
         <vm:SessionsViewModel />
@@ -24,7 +29,7 @@
                 <DockPanel>
                     <Button Content="Add" DockPanel.Dock="Right" />
                     <Button Content="Remove" DockPanel.Dock="Right" />
-                    <Button Content="Save Changes" DockPanel.Dock="Right" />
+                    <Button Content="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" />
                     <TextBlock Text="Search Course Sessions" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
@@ -134,7 +139,7 @@
                 <DataGridTemplateColumn Header="Start">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Strt, StringFormat='dd/MM/yyyy hh:mm tt (ddd)'}"/>
+                            <TextBlock Text="{Binding Strt, StringFormat=dd/MM/yyyy hh:mm tt (ddd)}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -148,8 +153,8 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="End" Binding="{Binding EndTime}" />
                 <DataGridTextColumn Header="Places" Binding="{Binding MaxP}" />
-                <DataGridTextColumn Header="Bookings" Binding="{Binding Bookings }" IsReadOnly="True" />
-                <DataGridTextColumn Header="Available" Binding="{Binding AvailablePlaces }" IsReadOnly="True" />
+                <DataGridTextColumn Header="Bookings" Binding="{Binding Bookings}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Available" Binding="{Binding AvailablePlaces}" IsReadOnly="True" />
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
@@ -211,9 +216,9 @@
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Comments" Binding="{Binding Comments}" MinWidth="200"/>
                         <DataGridTextColumn Header="Booked By" Binding="{Binding Booker.SimpleName}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created, StringFormat='{}{0:dd/MM/yyyy}'}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Booking Date" Binding="{Binding Created, StringFormat=\{0:dd/MM/yyyy\}}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Cancelled By" Binding="{Binding Canceller.SimpleName}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified, StringFormat='{}{0:dd/MM/yyyy}'}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Modified On" Binding="{Binding Modified, StringFormat=\{0:dd/MM/yyyy\}}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

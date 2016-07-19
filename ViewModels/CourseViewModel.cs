@@ -75,6 +75,7 @@ namespace WPFParisTraining.ViewModels
                 db.Reqs.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).Include("Staff").Load();
                 StaffList = db.Reqs.Local.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).OrderBy(r => r.StatusID).ThenBy(r => r.Staff.Sname).ToList();
             }
+            NotifyPropertyChanged("Changed");
         }
 
         private void Search(object parameter)

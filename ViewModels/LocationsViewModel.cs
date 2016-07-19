@@ -17,7 +17,7 @@ namespace WPFParisTraining.ViewModels
         public ObservableCollection<Location> LocationList { get { return _locationList; } set { _locationList = value; NotifyPropertyChanged(); } }
 
         private Location _selectedLocation;
-        public Location SelectedLocation { get { return _selectedLocation; } set { _selectedLocation = value; NotifyPropertyChanged(); } }
+        public Location SelectedLocation { get { return _selectedLocation; } set { _selectedLocation = value; NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
@@ -32,6 +32,7 @@ namespace WPFParisTraining.ViewModels
 
             AddCommand = new DelegateCommand<object>(AddLocation);
             RemoveCommand = new DelegateCommand<object>(RemoveLocation);
+            SaveCommand = new DelegateCommand<object>(SaveDataChanges);
         }
 
         private void AddLocation(object parameter)

@@ -93,12 +93,16 @@ namespace WPFParisTraining.ViewModels
 
         private void UpdateLinked()
         {
-            db.Attendances.Where(a => a.SessID == SelectedSession.ID).Load();
-            Bookings = db.Attendances.Local.Where(a => a.SessID == SelectedSession.ID).OrderBy(a => a.Created).ToList();
-            db.Reqs.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Include("Staff").Load();
-            StaffRequiring = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
-            BookStaff = null;
-            NameFilter = null;
+            if (SelectedSession != null)
+            {
+                db.Attendances.Where(a => a.SessID == SelectedSession.ID).Load();
+                Bookings = db.Attendances.Local.Where(a => a.SessID == SelectedSession.ID).OrderBy(a => a.Created).ToList();
+                db.Reqs.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Include("Staff").Load();
+                StaffRequiring = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+                BookStaff = null;
+                NameFilter = null;
+            }
+            NotifyPropertyChanged("Changed");
         }
 
         private void Search(object parameter)
