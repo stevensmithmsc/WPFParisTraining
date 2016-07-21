@@ -11,6 +11,7 @@ namespace WPFParisTraining.ViewModels
     public abstract class DBViewModel : ViewModel, IDisposable
     {
         protected StaffEntities db;
+        protected bool _addMode;
 
         public bool Changed { get { return db.ChangeTracker.HasChanges(); } }
 

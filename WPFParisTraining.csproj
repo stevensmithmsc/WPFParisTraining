@@ -138,6 +138,7 @@
     <Compile Include="Entity\Title.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Title_Extra.cs" />
     <Compile Include="Entity\TNA.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>

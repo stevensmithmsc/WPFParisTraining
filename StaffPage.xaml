@@ -33,7 +33,7 @@
             <Expander.Header>
                 <DockPanel>
                     <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" />
-                    <Button Content="Remove" DockPanel.Dock="Right" />
+                    <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" />
                     <Button Content="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" />
                     <TextBlock Text="Search Staff" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
@@ -148,7 +148,7 @@
                                         <ColumnDefinition Width="0.6*" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Title" />
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding Titles}" SelectedItem="{Binding SelectedStaff.Title}">
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding Titles}" SelectedItem="{Binding SelTitle}">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding TitleValue}"/>
@@ -164,7 +164,7 @@
                                     <TextBlock Text="Preferred Name" Grid.Row="4"/>
                                     <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedStaff.PName}"/>
                                     <TextBlock Text="Gender" Grid.Row="5"/>
-                                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding GenderList}" SelectedItem="{Binding SelectedStaff.Gender}"/>
+                                    <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding GenderList}" SelectedItem="{Binding SelGender}"/>
                                     <TextBlock Text="Job Title" Grid.Row="6"/>
                                     <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SelectedStaff.JobTitle}"/>
                                     <TextBlock Text="Cost Code" Grid.Row="7"/>

@@ -13,11 +13,13 @@ namespace WPFParisTraining.ViewModels
 {
     class StaffViewModel : DBViewModel
     {
-        private List<Staff> _staffList;
-        public List<Staff> StaffList { get { return _staffList; } set { _staffList = value;  NotifyPropertyChanged(); } }
+        private IEnumerable<Staff> _staffList;
+        public IEnumerable<Staff> StaffList { get { return _staffList; } set { _staffList = value;  NotifyPropertyChanged(); } }
 
         private Staff _selectedStaff;
-        public Staff SelectedStaff { get { return _selectedStaff; } set { CheckLinkedEntities(); _selectedStaff = value;  NotifyPropertyChanged(); UpdateLinkedStuff(); } }
+        public Staff SelectedStaff { get { return _selectedStaff; } set { CheckLinkedEntities(); _selectedStaff = value;  NotifyPropertyChanged(); NotifyPropertyChanged("SelGender"); NotifyPropertyChanged("SelTitle"); UpdateLinkedStuff(); } }
+        public Genders? SelGender { get { return (_selectedStaff != null) ? _selectedStaff.Gender : null; } set { _selectedStaff.Gender = value;  NotifyPropertyChanged(); UpdateTitles(); } }
+        public Title SelTitle { get { return (_selectedStaff != null) ? _selectedStaff.Title : null; } set { _selectedStaff.Title = value; NotifyPropertyChanged(); UpdateGenders(true); } }
 
         private IEnumerable<TeamMem> _teamMemberships;
         public IEnumerable<TeamMem> TeamMemberships { get { return _teamMemberships; } set { _teamMemberships = value;  NotifyPropertyChanged(); } }
@@ -158,6 +160,7 @@ namespace WPFParisTraining.ViewModels
             AddTeamCommand = new DelegateCommand<object>(AddTeamMembership);
             RemoveTeamCommand = new DelegateCommand<object>(RemoveTeamMembership);
             AddCommand = new DelegateCommand<object>(AddStaff);
+            RemoveCommand = new DelegateCommand<object>(RemoveStaff);
         }
 
         private void UpdateLinkedStuff()
@@ -182,6 +185,8 @@ namespace WPFParisTraining.ViewModels
                 SelectedReq = StaffReqs.FirstOrDefault();
                 db.Attendances.Where(a => a.StaffID == SelectedStaff.ID).Load();
                 StaffAttendances = db.Attendances.Local.Where(a => a.StaffID == SelectedStaff.ID).ToList();
+                UpdateGenders(false);
+                UpdateTitles();
             }
         }
 
@@ -213,6 +218,36 @@ namespace WPFParisTraining.ViewModels
             }
 
             NotifyPropertyChanged("Changed");
+        }
+
+        private void UpdateTitles()
+        {
+            if (SelGender != null && SelGender != 0)
+            {
+                Titles = db.Titles.Local.Where(t => t.AllowedGenders.Contains((Genders)SelGender)).ToList();
+            }
+            else
+            {
+                Titles = db.Titles.Local.ToList();
+            }
+            NotifyPropertyChanged("Titles");
+        }
+
+        private void UpdateGenders(bool fromSet)
+        {
+            if (SelTitle != null)
+            {
+                GenderList = SelTitle.AllowedGenders;
+                if (fromSet && SelGender == null)
+                {
+                    SelGender = SelTitle.DefaultGender;
+                }
+            }
+            else
+            {
+                GenderList = new List<Genders>() { Genders.Male, Genders.Female, Genders.Not_Known };
+            }
+            NotifyPropertyChanged("GenderList");
         }
 
         private void Search(object parameter)
@@ -307,9 +342,35 @@ namespace WPFParisTraining.ViewModels
 
         private void AddStaff(object parameter)
         {
+            _addMode = true;
             Staff newStaff = new Staff();
-            StaffList.Add(newStaff);
+            // set defaults
+            newStaff.LM = false;
+            newStaff.Trainer = false;
+            newStaff.LeftTrust = false;
+            newStaff.NoTraining = false;
+            newStaff.Bank = false;
+            newStaff.External = false;
+
+            db.Staffs.Add(newStaff);
+            //reset staff list to only show new records
+            StaffList = db.Staffs.Local.Where(s => s.ID <= 0).ToList();
             SelectedStaff = newStaff;
+            //will need to disable adding teams and other releated records until after record is saved
+            // so will probably move next line as well!
+            _addMode = false;
+        }
+
+        private void RemoveStaff(object Parameter)
+        {
+            if (SelectedStaff != null && (MessageBox.Show("Are you sure you want to delete " + SelectedStaff.FullName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                IEnumerable<int> idlist = StaffList.Select(s => s.ID);
+                db.Staffs.Remove(SelectedStaff);
+                //SaveDataChanges(null);
+                StaffList = db.Staffs.Local.Where(s => idlist.Contains(s.ID)).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+                SelectedStaff = StaffList.FirstOrDefault();
+            }                
         }
     }
 }
