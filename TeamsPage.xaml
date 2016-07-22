@@ -31,8 +31,8 @@
         <Expander Grid.ColumnSpan="2">
             <Expander.Header>
                 <DockPanel>
-                    <Button Content="Add" DockPanel.Dock="Right" />
-                    <Button Content="Remove" DockPanel.Dock="Right" />
+                    <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" />
+                    <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" />
                     <Button Content="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" />
                     <TextBlock Text="Search Teams" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>

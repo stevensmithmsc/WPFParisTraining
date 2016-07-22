@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using WPFParisTraining.Entity;
 
@@ -12,8 +13,8 @@ namespace WPFParisTraining.ViewModels
 {
     class CourseViewModel : DBViewModel
     {
-        private List<Course> _courseList;
-        public List<Course> CourseList { get { return _courseList; } set { _courseList = value; NotifyPropertyChanged(); } }
+        private IEnumerable<Course> _courseList;
+        public IEnumerable<Course> CourseList { get { return _courseList; } set { _courseList = value; NotifyPropertyChanged(); } }
 
         private Course _selectedCourse;
         public Course SelectedCourse { get { return _selectedCourse; } set { _selectedCourse = value; NotifyPropertyChanged(); UpdateLinked(); } }
@@ -64,6 +65,8 @@ namespace WPFParisTraining.ViewModels
 
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
+            AddCommand = new DelegateCommand<object>(AddCourse);
+            RemoveCommand = new DelegateCommand<object>(RemoveCourse);
         }
 
         private void UpdateLinked()
@@ -90,6 +93,34 @@ namespace WPFParisTraining.ViewModels
             SearchParis = null;
             SearchExternal = false;
             SearchObselete = false;
+        }
+
+        private void AddCourse(object parameter)
+        {
+            _addMode = true;
+            Course newcourse = new Course();
+            newcourse.External = false;
+            newcourse.Obselete = false;
+            newcourse.Paris = true;
+            newcourse.Template = 1;
+
+            db.Courses.Add(newcourse);
+            CourseList = db.Courses.Local.Where(c => c.ID <= 0).ToList();
+            SelectedCourse = newcourse;
+
+            _addMode = false;
+        }
+
+        private void RemoveCourse(object parameter)
+        {
+            if (SelectedCourse != null && (MessageBox.Show("Are you sure you want to delete " + SelectedCourse.CourseName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                IEnumerable<int> idlist = CourseList.Select(t => t.ID);
+                db.Courses.Remove(SelectedCourse);
+                //SaveDataChanges(null);
+                CourseList = db.Courses.Local.Where(c => idlist.Contains(c.ID)).OrderBy(c => c.CourseName).ToList();
+                SelectedCourse = CourseList.FirstOrDefault();
+            }
         }
     }
 }

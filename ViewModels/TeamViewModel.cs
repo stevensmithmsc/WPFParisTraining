@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using WPFParisTraining.Entity;
 
@@ -12,8 +13,8 @@ namespace WPFParisTraining.ViewModels
 {
     class TeamViewModel : DBViewModel
     {
-        private List<Team> _teamList;
-        public List<Team> TeamList { get { return _teamList; } set { _teamList = value; NotifyPropertyChanged(); } }
+        private IEnumerable<Team> _teamList;
+        public IEnumerable<Team> TeamList { get { return _teamList; } set { _teamList = value; NotifyPropertyChanged(); } }
 
         private Team _selectedTeam;
         public Team SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value; NotifyPropertyChanged(); UpdateLinkedStuff(); } }
@@ -69,6 +70,8 @@ namespace WPFParisTraining.ViewModels
 
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
+            AddCommand = new DelegateCommand<object>(AddTeam);
+            RemoveCommand = new DelegateCommand<object>(RemoveTeam);
         }
 
         private void UpdateLinkedStuff()
@@ -100,6 +103,32 @@ namespace WPFParisTraining.ViewModels
             SearchCohort = null;
             SearchNoTrain = null;
             SearchHasMem = true;
+        }
+
+        private void AddTeam(object parameter)
+        {
+            _addMode = true;
+            Team newteam = new Team();
+            newteam.NoTrain = false;
+            newteam.Dont_Migrate = false;
+
+            db.Teams.Add(newteam);
+            TeamList = db.Teams.Local.Where(t => t.ID <= 0).ToList();
+            SelectedTeam = newteam;
+
+            _addMode = false;
+        }
+
+        private void RemoveTeam(object parameter)
+        {
+            if (SelectedTeam != null && (MessageBox.Show("Are you sure you want to delete " + SelectedTeam.TeamName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                IEnumerable<int> idlist = TeamList.Select(t => t.ID);
+                db.Teams.Remove(SelectedTeam);
+                //SaveDataChanges(null);
+                TeamList = db.Teams.Local.Where(t => idlist.Contains(t.ID)).OrderBy(t => t.TeamName).ToList();
+                SelectedTeam = TeamList.FirstOrDefault();
+            }
         }
     }
 }
