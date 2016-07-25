@@ -13,8 +13,8 @@ namespace WPFParisTraining.ViewModels
 {
     class SessionsViewModel : DBViewModel
     {
-        private List<Sess> _sessionList;
-        public List<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
+        private IEnumerable<Sess> _sessionList;
+        public IEnumerable<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
 
         private Sess _selectedSession;
         public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value; NotifyPropertyChanged(); UpdateLinked(); } }
@@ -61,15 +61,9 @@ namespace WPFParisTraining.ViewModels
         public ICommand ResetCommand { get; private set; }
         public ICommand BookCommand { get; private set; }
         public ICommand FilterCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
-        public ICommand AddCommand { get; private set; }
-        public ICommand RemoveCommand { get; private set; }
 
-        public SessionsViewModel()
+        protected override void LoadRefData()
         {
-            db = new StaffEntities();
-            db.Sesses.Where(s => s.Strt > DateTime.Now).OrderBy(s => s.Strt).Load();
-            SessionList = db.Sesses.Local.ToList();
             db.Staffs.Where(s => s.Trainer == true).Load();
             Trainers = db.Staffs.Local.Where(s => s.Trainer == true && s.External == false).OrderBy(s => s.Sname).ToList();
             NotifyPropertyChanged("Trainers");
@@ -82,13 +76,24 @@ namespace WPFParisTraining.ViewModels
             db.Statuses.Where(s => s.Attendance).Load();
             Outcomes = db.Statuses.Local.ToList();
             NotifyPropertyChanged("Outcomes");
+        }
+
+        protected override void LoadInitalData()
+        {
+            db.Sesses.Where(s => s.Strt > DateTime.Now).OrderBy(s => s.Strt).Load();
+            SessionList = db.Sesses.Local.ToList();
 
             ResetSearch(null);
+        }
 
+        protected override void AssignCommands()
+        {
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
             BookCommand = new DelegateCommand<object>(MakeBooking);
             FilterCommand = new DelegateCommand<object>(FilterStaffList);
+            AddCommand = new DelegateCommand<object>(AddSession);
+            RemoveCommand = new DelegateCommand<object>(RemoveSession);
         }
 
         private void UpdateLinked()
@@ -131,7 +136,7 @@ namespace WPFParisTraining.ViewModels
         {
             if (BookStaff != null)
             {
-                if (SelectedSession.AvailablePlaces > 0 || MessageBox.Show("These course session is already full booked, do you want to overbook?", "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (SelectedSession.AvailablePlaces > 0 || MessageBox.Show("This course session is already full, do you want to overbook?", "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     Attendance booking = new Attendance();
                     booking.StaffID = BookStaff.ID;
@@ -171,6 +176,30 @@ namespace WPFParisTraining.ViewModels
                 }
             }
             
+        }
+
+        private void AddSession(object parameter)
+        {
+            _addMode = true;
+            Sess newsess = new Sess();
+
+            db.Sesses.Add(newsess);
+            SessionList = db.Sesses.Local.Where(s => s.ID <= 0).ToList();
+            SelectedSession = newsess;
+
+            _addMode = false;
+        }
+
+        private void RemoveSession(object parameter)
+        {
+            if (SelectedSession != null && (MessageBox.Show("Are you sure you want to delete " + SelectedSession.Course.CourseName + " on " + ((DateTime)SelectedSession.Strt).ToShortDateString(), "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                IEnumerable<int> idlist = SessionList.Select(s => s.ID);
+                db.Sesses.Remove(SelectedSession);
+                //SaveDataChanges(null);
+                SessionList = db.Sesses.Local.Where(s => idlist.Contains(s.ID)).OrderBy(s => s.Strt).ToList();
+                SelectedSession = SessionList.FirstOrDefault();
+            }
         }
     }
 }

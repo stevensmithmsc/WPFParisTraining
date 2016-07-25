@@ -47,27 +47,28 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
-        public ICommand AddCommand { get; private set; }
-        public ICommand RemoveCommand { get; private set; }
 
-        public TeamViewModel()
+        protected override void LoadRefData()
         {
-            db = new StaffEntities();
-
             db.Cohorts.Load();
             CohortList = db.Cohorts.Local.OrderBy(c => c.Number).ToList();
             NotifyPropertyChanged("CohortList");
             db.Cost_Centres.Where(cc => cc.Enbld).Load();
             CostCentres = db.Cost_Centres.Local.ToList();
             NotifyPropertyChanged("CostCentres");
+        }
 
+        protected override void LoadInitalData()
+        {
             db.Teams.Take(50).Load();
             TeamList = db.Teams.Local.OrderBy(t => t.TeamName).ToList();
             SelectedTeam = TeamList.FirstOrDefault();
 
             ResetSearch(null);
+        }
 
+        protected override void AssignCommands()
+        {
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
             AddCommand = new DelegateCommand<object>(AddTeam);

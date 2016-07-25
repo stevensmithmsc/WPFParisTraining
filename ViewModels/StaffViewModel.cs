@@ -93,9 +93,6 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
-        public ICommand AddCommand { get; private set; }
-        public ICommand RemoveCommand { get; private set; }
         public ICommand AddTeamApprovCommand { get; private set; }
         public ICommand RemoveTeamApprovCommand { get; private set; }
         public ICommand AddReqCommand { get; private set; }
@@ -104,21 +101,17 @@ namespace WPFParisTraining.ViewModels
         public ICommand RemoveTeamCommand { get; private set; }
 
 
-        public StaffViewModel()
+        protected override void LoadRefData()
         {
-            db = new StaffEntities();
             db.Staffs.Where(s => s.LM == true || s.Trainer == true).Load();
             Leaders = db.Staffs.Local.Where(s => s.LM == true).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
             NotifyPropertyChanged("Leaders");
             Trainers = db.Staffs.Local.Where(s => s.Trainer == true && s.External == false).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
             NotifyPropertyChanged("Trainers");
-            db.Staffs.Take(50).Load();
-            StaffList = db.Staffs.Local.ToList();
-            SelectedStaff = StaffList.First();
             db.Titles.Load();
             Titles = db.Titles.Local.ToList();
             NotifyPropertyChanged("Titles");
-            GenderList = new List<Genders>(){ Genders.Male, Genders.Female, Genders.Not_Known };
+            GenderList = new List<Genders>() { Genders.Male, Genders.Female, Genders.Not_Known };
             db.Cohorts.Load();
             CohortList = db.Cohorts.Local.OrderBy(c => c.Number).ToList();
             NotifyPropertyChanged("CohortList");
@@ -147,10 +140,19 @@ namespace WPFParisTraining.ViewModels
             db.Courses.Load();
             Courses = db.Courses.Local.OrderBy(c => c.CourseName);
             NotifyPropertyChanged("Courses");
+        }
 
+        protected override void LoadInitalData()
+        {
+            db.Staffs.Take(50).Load();
+            StaffList = db.Staffs.Local.ToList();
+            SelectedStaff = StaffList.First();
 
             ResetSearch(null);
+        }
 
+        protected override void AssignCommands()
+        {
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
             AddTeamApprovCommand = new DelegateCommand<object>(AddTeamApprov);

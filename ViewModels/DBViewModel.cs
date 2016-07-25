@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels
@@ -14,6 +15,24 @@ namespace WPFParisTraining.ViewModels
         protected bool _addMode;
 
         public bool Changed { get { return db.ChangeTracker.HasChanges(); } }
+
+        public ICommand SaveCommand { get; protected set; }
+        public ICommand AddCommand { get; protected set; }
+        public ICommand RemoveCommand { get; protected set; }
+
+        public DBViewModel()
+        {
+            //set db context
+            db = new StaffEntities();
+
+            LoadRefData();
+            LoadInitalData();
+            AssignCommands();
+        }
+
+        protected abstract void LoadRefData();
+        protected abstract void LoadInitalData();
+        protected abstract void AssignCommands();
 
         async protected void SaveDataChanges(object parameter)
         {

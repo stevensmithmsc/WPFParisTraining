@@ -41,16 +41,9 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
-        public ICommand AddCommand { get; private set; }
-        public ICommand RemoveCommand { get; private set; }
 
-        public CourseViewModel()
+        protected override void LoadRefData()
         {
-            db = new StaffEntities();
-            db.Courses.Where(c => c.External == false && c.Obselete == false).OrderBy(c => c.CourseName).Load();
-            CourseList = db.Courses.Local.ToList();
-            SelectedCourse = CourseList.First();
             db.Staffs.Where(s => s.Trainer == true).Load();
             Trainers = db.Staffs.Local.Where(s => s.Trainer == true && s.External == false).OrderBy(s => s.Sname).ToList();
             NotifyPropertyChanged("Trainers");
@@ -60,9 +53,19 @@ namespace WPFParisTraining.ViewModels
             db.Statuses.Where(s => s.Requirement).Load();
             RequirementStatuses = db.Statuses.Local.ToList();
             NotifyPropertyChanged("RequirementStatuses");
+        }
+
+        protected override void LoadInitalData()
+        {
+            db.Courses.Where(c => c.External == false && c.Obselete == false).OrderBy(c => c.CourseName).Load();
+            CourseList = db.Courses.Local.ToList();
+            SelectedCourse = CourseList.First();
 
             ResetSearch(null);
+        }
 
+        protected override void AssignCommands()
+        {
             SearchCommand = new DelegateCommand<object>(Search);
             ResetCommand = new DelegateCommand<object>(ResetSearch);
             AddCommand = new DelegateCommand<object>(AddCourse);

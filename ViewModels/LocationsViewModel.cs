@@ -19,22 +19,6 @@ namespace WPFParisTraining.ViewModels
         private Location _selectedLocation;
         public Location SelectedLocation { get { return _selectedLocation; } set { _selectedLocation = value; NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
-        public ICommand AddCommand { get; private set; }
-        public ICommand RemoveCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
-
-        public LocationsViewModel()
-        {
-            db = new StaffEntities();
-            db.Locations.OrderBy(l => l.LocationName).Load();
-            LocationList = db.Locations.Local;
-            SelectedLocation = LocationList.FirstOrDefault();
-
-            AddCommand = new DelegateCommand<object>(AddLocation);
-            RemoveCommand = new DelegateCommand<object>(RemoveLocation);
-            SaveCommand = new DelegateCommand<object>(SaveDataChanges);
-        }
-
         private void AddLocation(object parameter)
         {
             Location newLoc = new Location();
@@ -49,6 +33,25 @@ namespace WPFParisTraining.ViewModels
                 LocationList.Remove(SelectedLocation);
                 SelectedLocation = LocationList.FirstOrDefault();
             }
+        }
+
+        protected override void LoadRefData()
+        {
+            
+        }
+
+        protected override void LoadInitalData()
+        {
+            db.Locations.OrderBy(l => l.LocationName).Load();
+            LocationList = db.Locations.Local;
+            SelectedLocation = LocationList.FirstOrDefault();
+        }
+
+        protected override void AssignCommands()
+        {
+            AddCommand = new DelegateCommand<object>(AddLocation);
+            RemoveCommand = new DelegateCommand<object>(RemoveLocation);
+            SaveCommand = new DelegateCommand<object>(SaveDataChanges);
         }
     }
 }
