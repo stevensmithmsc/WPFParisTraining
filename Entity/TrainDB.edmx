@@ -735,6 +735,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Parameter Name="notrain" Type="bit" Mode="In" />
           <Parameter Name="hasMembers" Type="bit" Mode="In" />
         </Function>
+        <Function Name="user_details" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train" />
         <EntityContainer Name="StaffModelStoreContainer">
           <EntitySet Name="Cohorts" EntityType="Self.Cohorts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cost_Centres" EntityType="Self.Cost_Centres" Schema="dbo" store:Type="Tables" />
@@ -1394,6 +1395,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
             <Parameter Name="notrain" Mode="In" Type="Boolean" />
             <Parameter Name="hasMembers" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <FunctionImport Name="user_details" ReturnType="Collection(StaffModel.user_details_Result)" />
         </EntityContainer>
         <EnumType Name="Genders" UnderlyingType="Byte">
           <Member Name="Male" Value="1" />
@@ -1820,6 +1822,17 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <Property Type="Boolean" Name="NoTrain" Nullable="true" />
           <Property Type="Boolean" Name="Dont_Migrate" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="user_details_Result">
+          <Property Type="String" Name="System_User_Name" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Current_User_Name" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="SysAdm" Nullable="true" />
+          <Property Type="Int32" Name="dbowner" Nullable="true" />
+          <Property Type="Int32" Name="TrainAdm" Nullable="true" />
+          <Property Type="Int32" Name="trainer" Nullable="true" />
+          <Property Type="Int32" Name="ra" Nullable="true" />
+          <Property Type="Int32" Name="cm" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2090,6 +2103,21 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <FunctionImportMapping FunctionImportName="search_staff" FunctionName="StaffModel.Store.search_staff">
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="search_team" FunctionName="StaffModel.Store.search_team">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="user_details" FunctionName="StaffModel.Store.user_details">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="StaffModel.user_details_Result">
+                <ScalarProperty Name="System_User_Name" ColumnName="System User Name" />
+                <ScalarProperty Name="Current_User_Name" ColumnName="Current_User_Name" />
+                <ScalarProperty Name="SysAdm" ColumnName="SysAdm" />
+                <ScalarProperty Name="dbowner" ColumnName="dbowner" />
+                <ScalarProperty Name="TrainAdm" ColumnName="TrainAdm" />
+                <ScalarProperty Name="trainer" ColumnName="trainer" />
+                <ScalarProperty Name="ra" ColumnName="ra" />
+                <ScalarProperty Name="cm" ColumnName="cm" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </ComplexTypeMapping>
+            </ResultMapping>
           </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>

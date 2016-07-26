@@ -157,6 +157,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TrainDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entity\user_details_Result.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\BooltoFontStyle.cs" />
     <Compile Include="Helpers\BooltoFontWeight.cs" />
     <Compile Include="LocationsPage.xaml.cs">
@@ -168,6 +171,9 @@
     <Compile Include="StaffPage.xaml.cs">
       <DependentUpon>StaffPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TeamsPage.xaml.cs">
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
@@ -178,6 +184,7 @@
     <Compile Include="ViewModels\LocationsViewModel.cs" />
     <Compile Include="ViewModels\SessionsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />
+    <Compile Include="ViewModels\StartVM.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="CoursesPage.xaml">
@@ -205,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StaffPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

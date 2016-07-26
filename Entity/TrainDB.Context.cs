@@ -341,5 +341,10 @@ namespace WPFParisTraining.Entity
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Team>("search_team", mergeOption, nameParameter, mhcParameter, boroughParameter, serviceParameter, leaderParameter, cohortParameter, notrainParameter, hasMembersParameter);
         }
+    
+        public virtual ObjectResult<user_details_Result> user_details()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<user_details_Result>("user_details");
+        }
     }
 }

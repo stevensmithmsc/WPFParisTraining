@@ -39,7 +39,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Frame Name="MainFrame" Grid.Column="1" Source="StaffPage.xaml"/>
+        <Frame Name="MainFrame" Grid.Column="1" Source="StartPage.xaml"/>
         <StatusBar Grid.Row="1" Grid.ColumnSpan="2" Height="20" />
     </Grid>
 </Window>
