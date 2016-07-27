@@ -72,17 +72,37 @@
         <ScrollViewer Grid.Row="2">
             <Border BorderThickness="5">
                 <StackPanel>
-                    <Expander Header="PreReqs" >
-                        <ListBox ItemsSource="{Binding SelectedCourse.PreReqs}" MinHeight="30">
+                    <Expander >
+                        <Expander.Header>
+                            <DockPanel>
+                                <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddPreReqCommand, Mode=OneWay}" />
+                                <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemovePreReqCommand, Mode=OneWay}" />
+                                <TextBlock Text="PreReqs" DockPanel.Dock="Left" MinWidth="1200"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <ListBox ItemsSource="{Binding PreReqs}" SelectedItem="{Binding SelectedPreReq}" MinHeight="30">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding PreReq.CourseName}" />
+                                    <ComboBox ItemsSource="{Binding DataContext.AllCourses, RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  SelectedItem="{Binding PreReq}" MinWidth="300">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding CourseName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Expander>
-                    <Expander Header="Sessions">
-                        <DataGrid ItemsSource="{Binding SessionList}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                    <Expander>
+                        <Expander.Header>
+                            <DockPanel>
+                                <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddSessCommand, Mode=OneWay}" />
+                                <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveSessCommand, Mode=OneWay}" />
+                                <TextBlock Text="Sessions" DockPanel.Dock="Left" MinWidth="1200"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <DataGrid ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Header="Start" SortMemberPath="Strt">
                                     <DataGridTemplateColumn.CellTemplate>

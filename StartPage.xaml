@@ -29,24 +29,25 @@
                 <TextBlock Text="{Binding CurrentUserName}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Border BorderThickness="2" CornerRadius="10"  BorderBrush="Black" Background="Blue" Visibility="{Binding IsSysAdm, Converter={StaticResource BooltoVis}}" >
+                <TextBlock Text="Roles: " /> 
+                <Border BorderThickness="2" CornerRadius="10"  BorderBrush="Black" Background="Blue" Margin="2" Visibility="{Binding IsSysAdm, Converter={StaticResource BooltoVis}}" >
                     <TextBlock Text="System Admin" Foreground="White" Margin="5"/>
                 </Border>
-                <Border BorderThickness="2" CornerRadius="10"  BorderBrush="Black" Background="Blue" Visibility="{Binding IsDbOwner, Converter={StaticResource BooltoVis}}" >
+                <Border BorderThickness="2" CornerRadius="10"  BorderBrush="Black" Background="Blue" Margin="2" Visibility="{Binding IsDbOwner, Converter={StaticResource BooltoVis}}" >
                     <TextBlock Text="Database Owner" Foreground="White" Margin="5"/>
                 </Border>
-                <Border BorderThickness="2" CornerRadius="10" BorderBrush="Black" Background="Blue" Visibility="{Binding IsTrainAdm, Converter={StaticResource BooltoVis}}" >
+                <Border BorderThickness="2" CornerRadius="10" BorderBrush="Black" Background="Blue" Margin="2"  Visibility="{Binding IsTrainAdm, Converter={StaticResource BooltoVis}}" >
                     <TextBlock Text="Training Admin" Foreground="White" Margin="5"/>
                 </Border>
-                <Border BorderThickness="2" CornerRadius="10" BorderBrush="Black" Background="Blue" Visibility="{Binding IsTrainer, Converter={StaticResource BooltoVis}}">
+                <Border BorderThickness="2" CornerRadius="10" BorderBrush="Black" Background="Blue" Margin="2"  Visibility="{Binding IsTrainer, Converter={StaticResource BooltoVis}}">
                     <TextBlock Text="Trainer" Foreground="White" Margin="5"/>
                 </Border>
-                <Border BorderThickness="2" CornerRadius="10" BorderBrush="Black" Background="Blue" Visibility="{Binding IsRA, Converter={StaticResource BooltoVis}}" >
+                <Border BorderThickness="2" CornerRadius="10" BorderBrush="Black" Background="Blue" Margin="2"  Visibility="{Binding IsRA, Converter={StaticResource BooltoVis}}" >
                     <TextBlock Text="RA" Foreground="White" Margin="5"/>
                 </Border>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Current User Name: " FontWeight="Bold" />
+                <TextBlock Text="Name: " FontWeight="Bold" />
                 <TextBlock Text="{Binding UserStaffRecord.FullName}" />
             </StackPanel>
         </StackPanel>

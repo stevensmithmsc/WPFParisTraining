@@ -74,7 +74,7 @@
                 <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}"  />
             </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Team Name" Binding="{Binding TeamName}"/>
                 <DataGridTextColumn Header="Cost Code" Binding="{Binding Cost_Centres.CCName}" IsReadOnly="True" />
@@ -152,7 +152,7 @@
                 </Grid>
             </Border>
         </ScrollViewer>
-        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Membership}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Membership}" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Staff Member" Binding="{Binding Staff.SimpleName}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Job Title" Binding="{Binding Staff.JobTitle}" IsReadOnly="True" />

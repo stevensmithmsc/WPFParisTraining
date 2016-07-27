@@ -19,8 +19,17 @@ namespace WPFParisTraining.ViewModels
         private Course _selectedCourse;
         public Course SelectedCourse { get { return _selectedCourse; } set { _selectedCourse = value; NotifyPropertyChanged(); UpdateLinked(); } }
 
+        private IEnumerable<CourseReq> _preReqs;
+        public IEnumerable<CourseReq> PreReqs { get { return _preReqs; } set { _preReqs = value;  NotifyPropertyChanged(); } }
+
+        private CourseReq _selectedPreReq;
+        public CourseReq SelectedPreReq { get { return _selectedPreReq; } set { _selectedPreReq = value;  NotifyPropertyChanged(); } }
+
         private IEnumerable<Sess> _sessionList;
         public IEnumerable<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
+
+        private Sess _selectedSession;
+        public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value;  NotifyPropertyChanged(); } }
 
         private IEnumerable<Req> _staffList;
         public IEnumerable<Req> StaffList { get { return _staffList; } set { _staffList = value; NotifyPropertyChanged(); } }
@@ -28,6 +37,7 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Staff> Trainers { get; private set; }
         public IEnumerable<Location> Locations { get; private set; }
         public IEnumerable<Status> RequirementStatuses { get; private set; }
+        public IEnumerable<Course> AllCourses { get; private set; }
 
         //Search Fields
         private string _searchName;
@@ -41,6 +51,10 @@ namespace WPFParisTraining.ViewModels
 
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
+        public ICommand AddPreReqCommand { get; private set; }
+        public ICommand RemovePreReqCommand { get; private set; }
+        public ICommand AddSessCommand { get; private set; }
+        public ICommand RemoveSessCommand { get; private set; }
 
         protected override void LoadRefData()
         {
@@ -53,12 +67,15 @@ namespace WPFParisTraining.ViewModels
             db.Statuses.Where(s => s.Requirement).Load();
             RequirementStatuses = db.Statuses.Local.ToList();
             NotifyPropertyChanged("RequirementStatuses");
+            db.Courses.Load();
+            AllCourses = db.Courses.OrderBy(c => c.CourseName).ToList();
+            NotifyPropertyChanged("AllCourses");
         }
 
         protected override void LoadInitalData()
         {
             db.Courses.Where(c => c.External == false && c.Obselete == false).OrderBy(c => c.CourseName).Load();
-            CourseList = db.Courses.Local.ToList();
+            CourseList = db.Courses.Local.Where(c => c.External == false && c.Obselete == false).OrderBy(c => c.CourseName).ToList();
             SelectedCourse = CourseList.First();
 
             ResetSearch(null);
@@ -70,12 +87,18 @@ namespace WPFParisTraining.ViewModels
             ResetCommand = new DelegateCommand<object>(ResetSearch);
             AddCommand = new DelegateCommand<object>(AddCourse);
             RemoveCommand = new DelegateCommand<object>(RemoveCourse);
+            AddPreReqCommand = new DelegateCommand<object>(AddPreReq);
+            RemovePreReqCommand = new DelegateCommand<object>(RemovePreReq);
+            AddSessCommand = new DelegateCommand<object>(AddSession);
+            RemoveSessCommand = new DelegateCommand<object>(RemoveSession);
         }
 
         private void UpdateLinked()
         {
             if (SelectedCourse != null)
             {
+                db.CourseReqs.Where(r => r.CourseID == SelectedCourse.ID).Load();
+                PreReqs = db.CourseReqs.Local.Where(p => p.CourseID == SelectedCourse.ID).OrderBy(p => p.PreReq.CourseName).ToList();
                 db.Sesses.Where(s => s.CourseID == SelectedCourse.ID).Load();
                 SessionList = db.Sesses.Local.Where(s => s.CourseID == SelectedCourse.ID).OrderBy(s => s.Strt).ToList();
                 db.Reqs.Where(r => r.CourseID == SelectedCourse.ID && (r.StatusID == 1 || r.StatusID == 2)).Include("Staff").Load();
@@ -123,6 +146,48 @@ namespace WPFParisTraining.ViewModels
                 //SaveDataChanges(null);
                 CourseList = db.Courses.Local.Where(c => idlist.Contains(c.ID)).OrderBy(c => c.CourseName).ToList();
                 SelectedCourse = CourseList.FirstOrDefault();
+            }
+        }
+
+        private void AddPreReq(object parameter)
+        {
+            CourseReq newreq = new CourseReq();
+            newreq.CourseID = SelectedCourse.ID;
+            db.CourseReqs.Add(newreq);
+            PreReqs = db.CourseReqs.Local.Where(p => p.CourseID == SelectedCourse.ID).ToList();
+            SelectedPreReq = newreq;
+            NotifyPropertyChanged("Changed");
+        }
+
+        private void RemovePreReq(object parameter)
+        {
+            if (SelectedPreReq != null && MessageBox.Show("Are you sure you want to remove requirement for " + SelectedPreReq.PreReq.CourseName + " to be completed before " + SelectedPreReq.Course.CourseName + "?", "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                db.CourseReqs.Remove(SelectedPreReq);
+                SelectedPreReq = null;
+                PreReqs = db.CourseReqs.Local.Where(p => p.CourseID == SelectedCourse.ID).ToList();
+                NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void AddSession(object parameter)
+        {
+            Sess newsess = new Sess();
+            newsess.CourseID = SelectedCourse.ID;
+            db.Sesses.Add(newsess);
+            SessionList = db.Sesses.Local.Where(s => s.CourseID == SelectedCourse.ID).OrderBy(s => s.Strt).ToList();
+            SelectedSession = newsess;
+            NotifyPropertyChanged("Changed");
+        }
+
+        private void RemoveSession(object parameter)
+        {
+            if (SelectedSession != null && MessageBox.Show("Are you sure you want to remove session on " + ((SelectedSession.Strt == null) ? "" : ((DateTime)SelectedSession.Strt).ToShortDateString()) + "?", "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                db.Sesses.Remove(SelectedSession);
+                SelectedSession = null;
+                SessionList = db.Sesses.Local.Where(s => s.CourseID == SelectedCourse.ID).OrderBy(s => s.Strt).ToList();
+                NotifyPropertyChanged();
             }
         }
     }
