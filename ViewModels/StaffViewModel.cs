@@ -163,6 +163,7 @@ namespace WPFParisTraining.ViewModels
             RemoveTeamCommand = new DelegateCommand<object>(RemoveTeamMembership);
             AddCommand = new DelegateCommand<object>(AddStaff);
             RemoveCommand = new DelegateCommand<object>(RemoveStaff);
+            SaveCommand = new DelegateCommand<object>(SaveStaffChanges);
         }
 
         private void UpdateLinkedStuff()
@@ -373,6 +374,12 @@ namespace WPFParisTraining.ViewModels
                 StaffList = db.Staffs.Local.Where(s => idlist.Contains(s.ID)).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
                 SelectedStaff = StaffList.FirstOrDefault();
             }                
+        }
+
+        private void SaveStaffChanges(object Parameter)
+        {
+            CheckLinkedEntities();
+            SaveDataChanges(Parameter);
         }
     }
 }

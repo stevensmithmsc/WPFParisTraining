@@ -116,6 +116,7 @@
           <Property Name="Creator" Type="int" />
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
+          <Property Name="Child_Health" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Locations">
           <Key>
@@ -155,6 +156,9 @@
           <Property Name="Creator" Type="int" />
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
+          <Property Name="Fully_Compliant" Type="datetime" />
+          <Property Name="CH_Go_Live_Aprv" Type="datetime" />
+          <Property Name="CH_GLA_Locked" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Req">
           <Key>
@@ -296,7 +300,7 @@
           <Property Name="Modifier" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Staff_List">
           
           <Key>
@@ -698,6 +702,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
         <Function Name="search_course" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train">
           <Parameter Name="name" Type="varchar" Mode="In" />
           <Parameter Name="paris" Type="bit" Mode="In" />
+          <Parameter Name="ch" Type="bit" Mode="In" />
           <Parameter Name="ext" Type="bit" Mode="In" />
           <Parameter Name="obs" Type="bit" Mode="In" />
         </Function>
@@ -960,6 +965,9 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <NavigationProperty Name="Status_ESR_Up" Relationship="StaffModel.FK_RA_ESR_Updated" FromRole="RA" ToRole="Status" />
           <NavigationProperty Name="Status_PDS_Role" Relationship="StaffModel.FK_RA_PDS_Role" FromRole="RA" ToRole="Status" />
           <NavigationProperty Name="Status_Plus_Up" Relationship="StaffModel.FK_RA_PLUS_Updated" FromRole="RA" ToRole="Status" />
+          <Property Name="Fully_Compliant" Type="DateTime" Precision="3" />
+          <Property Name="CH_Go_Live_Aprv" Type="DateTime" Precision="3" />
+          <Property Name="CH_GLA_Locked" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -1358,6 +1366,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <FunctionImport Name="search_course" EntitySet="Courses" ReturnType="Collection(StaffModel.Course)">
             <Parameter Name="name" Mode="In" Type="String" />
             <Parameter Name="paris" Mode="In" Type="Boolean" />
+            <Parameter Name="ch" Mode="In" Type="Boolean" />
             <Parameter Name="ext" Mode="In" Type="Boolean" />
             <Parameter Name="obs" Mode="In" Type="Boolean" />
           </FunctionImport>
@@ -1576,6 +1585,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <NavigationProperty Name="PreReqs" Relationship="StaffModel.FK_CourseReq_Courses" FromRole="Cours" ToRole="CourseReq" />
           <NavigationProperty Name="StaffReqs" Relationship="StaffModel.FK_Req_Courses" FromRole="Cours" ToRole="Req" />
           <NavigationProperty Name="Sesses" Relationship="StaffModel.FK_Sess_Courses" FromRole="Cours" ToRole="Sess" />
+          <Property Name="Child_Health" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Req">
           <Key>
@@ -1867,6 +1877,9 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <EntitySetMapping Name="RAs">
             <EntityTypeMapping TypeName="StaffModel.RA">
               <MappingFragment StoreEntitySet="RA">
+                <ScalarProperty Name="CH_GLA_Locked" ColumnName="CH_GLA_Locked" />
+                <ScalarProperty Name="CH_Go_Live_Aprv" ColumnName="CH_Go_Live_Aprv" />
+                <ScalarProperty Name="Fully_Compliant" ColumnName="Fully_Compliant" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UUID" ColumnName="UUID" />
                 <ScalarProperty Name="PDS_Role" ColumnName="PDS_Role" />
@@ -2057,6 +2070,7 @@ warning 6002: The table/view 'Staff.ESR.Staff_List' does not have a primary key 
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="StaffModel.Course">
               <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="Child_Health" ColumnName="Child_Health" />
                 <ScalarProperty Name="Obselete" ColumnName="Obselete" />
                 <ScalarProperty Name="EmptyColour" ColumnName="EmptyColour" />
                 <ScalarProperty Name="BookedColour" ColumnName="BookedColour" />

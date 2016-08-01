@@ -42,10 +42,12 @@ namespace WPFParisTraining.ViewModels
         //Search Fields
         private string _searchName;
         private bool? _searchParis;
+        private bool? _searchCH;
         private bool? _searchExternal;
         private bool? _searchObselete;
         public string SearchName { get { return _searchName; } set { _searchName = value; NotifyPropertyChanged(); } }
         public bool? SearchParis { get { return _searchParis; } set { _searchParis = value; NotifyPropertyChanged(); } }
+        public bool? SearchChildHealth { get { return _searchCH; } set { _searchCH = value; NotifyPropertyChanged(); } }
         public bool? SearchExternal { get { return _searchExternal; } set { _searchExternal = value;  NotifyPropertyChanged(); } }
         public bool? SearchObselete { get { return _searchObselete; } set { _searchObselete = value;  NotifyPropertyChanged(); } }
 
@@ -109,7 +111,7 @@ namespace WPFParisTraining.ViewModels
 
         private void Search(object parameter)
         {
-            CourseList = db.search_course(SearchName, SearchParis, SearchExternal, SearchObselete).OrderBy(c => c.CourseName).ToList();
+            CourseList = db.search_course(SearchName, SearchParis, SearchChildHealth, SearchExternal, SearchObselete).OrderBy(c => c.CourseName).ToList();
             SelectedCourse = CourseList.First();
         }
 
@@ -117,6 +119,7 @@ namespace WPFParisTraining.ViewModels
         {
             SearchName = null;
             SearchParis = null;
+            SearchChildHealth = null;
             SearchExternal = false;
             SearchObselete = false;
         }

@@ -30,6 +30,9 @@ namespace WPFParisTraining.Entity
         public Nullable<System.DateTime> Password_Emailed { get; set; }
         public Nullable<System.DateTime> Access_to_Plus { get; set; }
         public Nullable<System.DateTime> UUID_Add_ESR { get; set; }
+        public Nullable<System.DateTime> Fully_Compliant { get; set; }
+        public Nullable<System.DateTime> CH_Go_Live_Aprv { get; set; }
+        public bool CH_GLA_Locked { get; set; }
     
         public virtual Staff Staff { get; set; }
         public virtual Status Status_ESR_Up { get; set; }

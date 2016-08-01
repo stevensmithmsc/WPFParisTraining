@@ -46,7 +46,7 @@ namespace WPFParisTraining.Entity
         public virtual DbSet<Req> Reqs { get; set; }
         public virtual DbSet<Sess> Sesses { get; set; }
     
-        public virtual ObjectResult<Course> search_course(string name, Nullable<bool> paris, Nullable<bool> ext, Nullable<bool> obs)
+        public virtual ObjectResult<Course> search_course(string name, Nullable<bool> paris, Nullable<bool> ch, Nullable<bool> ext, Nullable<bool> obs)
         {
             var nameParameter = name != null ?
                 new ObjectParameter("name", name) :
@@ -56,6 +56,10 @@ namespace WPFParisTraining.Entity
                 new ObjectParameter("paris", paris) :
                 new ObjectParameter("paris", typeof(bool));
     
+            var chParameter = ch.HasValue ?
+                new ObjectParameter("ch", ch) :
+                new ObjectParameter("ch", typeof(bool));
+    
             var extParameter = ext.HasValue ?
                 new ObjectParameter("ext", ext) :
                 new ObjectParameter("ext", typeof(bool));
@@ -64,10 +68,10 @@ namespace WPFParisTraining.Entity
                 new ObjectParameter("obs", obs) :
                 new ObjectParameter("obs", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Course>("search_course", nameParameter, parisParameter, extParameter, obsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Course>("search_course", nameParameter, parisParameter, chParameter, extParameter, obsParameter);
         }
     
-        public virtual ObjectResult<Course> search_course(string name, Nullable<bool> paris, Nullable<bool> ext, Nullable<bool> obs, MergeOption mergeOption)
+        public virtual ObjectResult<Course> search_course(string name, Nullable<bool> paris, Nullable<bool> ch, Nullable<bool> ext, Nullable<bool> obs, MergeOption mergeOption)
         {
             var nameParameter = name != null ?
                 new ObjectParameter("name", name) :
@@ -77,6 +81,10 @@ namespace WPFParisTraining.Entity
                 new ObjectParameter("paris", paris) :
                 new ObjectParameter("paris", typeof(bool));
     
+            var chParameter = ch.HasValue ?
+                new ObjectParameter("ch", ch) :
+                new ObjectParameter("ch", typeof(bool));
+    
             var extParameter = ext.HasValue ?
                 new ObjectParameter("ext", ext) :
                 new ObjectParameter("ext", typeof(bool));
@@ -85,7 +93,7 @@ namespace WPFParisTraining.Entity
                 new ObjectParameter("obs", obs) :
                 new ObjectParameter("obs", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Course>("search_course", mergeOption, nameParameter, parisParameter, extParameter, obsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Course>("search_course", mergeOption, nameParameter, parisParameter, chParameter, extParameter, obsParameter);
         }
     
         public virtual ObjectResult<Sess> search_session(Nullable<int> course, Nullable<int> trainer, Nullable<int> location, Nullable<System.DateTime> from, Nullable<System.DateTime> to, Nullable<bool> ext, Nullable<bool> obs, Nullable<bool> paris, Nullable<bool> avail)

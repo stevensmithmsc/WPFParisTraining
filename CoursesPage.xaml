@@ -39,13 +39,14 @@
                     <TextBox Text="{Binding SearchName}"  MinWidth="200" Margin="0,0,10,0"/>
                 </StackPanel>
                 <CheckBox IsChecked="{Binding SearchParis}" Content="Paris" Margin="0,0,10,0" IsThreeState="True" />
+                <CheckBox IsChecked="{Binding SearchChildHealth}" Content="Child Health" Margin="0,0,10,0" IsThreeState="True" />
                 <CheckBox IsChecked="{Binding SearchExternal}" Content="External" Margin="0,0,10,0" IsThreeState="True" />
                 <CheckBox IsChecked="{Binding SearchObselete}" Content="Obselete" Margin="0,0,10,0" IsThreeState="True" />
                 <Button Content="Go !" Command="{Binding SearchCommand, Mode=OneWay}" />
                 <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
             </WrapPanel>
         </Expander>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding CourseList}" SelectedItem="{Binding SelectedCourse}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding CourseList}" SelectedItem="{Binding SelectedCourse}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Course" Binding="{Binding CourseName}" />
                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" />
@@ -54,6 +55,7 @@
                 <DataGridTextColumn Header="Booked" Binding="{Binding PlacesBooked}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Completed" Binding="{Binding NumberCompleted}" IsReadOnly="True" />
                 <DataGridCheckBoxColumn Header="Paris" Binding="{Binding Paris}" />
+                <DataGridCheckBoxColumn Header="Child Health" Binding="{Binding Child_Health}" />
                 <DataGridCheckBoxColumn Header="External" Binding="{Binding External}" />
                 <DataGridCheckBoxColumn Header="Obselete" Binding="{Binding Obselete}" />
             </DataGrid.Columns>
