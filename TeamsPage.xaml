@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
       xmlns:local="clr-namespace:WPFParisTraining"
       xmlns:vm="clr-namespace:WPFParisTraining.ViewModels"
       xmlns:Helpers="clr-namespace:WPFParisTraining.Helpers" x:Class="WPFParisTraining.TeamsPage"
@@ -31,9 +32,16 @@
         <Expander Grid.ColumnSpan="2">
             <Expander.Header>
                 <DockPanel>
-                    <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" />
-                    <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" />
-                    <Button Content="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" />
+                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" >
+                        <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
+                    </Button>
+                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" >
+                        <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
+                    </Button>
+                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" >
+                        <fa:FontAwesome Icon="Save" Foreground="Blue" FontSize="16" />
+                    </Button>
+                    <fa:FontAwesome DockPanel.Dock="Left" Icon="Search" FontSize="14" />
                     <TextBlock Text="Search Teams" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
@@ -70,8 +78,18 @@
                 </StackPanel>
                 <CheckBox IsChecked="{Binding SearchNoTrain}" Content="No Training Required" Margin="0,0,10,0" IsThreeState="True" />
                 <CheckBox IsChecked="{Binding SearchHasMem}" Content="Has Members?" Margin="0,0,10,0" IsThreeState="True" />
-                <Button Content="Go !" Command="{Binding SearchCommand, Mode=OneWay}"  />
-                <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}"  />
+                <Button ToolTip="Initiate Search" Command="{Binding SearchCommand, Mode=OneWay}"  >
+                    <StackPanel>
+                        <fa:FontAwesome Icon="Search" FontSize="16" />
+                        <TextBlock Text="Go !" />
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Reset Search Criteria" Command="{Binding ResetCommand, Mode=OneWay}"  >
+                    <StackPanel>
+                        <fa:FontAwesome Icon="Undo" FontSize="16" />
+                        <TextBlock Text="Reset" />
+                    </StackPanel>
+                </Button>
             </WrapPanel>
         </Expander>
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">

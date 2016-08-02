@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:WPFParisTraining"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000">
+        Title="Pennine Care IT Training Database" Height="700" Width="1000" Background="White" Foreground="Black">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -18,24 +19,34 @@
         <Border BorderThickness="5">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="StaffButton" Content="S" Click="Button_Click" />
-                    <TextBlock Text="Staff"/>
+                    <Button Name="StaffButton" Click="Button_Click" >
+                        <fa:ImageAwesome Icon="User" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Staff" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="TeamsButton" Content="T" Click="TeamsButton_Click"  />
-                    <TextBlock Text="Teams"/>
+                    <Button Name="TeamsButton" Click="TeamsButton_Click"  >
+                        <fa:ImageAwesome Icon="Users" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Teams" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="SessionsButton" Content="E" Click="SessionsButton_Click"   />
-                    <TextBlock Text="Sessions"/>
+                    <Button Name="SessionsButton" Click="SessionsButton_Click"   >
+                        <fa:ImageAwesome Icon="Calendar" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Sessions" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="CoursesButton" Content="C" Click="CoursesButton_Click"   />
-                    <TextBlock Text="Courses"/>
+                    <Button Name="CoursesButton" Click="CoursesButton_Click"  >
+                        <fa:ImageAwesome Icon="Book" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Courses" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="LocationsButton" Content="L" Click="LocationsButton_Click"   />
-                    <TextBlock Text="Locations"/>
+                    <Button Name="LocationsButton" Click="LocationsButton_Click" >
+                        <fa:ImageAwesome Icon="Building" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Locations" VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
         </Border>

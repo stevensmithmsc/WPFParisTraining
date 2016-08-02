@@ -3,12 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
       xmlns:local="clr-namespace:WPFParisTraining"
       xmlns:vm="clr-namespace:WPFParisTraining.ViewModels"
       xmlns:h="clr-namespace:WPFParisTraining.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="Staff">
+      Title="Staff" >
 
     <Page.DataContext>
         <vm:StaffViewModel />
@@ -32,10 +33,17 @@
         <Expander>
             <Expander.Header>
                 <DockPanel>
-                    <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" />
-                    <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" />
-                    <Button Content="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" />
-                    <TextBlock Text="Search Staff" DockPanel.Dock="Left" MinWidth="1200"/>
+                    <Button DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" ToolTip="Add New Staff Member" >
+                        <fa:FontAwesome Icon="UserPlus" Foreground="Green" FontSize="16" />
+                    </Button>
+                    <Button DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" ToolTip="Remove Staff Member" >
+                        <fa:FontAwesome Icon="UserTimes" Foreground="Red" FontSize="16" />
+                    </Button>
+                    <Button DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" ToolTip="Save Changes">
+                        <fa:FontAwesome Icon="Save" Foreground="Blue" FontSize="16" />
+                    </Button>
+                    <fa:FontAwesome DockPanel.Dock="Left" Icon="Search" FontSize="14" />
+                    <TextBlock Text=" Search Staff" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
             <WrapPanel>
@@ -95,8 +103,18 @@
                 </StackPanel>
                 <CheckBox IsChecked="{Binding LeftTrustSearch}" Content="Left Trust" Margin="0,0,10,0" IsThreeState="True" />
                 <CheckBox IsChecked="{Binding ExternalSearch}" Content="External" Margin="0,0,10,0" IsThreeState="True" />
-                <Button Content="Go !" Command="{Binding SearchCommand, Mode=OneWay}" />
-                <Button Content="Reset" Command="{Binding ResetCommand, Mode=OneWay}" />
+                <Button Command="{Binding SearchCommand, Mode=OneWay}" >
+                    <StackPanel>
+                        <fa:FontAwesome Icon="Search" FontSize="16" />
+                        <TextBlock Text="Go !" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding ResetCommand, Mode=OneWay}" >
+                    <StackPanel>
+                        <fa:FontAwesome Icon="Undo" FontSize="16" />
+                        <TextBlock Text="Reset" />
+                    </StackPanel>
+                </Button>
             </WrapPanel>
         </Expander>
         <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
@@ -213,8 +231,12 @@
                             <Border BorderThickness="5" Grid.Column="1">
                                 <StackPanel>
                                     <DockPanel>
-                                        <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddTeamCommand, Mode=OneWay}" />
-                                        <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" />
+                                        <Button DockPanel.Dock="Right" Command="{Binding AddTeamCommand, Mode=OneWay}" >
+                                            <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="14" />
+                                        </Button>
+                                        <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" >
+                                            <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
+                                        </Button>
                                         <TextBlock Text="Teams" />
                                     </DockPanel>
                                     <DataGrid MinHeight="75" ItemsSource="{Binding TeamMemberships}" SelectedItem="{Binding SelectedTeam}" HeadersVisibility="None" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
@@ -404,8 +426,12 @@
                     <Expander>
                         <Expander.Header>
                             <DockPanel>
-                                <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddTeamApprovCommand, Mode=OneWay}" />
-                                <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveTeamApprovCommand, Mode=OneWay}" />
+                                <Button DockPanel.Dock="Right" Command="{Binding AddTeamApprovCommand, Mode=OneWay}" >
+                                    <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
+                                </Button>
+                                <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamApprovCommand, Mode=OneWay}">
+                                    <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
+                                </Button>
                                 <TextBlock Text="Team Approvals" DockPanel.Dock="Left" MinWidth="1200"/>
                             </DockPanel>
                         </Expander.Header>
@@ -452,8 +478,12 @@
                     <Expander>
                         <Expander.Header>
                             <DockPanel>
-                                <Button Content="Add" DockPanel.Dock="Right" Command="{Binding AddReqCommand, Mode=OneWay}" />
-                                <Button Content="Remove" DockPanel.Dock="Right" Command="{Binding RemoveReqCommand, Mode=OneWay}" />
+                                <Button DockPanel.Dock="Right" Command="{Binding AddReqCommand, Mode=OneWay}" >
+                                    <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
+                                </Button>
+                                <Button DockPanel.Dock="Right" Command="{Binding RemoveReqCommand, Mode=OneWay}" >
+                                    <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
+                                </Button>
                                 <TextBlock Text="Requirements" DockPanel.Dock="Left" MinWidth="1200"/>
                             </DockPanel>
                         </Expander.Header>
