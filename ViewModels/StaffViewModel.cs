@@ -100,6 +100,51 @@ namespace WPFParisTraining.ViewModels
         public ICommand AddTeamCommand { get; private set; }
         public ICommand RemoveTeamCommand { get; private set; }
 
+        //Control Display Settings
+        private Visibility _addStaffButtonVis;
+        private Visibility _removeStaffButtonVis;
+        private Visibility _addTeamButtonVis;
+        private Visibility _removeTeamButtonVis;
+        private Visibility _addTeamApprovButtonVis;
+        private Visibility _removeTeamApprovButtonVis;
+        private Visibility _addReqButtonVis;
+        private Visibility _removeReqButtonVis;
+        private bool _staffDemExpanded;
+        private bool _esrExpanded;
+        private Visibility _esrVis;
+        private bool _tnaExpanded;
+        private Visibility _tnaVis;
+        private bool _raExpanded;
+        private Visibility _raVis;
+        private bool _teamApprovExpanded;
+        private Visibility _teamApprovVis;
+        private bool _reqExpanded;
+        private Visibility _reqVis;
+        private bool _attendExpanded;
+        private Visibility _attendVis;
+
+        public Visibility AddStaffButtonVis { get { return _addStaffButtonVis; } set { if (value != _addStaffButtonVis) { _addStaffButtonVis = value;  NotifyPropertyChanged(); } } }
+        public Visibility RemoveStaffButtonVis { get { return _removeStaffButtonVis; } set { if (value != _removeStaffButtonVis) { _removeStaffButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility AddTeamButtonVis { get { return _addTeamButtonVis; } set { if (value != _addTeamButtonVis) { _addTeamButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveTeamButtonVis { get { return _removeTeamButtonVis; } set { if (value != _removeTeamButtonVis) { _removeTeamButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility AddTeamApprovButtonVis { get { return _addTeamApprovButtonVis; } set { if (value != _addTeamApprovButtonVis) { _addTeamApprovButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveTeamApprovButtonVis { get { return _removeTeamApprovButtonVis; } set { if (value != _removeTeamApprovButtonVis) { _removeTeamApprovButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility AddReqButtonVis { get { return _addReqButtonVis; } set { if (value != _addReqButtonVis) { _addReqButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveReqButtonVis { get { return _removeReqButtonVis; } set { if (value != _removeReqButtonVis) { _removeReqButtonVis = value; NotifyPropertyChanged(); } } }
+        public bool StaffDemExpanded { get { return _staffDemExpanded; } set { if (value != _staffDemExpanded) { _staffDemExpanded = value; NotifyPropertyChanged(); } } }
+        public bool ESRExpanded { get { return _esrExpanded; } set { if (value != _esrExpanded) { _esrExpanded = value; NotifyPropertyChanged(); } } }
+        public Visibility ESRVis { get { return _esrVis; } set { if (value != _esrVis) { _esrVis = value; NotifyPropertyChanged(); } } }
+        public bool TNAExpanded { get { return _tnaExpanded; } set { if (value != _tnaExpanded) { _tnaExpanded = value; NotifyPropertyChanged(); } } }
+        public Visibility TNAVis { get { return _tnaVis; } set { if (value != _tnaVis) { _tnaVis = value; NotifyPropertyChanged(); } } }
+        public bool RAExpanded { get { return _raExpanded; } set { if (value != _raExpanded) { _raExpanded = value; NotifyPropertyChanged(); } } }
+        public Visibility RAVis { get { return _raVis; } set { if (value != _raVis) { _raVis = value; NotifyPropertyChanged(); } } }
+        public bool TeamApprovExpanded { get { return _teamApprovExpanded; } set { if (value != _teamApprovExpanded) { _teamApprovExpanded = value; NotifyPropertyChanged(); } } }
+        public Visibility TeamApprovVis { get { return _teamApprovVis; } set { if (value != _teamApprovVis) { _teamApprovVis = value; NotifyPropertyChanged(); } } }
+        public bool ReqExpanded { get { return _reqExpanded; } set { if (value != _reqExpanded) { _reqExpanded = value; NotifyPropertyChanged(); } } }
+        public Visibility ReqVis { get { return _reqVis; } set { if (value != _reqVis) { _reqVis = value; NotifyPropertyChanged(); } } }
+        public bool AttendExpanded { get { return _attendExpanded; } set { if (value != _attendExpanded) { _attendExpanded = value; NotifyPropertyChanged(); } } }
+        public Visibility AttendVis { get { return _attendVis; } set { if (value != _attendVis) { _attendVis = value; NotifyPropertyChanged(); } } }
+
 
         protected override void LoadRefData()
         {
@@ -164,6 +209,31 @@ namespace WPFParisTraining.ViewModels
             AddCommand = new DelegateCommand<object>(AddStaff);
             RemoveCommand = new DelegateCommand<object>(RemoveStaff);
             SaveCommand = new DelegateCommand<object>(SaveStaffChanges);
+        }
+
+        protected override void InitalDisplayState()
+        {
+            AddStaffButtonVis = Visibility.Visible;
+            RemoveStaffButtonVis = Visibility.Visible;
+            AddTeamButtonVis = Visibility.Visible;
+            RemoveTeamButtonVis = Visibility.Visible;
+            AddTeamApprovButtonVis = Visibility.Visible;
+            RemoveTeamApprovButtonVis = Visibility.Visible;
+            AddReqButtonVis = Visibility.Visible;
+            RemoveReqButtonVis = Visibility.Visible;
+            StaffDemExpanded = true;
+            ESRExpanded = false;
+            ESRVis = Visibility.Visible;
+            TNAExpanded = false;
+            TNAVis = Visibility.Visible;
+            RAExpanded = false;
+            RAVis = Visibility.Visible;
+            TeamApprovExpanded = false;
+            TeamApprovVis = Visibility.Visible;
+            ReqExpanded = false;
+            ReqVis = Visibility.Visible;
+            AttendExpanded = false;
+            AttendVis = Visibility.Visible;
         }
 
         private void UpdateLinkedStuff()
@@ -345,7 +415,7 @@ namespace WPFParisTraining.ViewModels
 
         private void AddStaff(object parameter)
         {
-            _addMode = true;
+            BeginAddMode();
             Staff newStaff = new Staff();
             // set defaults
             newStaff.LM = false;
@@ -359,9 +429,7 @@ namespace WPFParisTraining.ViewModels
             //reset staff list to only show new records
             StaffList = db.Staffs.Local.Where(s => s.ID <= 0).ToList();
             SelectedStaff = newStaff;
-            //will need to disable adding teams and other releated records until after record is saved
-            // so will probably move next line as well!
-            _addMode = false;
+            
         }
 
         private void RemoveStaff(object Parameter)
@@ -378,8 +446,33 @@ namespace WPFParisTraining.ViewModels
 
         private void SaveStaffChanges(object Parameter)
         {
-            CheckLinkedEntities();
+            if (!_addMode) CheckLinkedEntities();
             SaveDataChanges(Parameter);
+            if (_addMode)
+            {
+                InitalDisplayState();
+                _addMode = false;
+            }
+        }
+
+        private void BeginAddMode()
+        {
+            _addMode = true;
+            AddStaffButtonVis = Visibility.Hidden;
+            RemoveStaffButtonVis = Visibility.Hidden;
+            AddTeamButtonVis = Visibility.Hidden;
+            RemoveTeamButtonVis = Visibility.Hidden;
+            AddTeamApprovButtonVis = Visibility.Hidden;
+            RemoveTeamApprovButtonVis = Visibility.Hidden;
+            AddReqButtonVis = Visibility.Hidden;
+            RemoveReqButtonVis = Visibility.Hidden;
+            StaffDemExpanded = true;
+            ESRVis = Visibility.Hidden;
+            TNAVis = Visibility.Hidden;
+            RAVis = Visibility.Hidden;
+            TeamApprovVis = Visibility.Hidden;
+            ReqVis = Visibility.Hidden;
+            AttendVis = Visibility.Hidden;
         }
     }
 }

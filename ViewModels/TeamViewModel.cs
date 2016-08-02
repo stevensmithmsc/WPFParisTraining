@@ -75,6 +75,11 @@ namespace WPFParisTraining.ViewModels
             RemoveCommand = new DelegateCommand<object>(RemoveTeam);
         }
 
+        protected override void InitalDisplayState()
+        {
+            throw new NotImplementedException();
+        }
+
         private void UpdateLinkedStuff()
         {
             if (SelectedTeam != null)

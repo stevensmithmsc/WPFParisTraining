@@ -95,6 +95,11 @@ namespace WPFParisTraining.ViewModels
             RemoveSessCommand = new DelegateCommand<object>(RemoveSession);
         }
 
+        protected override void InitalDisplayState()
+        {
+            throw new NotImplementedException();
+        }
+
         private void UpdateLinked()
         {
             if (SelectedCourse != null)

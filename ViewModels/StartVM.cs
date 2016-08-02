@@ -55,5 +55,10 @@ namespace WPFParisTraining.ViewModels
         {
             
         }
+
+        protected override void InitalDisplayState()
+        {
+            
+        }
     }
 }

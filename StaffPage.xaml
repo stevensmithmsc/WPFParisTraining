@@ -33,10 +33,10 @@
         <Expander>
             <Expander.Header>
                 <DockPanel>
-                    <Button DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" ToolTip="Add New Staff Member" >
+                    <Button DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" ToolTip="Add New Staff Member" Visibility="{Binding AddStaffButtonVis}" >
                         <fa:FontAwesome Icon="UserPlus" Foreground="Green" FontSize="16" />
                     </Button>
-                    <Button DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" ToolTip="Remove Staff Member" >
+                    <Button DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" ToolTip="Remove Staff Member" Visibility="{Binding RemoveStaffButtonVis}" >
                         <fa:FontAwesome Icon="UserTimes" Foreground="Red" FontSize="16" />
                     </Button>
                     <Button DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" ToolTip="Save Changes">
@@ -129,7 +129,7 @@
         <ScrollViewer Grid.Row="2">
             <Border BorderThickness="5">
                 <StackPanel>
-                    <Expander Header="Staff Demographics" IsExpanded="True">
+                    <Expander Header="Staff Demographics" IsExpanded="{Binding StaffDemExpanded}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.3*" />
@@ -231,10 +231,10 @@
                             <Border BorderThickness="5" Grid.Column="1">
                                 <StackPanel>
                                     <DockPanel>
-                                        <Button DockPanel.Dock="Right" Command="{Binding AddTeamCommand, Mode=OneWay}" >
+                                        <Button DockPanel.Dock="Right" Command="{Binding AddTeamCommand, Mode=OneWay}" Visibility="{Binding AddTeamButtonVis}" >
                                             <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="14" />
                                         </Button>
-                                        <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" >
+                                        <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" Visibility="{Binding RemoveTeamButtonVis}" >
                                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                                         </Button>
                                         <TextBlock Text="Teams" />
@@ -327,10 +327,10 @@
                             <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,0" Text="{Binding SelectedStaff.ADAccount}" />
                         </Grid>
                     </Expander>
-                    <Expander Header="ESR">
+                    <Expander Header="ESR" Visibility="{Binding ESRVis}" IsExpanded="{Binding ESRExpanded}" >
                         <DataGrid ItemsSource="{Binding ESR}" IsReadOnly="True"></DataGrid>
                     </Expander>
-                    <Expander Header="TNA">
+                    <Expander Header="TNA" IsExpanded="{Binding TNAExpanded}" Visibility="{Binding TNAVis}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -362,7 +362,7 @@
                             <ComboBox Grid.Row="2" Grid.Column="3" Margin="5,0" ItemsSource="{Binding TNAOutcomes}" SelectedItem="{Binding StaffTNA.Status}" ItemTemplate="{StaticResource StatusDataTemplate}" />
                         </Grid>
                     </Expander>
-                    <Expander Header="RA">
+                    <Expander Header="RA" Visibility="{Binding RAVis}" IsExpanded="{Binding RAExpanded}" >
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -423,13 +423,13 @@
                             <DatePicker Grid.Column="3" Margin="5,0" Grid.Row="9" SelectedDate="{Binding StaffRA.Fully_Compliant}" />
                         </Grid>
                     </Expander>
-                    <Expander>
+                    <Expander IsExpanded="{Binding TeamApprovExpanded}" Visibility="{Binding TeamApprovVis}" >
                         <Expander.Header>
                             <DockPanel>
-                                <Button DockPanel.Dock="Right" Command="{Binding AddTeamApprovCommand, Mode=OneWay}" >
+                                <Button DockPanel.Dock="Right" Command="{Binding AddTeamApprovCommand, Mode=OneWay}" Visibility="{Binding AddTeamApprovButtonVis}" >
                                     <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                                 </Button>
-                                <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamApprovCommand, Mode=OneWay}">
+                                <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamApprovCommand, Mode=OneWay}" Visibility="{Binding RemoveTeamApprovButtonVis}">
                                     <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                                 </Button>
                                 <TextBlock Text="Team Approvals" DockPanel.Dock="Left" MinWidth="1200"/>
@@ -475,13 +475,13 @@
                             </DataGrid.RowDetailsTemplate>
                         </DataGrid>
                     </Expander>
-                    <Expander>
+                    <Expander Visibility="{Binding ReqVis}" IsExpanded="{Binding ReqExpanded}" >
                         <Expander.Header>
                             <DockPanel>
-                                <Button DockPanel.Dock="Right" Command="{Binding AddReqCommand, Mode=OneWay}" >
+                                <Button DockPanel.Dock="Right" Command="{Binding AddReqCommand, Mode=OneWay}" Visibility="{Binding AddReqButtonVis}" >
                                     <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                                 </Button>
-                                <Button DockPanel.Dock="Right" Command="{Binding RemoveReqCommand, Mode=OneWay}" >
+                                <Button DockPanel.Dock="Right" Command="{Binding RemoveReqCommand, Mode=OneWay}" Visibility="{Binding RemoveStaffButtonVis}" >
                                     <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                                 </Button>
                                 <TextBlock Text="Requirements" DockPanel.Dock="Left" MinWidth="1200"/>
@@ -529,7 +529,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Expander>
-                    <Expander Header="Attendances">
+                    <Expander Header="Attendances" Visibility="{Binding AttendVis}" IsExpanded="{Binding AttendExpanded}">
                         <DataGrid ItemsSource="{Binding StaffAttendances}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" IsReadOnly="True"/>

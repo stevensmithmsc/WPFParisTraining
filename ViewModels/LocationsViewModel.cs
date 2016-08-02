@@ -53,5 +53,10 @@ namespace WPFParisTraining.ViewModels
             RemoveCommand = new DelegateCommand<object>(RemoveLocation);
             SaveCommand = new DelegateCommand<object>(SaveDataChanges);
         }
+
+        protected override void InitalDisplayState()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

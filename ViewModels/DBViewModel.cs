@@ -28,11 +28,13 @@ namespace WPFParisTraining.ViewModels
             LoadRefData();
             LoadInitalData();
             AssignCommands();
+            InitalDisplayState();
         }
 
         protected abstract void LoadRefData();
         protected abstract void LoadInitalData();
         protected abstract void AssignCommands();
+        protected abstract void InitalDisplayState();
 
         async protected void SaveDataChanges(object parameter)
         {
