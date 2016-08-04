@@ -48,6 +48,15 @@ namespace WPFParisTraining.ViewModels
         public ICommand SearchCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
 
+        //Control Display Settings
+        private Visibility _addTeamButtonVis;
+        private Visibility _removeTeamButtonVis;
+        private bool _esrNameReadOnly;
+
+        public Visibility AddTeamButtonVis { get { return _addTeamButtonVis; } set { if (value != _addTeamButtonVis) { _addTeamButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveTeamButtonVis { get { return _removeTeamButtonVis; } set { if (value != _removeTeamButtonVis) { _removeTeamButtonVis = value; NotifyPropertyChanged(); } } }
+        public bool ESRNameReadOnly { get { return _esrNameReadOnly; } set { if (value != _esrNameReadOnly) { _esrNameReadOnly = value; NotifyPropertyChanged(); } } }
+
         protected override void LoadRefData()
         {
             db.Cohorts.Load();
@@ -73,11 +82,14 @@ namespace WPFParisTraining.ViewModels
             ResetCommand = new DelegateCommand<object>(ResetSearch);
             AddCommand = new DelegateCommand<object>(AddTeam);
             RemoveCommand = new DelegateCommand<object>(RemoveTeam);
+            SaveCommand = new DelegateCommand<object>(SaveTeamChanges);
         }
 
         protected override void InitalDisplayState()
         {
-            throw new NotImplementedException();
+            AddTeamButtonVis = Visibility.Visible;
+            RemoveTeamButtonVis = Visibility.Visible;
+            ESRNameReadOnly = false;
         }
 
         private void UpdateLinkedStuff()
@@ -113,7 +125,7 @@ namespace WPFParisTraining.ViewModels
 
         private void AddTeam(object parameter)
         {
-            _addMode = true;
+            BeginAddMode();
             Team newteam = new Team();
             newteam.NoTrain = false;
             newteam.Dont_Migrate = false;
@@ -121,8 +133,6 @@ namespace WPFParisTraining.ViewModels
             db.Teams.Add(newteam);
             TeamList = db.Teams.Local.Where(t => t.ID <= 0).ToList();
             SelectedTeam = newteam;
-
-            _addMode = false;
         }
 
         private void RemoveTeam(object parameter)
@@ -134,6 +144,24 @@ namespace WPFParisTraining.ViewModels
                 //SaveDataChanges(null);
                 TeamList = db.Teams.Local.Where(t => idlist.Contains(t.ID)).OrderBy(t => t.TeamName).ToList();
                 SelectedTeam = TeamList.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void BeginAddMode()
+        {
+            _addMode = true;
+            AddTeamButtonVis = Visibility.Hidden;
+            RemoveTeamButtonVis = Visibility.Hidden;
+        }
+
+        private void SaveTeamChanges(object Parameter)
+        {
+            SaveDataChanges(Parameter);
+            if (_addMode)
+            {
+                InitalDisplayState();
+                _addMode = false;
             }
         }
     }

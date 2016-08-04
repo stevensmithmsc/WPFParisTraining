@@ -26,13 +26,13 @@
         </Grid.RowDefinitions>
 
         <DockPanel>
-            <Button ToolTip="Add New Location" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" >
+            <Button ToolTip="Add New Location" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" Visibility="{Binding AddLocationButtonVis}" >
                 <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
             </Button>
-            <Button ToolTip="Remove Location" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" >
+            <Button ToolTip="Remove Location" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" Visibility="{Binding RemoveLocationButtonVis}" >
                 <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
             </Button>
-            <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" >
+            <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" >
                 <fa:FontAwesome Icon="Save" Foreground="Blue" FontSize="16" />
             </Button>
             <TextBlock Text="Locations" DockPanel.Dock="Left"/>

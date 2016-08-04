@@ -19,11 +19,19 @@ namespace WPFParisTraining.ViewModels
         private Location _selectedLocation;
         public Location SelectedLocation { get { return _selectedLocation; } set { _selectedLocation = value; NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
+        private Visibility _addLocButtonVis;
+        private Visibility _removeLocButtonVis;
+
+        public Visibility AddLocationButtonVis { get { return _addLocButtonVis; } set { if (value != _addLocButtonVis) { _addLocButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveLocationButtonVis { get { return _removeLocButtonVis; } set { if (value != _removeLocButtonVis) { _removeLocButtonVis = value; NotifyPropertyChanged(); } } }
+
+
         private void AddLocation(object parameter)
         {
             Location newLoc = new Location();
             LocationList.Add(newLoc);
             SelectedLocation = newLoc;
+            NotifyPropertyChanged("Changed");
         }
 
         private void RemoveLocation(object parameter)
@@ -32,6 +40,7 @@ namespace WPFParisTraining.ViewModels
             {
                 LocationList.Remove(SelectedLocation);
                 SelectedLocation = LocationList.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
             }
         }
 
@@ -56,7 +65,8 @@ namespace WPFParisTraining.ViewModels
 
         protected override void InitalDisplayState()
         {
-            throw new NotImplementedException();
+            AddLocationButtonVis = Visibility.Visible;
+            RemoveLocationButtonVis = Visibility.Visible;
         }
     }
 }

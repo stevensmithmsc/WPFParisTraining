@@ -62,6 +62,15 @@ namespace WPFParisTraining.ViewModels
         public ICommand BookCommand { get; private set; }
         public ICommand FilterCommand { get; private set; }
 
+        //Control Display Settings
+        private Visibility _addSessButtonVis;
+        private Visibility _removeSessButtonVis;
+        private Visibility _personSearchVis;
+
+        public Visibility AddSessionButtonVis { get { return _addSessButtonVis; } set { if (value != _addSessButtonVis) { _addSessButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveSessionButtonVis { get { return _removeSessButtonVis; } set { if (value != _removeSessButtonVis) { _removeSessButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility PersonSearchVis { get { return _personSearchVis; } set { if (value != _personSearchVis) { _personSearchVis = value; NotifyPropertyChanged(); } } }
+
         protected override void LoadRefData()
         {
             db.Staffs.Where(s => s.Trainer == true).Load();
@@ -94,11 +103,14 @@ namespace WPFParisTraining.ViewModels
             FilterCommand = new DelegateCommand<object>(FilterStaffList);
             AddCommand = new DelegateCommand<object>(AddSession);
             RemoveCommand = new DelegateCommand<object>(RemoveSession);
+            SaveCommand = new DelegateCommand<object>(SaveSessionChanges);
         }
 
         protected override void InitalDisplayState()
         {
-            throw new NotImplementedException();
+            AddSessionButtonVis = Visibility.Visible;
+            RemoveSessionButtonVis = Visibility.Visible;
+            PersonSearchVis = Visibility.Visible;
         }
 
         private void UpdateLinked()
@@ -154,6 +166,7 @@ namespace WPFParisTraining.ViewModels
                     StaffRequiring = db.Reqs.Local.Where(r => r.CourseID == SelectedSession.CourseID && r.StatusID == 1).Select(r => r.Staff).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
                     BookStaff = null;
                     NameFilter = null;
+                    NotifyPropertyChanged("Changed");
                 }
             }
         }
@@ -185,14 +198,13 @@ namespace WPFParisTraining.ViewModels
 
         private void AddSession(object parameter)
         {
-            _addMode = true;
+            BeginAddMode();
             Sess newsess = new Sess();
 
             db.Sesses.Add(newsess);
             SessionList = db.Sesses.Local.Where(s => s.ID <= 0).ToList();
             SelectedSession = newsess;
 
-            _addMode = false;
         }
 
         private void RemoveSession(object parameter)
@@ -204,6 +216,25 @@ namespace WPFParisTraining.ViewModels
                 //SaveDataChanges(null);
                 SessionList = db.Sesses.Local.Where(s => idlist.Contains(s.ID)).OrderBy(s => s.Strt).ToList();
                 SelectedSession = SessionList.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void BeginAddMode()
+        {
+            _addMode = true;
+            AddSessionButtonVis = Visibility.Hidden;
+            RemoveSessionButtonVis = Visibility.Hidden;
+            PersonSearchVis = Visibility.Collapsed;
+        }
+
+        private void SaveSessionChanges(object Parameter)
+        {
+            SaveDataChanges(Parameter);
+            if (_addMode)
+            {
+                InitalDisplayState();
+                _addMode = false;
             }
         }
     }

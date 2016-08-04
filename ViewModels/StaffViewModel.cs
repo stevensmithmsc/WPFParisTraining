@@ -18,13 +18,13 @@ namespace WPFParisTraining.ViewModels
 
         private Staff _selectedStaff;
         public Staff SelectedStaff { get { return _selectedStaff; } set { CheckLinkedEntities(); _selectedStaff = value;  NotifyPropertyChanged(); NotifyPropertyChanged("SelGender"); NotifyPropertyChanged("SelTitle"); UpdateLinkedStuff(); } }
-        public Genders? SelGender { get { return (_selectedStaff != null) ? _selectedStaff.Gender : null; } set { _selectedStaff.Gender = value;  NotifyPropertyChanged(); UpdateTitles(); } }
-        public Title SelTitle { get { return (_selectedStaff != null) ? _selectedStaff.Title : null; } set { _selectedStaff.Title = value; NotifyPropertyChanged(); UpdateGenders(true); } }
+        public Genders? SelGender { get { return (_selectedStaff != null) ? _selectedStaff.Gender : null; } set { _selectedStaff.Gender = value;  NotifyPropertyChanged(); UpdateTitles(); NotifyPropertyChanged("Changed"); } }
+        public Title SelTitle { get { return (_selectedStaff != null) ? _selectedStaff.Title : null; } set { _selectedStaff.Title = value; NotifyPropertyChanged(); UpdateGenders(true); NotifyPropertyChanged("Changed"); } }
 
         private IEnumerable<TeamMem> _teamMemberships;
         public IEnumerable<TeamMem> TeamMemberships { get { return _teamMemberships; } set { _teamMemberships = value;  NotifyPropertyChanged(); } }
         private TeamMem _selectedTeam;
-        public TeamMem SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value;  NotifyPropertyChanged(); } }
+        public TeamMem SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
         private RA _staffRA;
         public RA StaffRA { get { return _staffRA; } set { _staffRA = value;  NotifyPropertyChanged(); } }
@@ -35,12 +35,12 @@ namespace WPFParisTraining.ViewModels
         private IEnumerable<TeamApprov> _teamApprovals;
         public IEnumerable<TeamApprov> TeamApprovals { get { return _teamApprovals; } set { _teamApprovals = value;  NotifyPropertyChanged(); } }
         private TeamApprov _selectedTeamApprov;
-        public TeamApprov SelectedTeamApprov { get { return _selectedTeamApprov; } set { _selectedTeamApprov = value;  NotifyPropertyChanged(); } }
+        public TeamApprov SelectedTeamApprov { get { return _selectedTeamApprov; } set { _selectedTeamApprov = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
         private IEnumerable<Req> _staffReqs;
         public IEnumerable<Req> StaffReqs { get { return _staffReqs; } set { _staffReqs = value;  NotifyPropertyChanged(); } }
         private Req _selectedReq;
-        public Req SelectedReq { get { return _selectedReq; } set { _selectedReq = value;  NotifyPropertyChanged(); } }
+        public Req SelectedReq { get { return _selectedReq; } set { _selectedReq = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
         private IEnumerable<Attendance> _staffAttendances;
         public IEnumerable<Attendance> StaffAttendances { get { return _staffAttendances; } set { _staffAttendances = value;  NotifyPropertyChanged(); } }
@@ -441,6 +441,7 @@ namespace WPFParisTraining.ViewModels
                 //SaveDataChanges(null);
                 StaffList = db.Staffs.Local.Where(s => idlist.Contains(s.ID)).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
                 SelectedStaff = StaffList.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
             }                
         }
 

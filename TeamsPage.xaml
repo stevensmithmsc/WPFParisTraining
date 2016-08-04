@@ -32,65 +32,67 @@
         <Expander Grid.ColumnSpan="2">
             <Expander.Header>
                 <DockPanel>
-                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" >
+                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" Visibility="{Binding AddTeamButtonVis}" >
                         <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" >
+                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" Visibility="{Binding RemoveTeamButtonVis}" >
                         <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" >
+                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" >
                         <fa:FontAwesome Icon="Save" Foreground="Blue" FontSize="16" />
                     </Button>
                     <fa:FontAwesome DockPanel.Dock="Left" Icon="Search" FontSize="14" />
                     <TextBlock Text="Search Teams" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Name:"/>
-                    <TextBox Text="{Binding SearchName}" MinWidth="150" Margin="5,0,10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Mental Health/Community:"/>
-                    <TextBox Text="{Binding SearchMHC}" MinWidth="20" Margin="5,0,10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Borough:"/>
-                    <TextBox Text="{Binding SearchBorough}" MinWidth="20" Margin="5,0,10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Service:"/>
-                    <TextBox Text="{Binding SearchService}" MinWidth="20" Margin="5,0,10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Leader:"/>
-                    <TextBox Text="{Binding SearchLeader}" MinWidth="20" Margin="5,0,10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Cohort:"/>
-                    <ComboBox ItemsSource="{Binding CohortList}" SelectedItem="{Binding SearchCohort}" MinWidth="80" Margin="5,0,10,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Code}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-                <CheckBox IsChecked="{Binding SearchNoTrain}" Content="No Training Required" Margin="0,0,10,0" IsThreeState="True" />
-                <CheckBox IsChecked="{Binding SearchHasMem}" Content="Has Members?" Margin="0,0,10,0" IsThreeState="True" />
-                <Button ToolTip="Initiate Search" Command="{Binding SearchCommand, Mode=OneWay}"  >
-                    <StackPanel>
-                        <fa:FontAwesome Icon="Search" FontSize="16" />
-                        <TextBlock Text="Go !" />
+            <DockPanel>
+                <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Name:"/>
+                        <TextBox Text="{Binding SearchName}" MinWidth="150" Margin="5,0,10,0"/>
                     </StackPanel>
-                </Button>
-                <Button ToolTip="Reset Search Criteria" Command="{Binding ResetCommand, Mode=OneWay}"  >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Mental Health/Community:"/>
+                        <TextBox Text="{Binding SearchMHC}" MinWidth="20" Margin="5,0,10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Borough:"/>
+                        <TextBox Text="{Binding SearchBorough}" MinWidth="20" Margin="5,0,10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Service:"/>
+                        <TextBox Text="{Binding SearchService}" MinWidth="20" Margin="5,0,10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Leader:"/>
+                        <TextBox Text="{Binding SearchLeader}" MinWidth="20" Margin="5,0,10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Cohort:"/>
+                        <ComboBox ItemsSource="{Binding CohortList}" SelectedItem="{Binding SearchCohort}" MinWidth="80" Margin="5,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Code}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <CheckBox IsChecked="{Binding SearchNoTrain}" Content="No Training Required" Margin="0,0,10,0" IsThreeState="True" />
+                    <CheckBox IsChecked="{Binding SearchHasMem}" Content="Has Members?" Margin="0,0,10,0" IsThreeState="True" />
+                </WrapPanel>
+                <Button ToolTip="Reset Search Criteria" Command="{Binding ResetCommand, Mode=OneWay}"  DockPanel.Dock="Right">
                     <StackPanel>
                         <fa:FontAwesome Icon="Undo" FontSize="16" />
                         <TextBlock Text="Reset" />
                     </StackPanel>
                 </Button>
-            </WrapPanel>
+                <Button ToolTip="Initiate Search" Command="{Binding SearchCommand, Mode=OneWay}" DockPanel.Dock="Right" >
+                    <StackPanel>
+                        <fa:FontAwesome Icon="Search" FontSize="16" Foreground="Green"/>
+                        <TextBlock Text="Go !" />
+                    </StackPanel>
+                </Button>
+            </DockPanel>
         </Expander>
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding TeamList}" SelectedItem="{Binding SelectedTeam}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
@@ -130,7 +132,7 @@
                         <TextBlock Text="Team Name" />
                         <TextBox Grid.Column="1" Text="{Binding SelectedTeam.TeamName}"/>
                         <TextBlock Text="Name in ESR" Grid.Row="1"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedTeam.ESR}" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedTeam.ESR}" IsReadOnly="{Binding ESRNameReadOnly}"/>
                         <TextBlock Text="Cost Centre" Grid.Row="2"/>
                         <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding CostCentres}" SelectedItem="{Binding SelectedTeam.Cost_Centres}">
                             <ComboBox.ItemTemplate>

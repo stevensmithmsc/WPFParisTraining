@@ -28,75 +28,77 @@
         <Expander>
             <Expander.Header>
                 <DockPanel>
-                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" >
+                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" Visibility="{Binding AddSessionButtonVis}" >
                         <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" >
+                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" Visibility="{Binding RemoveSessionButtonVis}" >
                         <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" >
+                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" >
                         <fa:FontAwesome Icon="Save" Foreground="Blue" FontSize="16" />
                     </Button>
                     <fa:FontAwesome DockPanel.Dock="Left" Icon="Search" FontSize="14" />
                     <TextBlock Text="Search Course Sessions" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Course:" />
-                    <ComboBox ItemsSource="{Binding Courses}" SelectedItem="{Binding SearchCourse}" MinWidth="150" Margin="0,0,10,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding CourseName}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Trainer:" />
-                    <ComboBox ItemsSource="{Binding Trainers}" SelectedItem="{Binding SearchTrainer}" MinWidth="150" Margin="0,0,10,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding SimpleName}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Location:" />
-                    <ComboBox ItemsSource="{Binding Locations}" SelectedItem="{Binding SearchLocation}" MinWidth="150" Margin="0,0,10,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding LocationName}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="From:" />
-                    <DatePicker SelectedDate="{Binding SearchFrom}" Margin="5,0,10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="To:" />
-                    <DatePicker SelectedDate="{Binding SearchTo}" Margin="5,0,10,0"/>
-                </StackPanel>
-                <CheckBox IsChecked="{Binding SearchExternal}" Content="External?" IsThreeState="True" Margin="0,0,10,0"/>
-                <CheckBox IsChecked="{Binding SearchObselete}" Content="Obselete?" IsThreeState="True" Margin="0,0,10,0"/>
-                <CheckBox IsChecked="{Binding SearchParis}" Content="Paris?" IsThreeState="True" Margin="0,0,10,0"/>
-                <CheckBox IsChecked="{Binding SearchAvailable}" Content="Is Available for Booking?" IsThreeState="True" Margin="0,0,10,0"/>
-                <Button ToolTip="Initiate Search" Command="{Binding SearchCommand, Mode=OneWay}"  >
-                    <StackPanel>
-                        <fa:FontAwesome Icon="Search" FontSize="16" />
-                        <TextBlock Text="Go !" />
+            <DockPanel>
+                <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Course:" />
+                        <ComboBox ItemsSource="{Binding Courses}" SelectedItem="{Binding SearchCourse}" MinWidth="150" Margin="0,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding CourseName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
-                </Button>
-                <Button ToolTip="Reset Search Criteria" Command="{Binding ResetCommand, Mode=OneWay}"  >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Trainer:" />
+                        <ComboBox ItemsSource="{Binding Trainers}" SelectedItem="{Binding SearchTrainer}" MinWidth="150" Margin="0,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SimpleName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Location:" />
+                        <ComboBox ItemsSource="{Binding Locations}" SelectedItem="{Binding SearchLocation}" MinWidth="150" Margin="0,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding LocationName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="From:" />
+                        <DatePicker SelectedDate="{Binding SearchFrom}" Margin="5,0,10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="To:" />
+                        <DatePicker SelectedDate="{Binding SearchTo}" Margin="5,0,10,0"/>
+                    </StackPanel>
+                    <CheckBox IsChecked="{Binding SearchExternal}" Content="External?" IsThreeState="True" Margin="0,0,10,0"/>
+                    <CheckBox IsChecked="{Binding SearchObselete}" Content="Obselete?" IsThreeState="True" Margin="0,0,10,0"/>
+                    <CheckBox IsChecked="{Binding SearchParis}" Content="Paris?" IsThreeState="True" Margin="0,0,10,0"/>
+                    <CheckBox IsChecked="{Binding SearchAvailable}" Content="Is Available for Booking?" IsThreeState="True" Margin="0,0,10,0"/>
+                </WrapPanel>
+                <Button ToolTip="Reset Search Criteria" Command="{Binding ResetCommand, Mode=OneWay}" DockPanel.Dock="Right" >
                     <StackPanel>
                         <fa:FontAwesome Icon="Undo" FontSize="16" />
                         <TextBlock Text="Reset" />
                     </StackPanel>
                 </Button>
-            </WrapPanel>
+                <Button ToolTip="Initiate Search" Command="{Binding SearchCommand, Mode=OneWay}" DockPanel.Dock="Right" >
+                    <StackPanel>
+                        <fa:FontAwesome Icon="Search" FontSize="16" Foreground="Green" />
+                        <TextBlock Text="Go !" />
+                    </StackPanel>
+                </Button>
+            </DockPanel>
         </Expander>
         <DataGrid Grid.Row="1" ItemsSource="{Binding SessionList}" SelectedItem="{Binding SelectedSession}" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
             <DataGrid.Columns>
@@ -199,20 +201,20 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Search:" />
-                <TextBox Grid.Column="1" Margin="5,0,0,0" Text="{Binding NameFilter}"/>
-                <Button Grid.Column="2" Margin="0,0,5,0" Command="{Binding FilterCommand, Mode=OneWay}">
+                <TextBlock Text="Search:" Visibility="{Binding PersonSearchVis}" />
+                <TextBox Grid.Column="1" Margin="5,0,0,0" Text="{Binding NameFilter}" Visibility="{Binding PersonSearchVis}"/>
+                <Button Grid.Column="2" Margin="0,0,5,0" Command="{Binding FilterCommand, Mode=OneWay}" Visibility="{Binding PersonSearchVis}">
                     <fa:FontAwesome Icon="Search" FontSize="14" />
                 </Button>
                 <TextBlock Text="Person:" Grid.Column="3" />
-                <ComboBox Grid.Column="4" ItemsSource="{Binding StaffRequiring}" SelectedItem="{Binding BookStaff}">
+                <ComboBox Grid.Column="4" ItemsSource="{Binding StaffRequiring}" SelectedItem="{Binding BookStaff}" Visibility="{Binding PersonSearchVis}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding SimpleName}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button ToolTip="Book Person onto Selected Course Session" Grid.Column="5" Margin="5,0" Command="{Binding BookCommand, Mode=OneWay}">
+                <Button ToolTip="Book Person onto Selected Course Session" Grid.Column="5" Margin="5,0" Command="{Binding BookCommand, Mode=OneWay}" Visibility="{Binding PersonSearchVis}">
                     <StackPanel Orientation="Horizontal">
                         <fa:FontAwesome Icon="ThumbsUp" FontSize="14" />
                         <TextBlock Text=" Book Person" />
