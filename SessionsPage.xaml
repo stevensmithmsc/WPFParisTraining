@@ -28,10 +28,10 @@
         <Expander>
             <Expander.Header>
                 <DockPanel>
-                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" Visibility="{Binding AddSessionButtonVis}" >
+                    <Button ToolTip="Add New Session" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" Visibility="{Binding AddSessionButtonVis}" >
                         <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" Visibility="{Binding RemoveSessionButtonVis}" >
+                    <Button ToolTip="Remove Selected Session" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" Visibility="{Binding RemoveSessionButtonVis}" >
                         <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                     </Button>
                     <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" >

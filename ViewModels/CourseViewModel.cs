@@ -23,13 +23,16 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<CourseReq> PreReqs { get { return _preReqs; } set { _preReqs = value;  NotifyPropertyChanged(); } }
 
         private CourseReq _selectedPreReq;
-        public CourseReq SelectedPreReq { get { return _selectedPreReq; } set { _selectedPreReq = value;  NotifyPropertyChanged(); } }
+        public CourseReq SelectedPreReq { get { return _selectedPreReq; } set { _selectedPreReq = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
         private IEnumerable<Sess> _sessionList;
         public IEnumerable<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
 
         private Sess _selectedSession;
-        public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value;  NotifyPropertyChanged(); } }
+        public Sess SelectedSession { get { return _selectedSession; }
+            set { if (_selectedSession!= null && _selectedSession.Endt == null && _selectedSession.Strt != null) { _selectedSession.Endt = ((DateTime)_selectedSession.Strt).AddMinutes((double)_selectedSession.Course.Length); }
+                if (_selectedSession != null && _selectedSession.ID <= 0 && _selectedSession.MaxP == 0 && _selectedSession.Location != null) { _selectedSession.MaxP = (short)_selectedSession.Location.MaxP; }
+                _selectedSession = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
         private IEnumerable<Req> _staffList;
         public IEnumerable<Req> StaffList { get { return _staffList; } set { _staffList = value; NotifyPropertyChanged(); } }
@@ -57,6 +60,22 @@ namespace WPFParisTraining.ViewModels
         public ICommand RemovePreReqCommand { get; private set; }
         public ICommand AddSessCommand { get; private set; }
         public ICommand RemoveSessCommand { get; private set; }
+
+        //Control Display Settings
+        private Visibility _addCourseButtonVis;
+        private Visibility _removeCourseButtonVis;
+        private Visibility _addPreReqButtonVis;
+        private Visibility _removePreReqButtonVis;
+        private Visibility _addSessButtonVis;
+        private Visibility _removeSessButtonVis;
+
+        public Visibility AddCourseButtonVis { get { return _addCourseButtonVis; } set { if (value != _addCourseButtonVis) { _addCourseButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveCourseButtonVis { get { return _removeCourseButtonVis; } set { if (value != _removeCourseButtonVis) { _removeCourseButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility AddPreReqButtonVis { get { return _addPreReqButtonVis; } set { if (value != _addPreReqButtonVis) { _addPreReqButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemovePreReqButtonVis { get { return _removePreReqButtonVis; } set { if (value != _removePreReqButtonVis) { _removePreReqButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility AddSessButtonVis { get { return _addSessButtonVis; } set { if (value != _addSessButtonVis) { _addSessButtonVis = value; NotifyPropertyChanged(); } } }
+        public Visibility RemoveSessButtonVis { get { return _removeSessButtonVis; } set { if (value != _removeSessButtonVis) { _removeSessButtonVis = value; NotifyPropertyChanged(); } } }
+
 
         protected override void LoadRefData()
         {
@@ -93,11 +112,17 @@ namespace WPFParisTraining.ViewModels
             RemovePreReqCommand = new DelegateCommand<object>(RemovePreReq);
             AddSessCommand = new DelegateCommand<object>(AddSession);
             RemoveSessCommand = new DelegateCommand<object>(RemoveSession);
+            SaveCommand = new DelegateCommand<object>(SaveCourseChanges);
         }
 
         protected override void InitalDisplayState()
         {
-            throw new NotImplementedException();
+            AddCourseButtonVis = Visibility.Visible;
+            RemoveCourseButtonVis = Visibility.Visible;
+            AddPreReqButtonVis = Visibility.Visible;
+            RemovePreReqButtonVis = Visibility.Visible;
+            AddSessButtonVis = Visibility.Visible;
+            RemoveSessButtonVis = Visibility.Visible;
         }
 
         private void UpdateLinked()
@@ -131,7 +156,7 @@ namespace WPFParisTraining.ViewModels
 
         private void AddCourse(object parameter)
         {
-            _addMode = true;
+            BeginAddMode();
             Course newcourse = new Course();
             newcourse.External = false;
             newcourse.Obselete = false;
@@ -141,8 +166,6 @@ namespace WPFParisTraining.ViewModels
             db.Courses.Add(newcourse);
             CourseList = db.Courses.Local.Where(c => c.ID <= 0).ToList();
             SelectedCourse = newcourse;
-
-            _addMode = false;
         }
 
         private void RemoveCourse(object parameter)
@@ -154,6 +177,7 @@ namespace WPFParisTraining.ViewModels
                 //SaveDataChanges(null);
                 CourseList = db.Courses.Local.Where(c => idlist.Contains(c.ID)).OrderBy(c => c.CourseName).ToList();
                 SelectedCourse = CourseList.FirstOrDefault();
+                NotifyPropertyChanged("Changed");
             }
         }
 
@@ -195,7 +219,28 @@ namespace WPFParisTraining.ViewModels
                 db.Sesses.Remove(SelectedSession);
                 SelectedSession = null;
                 SessionList = db.Sesses.Local.Where(s => s.CourseID == SelectedCourse.ID).OrderBy(s => s.Strt).ToList();
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void BeginAddMode()
+        {
+            _addMode = true;
+            AddCourseButtonVis = Visibility.Hidden;
+            RemoveCourseButtonVis = Visibility.Hidden;
+            AddPreReqButtonVis = Visibility.Hidden;
+            RemovePreReqButtonVis = Visibility.Hidden;
+            AddSessButtonVis = Visibility.Hidden;
+            RemoveSessButtonVis = Visibility.Hidden;
+        }
+
+        private void SaveCourseChanges(object Parameter)
+        {
+            SaveDataChanges(Parameter);
+            if (_addMode)
+            {
+                InitalDisplayState();
+                _addMode = false;
             }
         }
     }

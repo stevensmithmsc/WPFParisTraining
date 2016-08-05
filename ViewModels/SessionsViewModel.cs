@@ -17,7 +17,7 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
 
         private Sess _selectedSession;
-        public Sess SelectedSession { get { return _selectedSession; } set { _selectedSession = value; NotifyPropertyChanged(); UpdateLinked(); } }
+        public Sess SelectedSession { get { return _selectedSession; } set { if (_selectedSession != null && _selectedSession.Endt == null && _selectedSession.Strt != null) { _selectedSession.Endt = ((DateTime)_selectedSession.Strt).AddMinutes((double)_selectedSession.Course.Length); } _selectedSession = value; NotifyPropertyChanged(); UpdateLinked(); } }
 
         public IEnumerable<Staff> Trainers { get; private set; }
         public IEnumerable<Course> Courses { get; private set; }
@@ -230,6 +230,8 @@ namespace WPFParisTraining.ViewModels
 
         private void SaveSessionChanges(object Parameter)
         {
+            if (SelectedSession != null && SelectedSession.Endt == null && SelectedSession.Strt != null) { SelectedSession.Endt = ((DateTime)SelectedSession.Strt).AddMinutes((double)SelectedSession.Course.Length); }
+            if (SelectedSession != null && SelectedSession.ID <= 0 && SelectedSession.MaxP == 0 && SelectedSession.Location != null) { SelectedSession.MaxP = (short)SelectedSession.Location.MaxP; }
             SaveDataChanges(Parameter);
             if (_addMode)
             {

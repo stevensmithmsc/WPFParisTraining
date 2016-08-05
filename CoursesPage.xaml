@@ -28,13 +28,13 @@
         <Expander>
             <Expander.Header>
                 <DockPanel>
-                    <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" >
+                    <Button ToolTip="Add New Course" DockPanel.Dock="Right" Command="{Binding AddCommand, Mode=OneWay}" Visibility="{Binding AddCourseButtonVis}" >
                         <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" >
+                    <Button ToolTip="Remove Selected Course" DockPanel.Dock="Right" Command="{Binding RemoveCommand, Mode=OneWay}" Visibility="{Binding RemoveCourseButtonVis}" >
                         <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                     </Button>
-                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" >
+                    <Button ToolTip="Save Changes" DockPanel.Dock="Right" Visibility="{Binding Changed, Converter={StaticResource BooltoVis}, Mode=OneWay}" Command="{Binding SaveCommand, Mode=OneWay}" >
                         <fa:FontAwesome Icon="Save" Foreground="Blue" FontSize="16" />
                     </Button>
                     <fa:FontAwesome DockPanel.Dock="Left" Icon="Search" FontSize="14" />
@@ -52,7 +52,7 @@
                 <CheckBox IsChecked="{Binding SearchObselete}" Content="Obselete" Margin="0,0,10,0" IsThreeState="True" />
                 <Button ToolTip="Initiate Search" Command="{Binding SearchCommand, Mode=OneWay}"  >
                     <StackPanel>
-                        <fa:FontAwesome Icon="Search" FontSize="16" />
+                        <fa:FontAwesome Icon="Search" FontSize="16" Foreground="Green"/>
                         <TextBlock Text="Go !" />
                     </StackPanel>
                 </Button>
@@ -95,10 +95,10 @@
                     <Expander >
                         <Expander.Header>
                             <DockPanel>
-                                <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddPreReqCommand, Mode=OneWay}" >
+                                <Button ToolTip="Add PreReq" DockPanel.Dock="Right" Command="{Binding AddPreReqCommand, Mode=OneWay}" Visibility="{Binding AddPreReqButtonVis}" >
                                     <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                                 </Button>
-                                <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemovePreReqCommand, Mode=OneWay}" >
+                                <Button ToolTip="Remove Selected PreReq" DockPanel.Dock="Right" Command="{Binding RemovePreReqCommand, Mode=OneWay}" Visibility="{Binding RemovePreReqButtonVis}"  >
                                     <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                                 </Button>
                                 <TextBlock Text="PreReqs" DockPanel.Dock="Left" MinWidth="1200"/>
@@ -121,10 +121,10 @@
                     <Expander>
                         <Expander.Header>
                             <DockPanel>
-                                <Button ToolTip="Add" DockPanel.Dock="Right" Command="{Binding AddSessCommand, Mode=OneWay}" >
+                                <Button ToolTip="Add Session" DockPanel.Dock="Right" Command="{Binding AddSessCommand, Mode=OneWay}" Visibility="{Binding AddSessButtonVis}" >
                                     <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                                 </Button>
-                                <Button ToolTip="Remove" DockPanel.Dock="Right" Command="{Binding RemoveSessCommand, Mode=OneWay}" >
+                                <Button ToolTip="Remove Selected Session" DockPanel.Dock="Right" Command="{Binding RemoveSessCommand, Mode=OneWay}" Visibility="{Binding RemoveSessButtonVis}" >
                                     <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                                 </Button>
                                 <TextBlock Text="Sessions" DockPanel.Dock="Left" MinWidth="1200"/>

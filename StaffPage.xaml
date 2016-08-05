@@ -535,6 +535,7 @@
                     <Expander Header="Attendances" Visibility="{Binding AttendVis}" IsExpanded="{Binding AttendExpanded}">
                         <DataGrid ItemsSource="{Binding StaffAttendances}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
+                                <DataGridTextColumn Header="Date" Binding="{Binding Sess.StartDate}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" IsReadOnly="True"/>
                                 <DataGridTemplateColumn Header="Outcome">
                                     <DataGridTemplateColumn.CellTemplate>
