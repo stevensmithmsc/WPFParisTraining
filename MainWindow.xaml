@@ -48,6 +48,15 @@
                     </Button>
                     <TextBlock Text="Locations" VerticalAlignment="Center"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="BulkReqButton" Click="BulkReqButton_Click" >
+                        <fa:ImageAwesome Icon="Tasks" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Bulk" />
+                        <TextBlock Text="Requirements" />
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </Border>
         <Frame Name="MainFrame" Grid.Column="1" Source="StartPage.xaml"/>

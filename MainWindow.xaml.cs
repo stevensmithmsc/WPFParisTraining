@@ -49,5 +49,10 @@ namespace WPFParisTraining
         {
             MainFrame.Navigate(new LocationsPage());
         }
+
+        private void BulkReqButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new BulkReq());
+        }
     }
 }

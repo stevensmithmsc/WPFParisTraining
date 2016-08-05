@@ -70,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BulkReq.xaml.cs">
+      <DependentUpon>BulkReq.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CoursesPage.xaml.cs">
       <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,7 @@
       <DependentUpon>TeamsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BooltoVis.cs" />
+    <Compile Include="ViewModels\BulkReqViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\DBViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
@@ -191,6 +195,10 @@
     <Compile Include="ViewModels\StartVM.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
+    <Page Include="BulkReq.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CoursesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
