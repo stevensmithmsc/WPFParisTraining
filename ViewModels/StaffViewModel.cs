@@ -26,6 +26,18 @@ namespace WPFParisTraining.ViewModels
         private TeamMem _selectedTeam;
         public TeamMem SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
+        private IEnumerable<BoroughMem> _boroughMemberships;
+        private BoroughMem _selectedBorough;
+        private Borough _boroughToAdd;
+        public IEnumerable<BoroughMem> BoroughMemberships { get { return _boroughMemberships; } set { _boroughMemberships = value;  NotifyPropertyChanged(); } }
+        public BoroughMem SelectedBorough { get { return _selectedBorough; } set { _selectedBorough = value;  NotifyPropertyChanged(); } }
+        public Borough BoroughToAdd { get { return _boroughToAdd; } set { _boroughToAdd = value;  NotifyPropertyChanged(); } }
+
+        private IEnumerable<ServMem> _serviceMemberships;
+        private IEnumerable<ServMem> _mhcMemberships;
+        public IEnumerable<ServMem> ServiceMemberships { get { return _serviceMemberships; } set { _serviceMemberships = value; NotifyPropertyChanged(); } }
+        public IEnumerable<ServMem> MHCMemberships { get { return _mhcMemberships; } set { _mhcMemberships = value; NotifyPropertyChanged(); } }
+
         private RA _staffRA;
         public RA StaffRA { get { return _staffRA; } set { _staffRA = value;  NotifyPropertyChanged(); } }
 
@@ -58,6 +70,7 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Staff> Trainers { get; private set; }
         public IEnumerable<Team> Teams { get; private set; }
         public IEnumerable<Course> Courses { get; private set; }
+        public IEnumerable<Borough> Boroughs { get; private set; }
 
         public IEnumerable<Status> TNAOutcomes { get; private set; }
         public IEnumerable<Status> StatusESRUp { get; private set; }
@@ -99,6 +112,8 @@ namespace WPFParisTraining.ViewModels
         public ICommand RemoveReqCommand { get; private set; }
         public ICommand AddTeamCommand { get; private set; }
         public ICommand RemoveTeamCommand { get; private set; }
+        public ICommand AddBoroughCommand { get; private set; }
+        public ICommand RemoveBoroughCommand { get; private set; }
 
         //Control Display Settings
         private Visibility _addStaffButtonVis;
@@ -185,6 +200,10 @@ namespace WPFParisTraining.ViewModels
             db.Courses.Load();
             Courses = db.Courses.Local.OrderBy(c => c.CourseName);
             NotifyPropertyChanged("Courses");
+            db.Boroughs.Load();
+            Boroughs = db.Boroughs.Local.OrderBy(b => b.BoroughName);
+            NotifyPropertyChanged("Boroughs");
+            db.Services.Load();
         }
 
         protected override void LoadInitalData()
@@ -209,6 +228,8 @@ namespace WPFParisTraining.ViewModels
             AddCommand = new DelegateCommand<object>(AddStaff);
             RemoveCommand = new DelegateCommand<object>(RemoveStaff);
             SaveCommand = new DelegateCommand<object>(SaveStaffChanges);
+            AddBoroughCommand = new DelegateCommand<object>(AddBorough);
+            RemoveBoroughCommand = new DelegateCommand<object>(RemoveBorough);
         }
 
         protected override void InitalDisplayState()
@@ -242,6 +263,11 @@ namespace WPFParisTraining.ViewModels
             {
                 db.TeamMems.Where(t => t.StaffID == SelectedStaff.ID).Load();
                 TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
+                db.BoroughMems.Where(b => b.ID == SelectedStaff.ID && b.Type == "S").Load();
+                BoroughMemberships = db.BoroughMems.Local.Where(b => b.ID == SelectedStaff.ID && b.Type == "S").OrderBy(b => b.Borough.BoroughName).ToList();
+                db.ServMems.Where(s => s.ID == SelectedStaff.ID && s.Type == "S").Load();
+                ServiceMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == false).OrderBy(s => s.Service.ServiceName).ToList();
+                MHCMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == true).OrderBy(s => s.Service.ServiceName).ToList();
                 db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).Load();
                 ESR = db.Staff_List.Where(e => e.Employee_Number == SelectedStaff.ESRID).ToList();
                 db.RAs.Where(r => r.ID == SelectedStaff.ID).Load();
@@ -453,6 +479,41 @@ namespace WPFParisTraining.ViewModels
             {
                 InitalDisplayState();
                 _addMode = false;
+            }
+        }
+
+        private void AddBorough(object Parameter)
+        {
+            if (BoroughToAdd != null)
+            {
+                var existing = db.BoroughMems.Local.Where(b => b.ID == SelectedStaff.ID && b.Type == "S" && b.BoroughID == BoroughToAdd.ID);
+
+                if (existing.Count() >= 1)
+                {
+                    MessageBox.Show("This person is already associated with " + BoroughToAdd.BoroughName, "Training Database", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                else
+                {
+                    BoroughMem newboromem = new BoroughMem();
+                    newboromem.Type = "S";
+                    newboromem.ID = SelectedStaff.ID;
+                    newboromem.Borough = BoroughToAdd;
+                    db.BoroughMems.Add(newboromem);
+                    BoroughMemberships = db.BoroughMems.Local.Where(b => b.ID == SelectedStaff.ID && b.Type == "S").OrderBy(b => b.Borough.BoroughName).ToList();
+                    SelectedBorough = newboromem;
+                    NotifyPropertyChanged("Changed");
+                }
+            }
+        }
+
+        private void RemoveBorough(object Parameter)
+        {
+            if (SelectedBorough != null && (MessageBox.Show("Are you sure you want to delete association with " + SelectedBorough.Borough.BoroughName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                db.BoroughMems.Remove(SelectedBorough);
+                BoroughMemberships = db.BoroughMems.Local.Where(b => b.ID == SelectedStaff.ID && b.Type == "S").OrderBy(b => b.Borough.BoroughName).ToList();
+                SelectedBorough = null;
+                NotifyPropertyChanged("Changed");
             }
         }
 

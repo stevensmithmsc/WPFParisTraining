@@ -44,5 +44,6 @@ namespace WPFParisTraining.Entity
         public virtual ICollection<Req> StaffReqs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sess> Sesses { get; set; }
+        public virtual mail_temp mail_temp { get; set; }
     }
 }

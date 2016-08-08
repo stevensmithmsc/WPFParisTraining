@@ -54,6 +54,15 @@
         <AssociationConnector Association="StaffModel.FK_Req_Statuses" />
         <AssociationConnector Association="StaffModel.FK_Sess_Trainer" />
         <AssociationConnector Association="StaffModel.FK_Attendance_Statuses" />
+        <EntityTypeShape EntityType="StaffModel.Borough" Width="1.5" PointX="15.375" PointY="1" />
+        <EntityTypeShape EntityType="StaffModel.BoroughMem" Width="1.5" PointX="17.625" PointY="1" />
+        <EntityTypeShape EntityType="StaffModel.mail_temp" Width="1.5" PointX="5.125" PointY="19.625" />
+        <EntityTypeShape EntityType="StaffModel.Service" Width="1.5" PointX="10.375" PointY="1" />
+        <EntityTypeShape EntityType="StaffModel.ServMem" Width="1.5" PointX="12.625" PointY="1.125" />
+        <AssociationConnector Association="StaffModel.FK_BoroughMem_Boroughs" />
+        <AssociationConnector Association="StaffModel.FK_Courses_mail_temp" />
+        <AssociationConnector Association="StaffModel.FK_Services_Services" />
+        <AssociationConnector Association="StaffModel.FK_ServMem_Services" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

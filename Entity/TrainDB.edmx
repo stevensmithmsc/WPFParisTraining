@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="StaffModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Boroughs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Borough" Type="varchar" MaxLength="15" />
+          <Property Name="Long" Type="varchar" MaxLength="50" />
+          <Property Name="Short" Type="varchar" MaxLength="3" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
         <EntityType Name="Cohorts">
           <Key>
             <PropertyRef Name="ID" />
@@ -85,6 +98,19 @@
           <Property Name="Modifier" Type="int" />
           <Property Name="CancelledBy" Type="int" />
         </EntityType>
+        <EntityType Name="BoroughMem">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Borough" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
         <EntityType Name="CourseReq">
           <Key>
             <PropertyRef Name="ID" />
@@ -132,6 +158,19 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
         </EntityType>
+        <EntityType Name="mail_temp">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Template_Name" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="First_Line" Type="text" />
+          <Property Name="Details" Type="text" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
         <EntityType Name="RA">
           <Key>
             <PropertyRef Name="ID" />
@@ -169,6 +208,35 @@
           <Property Name="Course" Type="int" Nullable="false" />
           <Property Name="Status" Type="smallint" />
           <Property Name="Comments" Type="text" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Service" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Level" Type="smallint" />
+          <Property Name="Display" Type="bit" Nullable="false" />
+          <Property Name="Parent" Type="int" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Creator" Type="int" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="Modifier" Type="int" />
+        </EntityType>
+        <EntityType Name="ServMem">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ServID" Type="int" Nullable="false" />
+          <Property Name="Main" Type="bit" Nullable="false" />
+          <Property Name="Pri" Type="bit" Nullable="false" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Creator" Type="int" />
           <Property Name="Modified" Type="datetime" />
@@ -387,6 +455,18 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BoroughMem_Boroughs">
+          <End Role="Boroughs" Type="Self.Boroughs" Multiplicity="1" />
+          <End Role="BoroughMem" Type="Self.BoroughMem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boroughs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BoroughMem">
+              <PropertyRef Name="Borough" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CourseReq_Course_PreReq">
           <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
           <End Role="CourseReq" Type="Self.CourseReq" Multiplicity="*" />
@@ -408,6 +488,18 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
             </Principal>
             <Dependent Role="CourseReq">
               <PropertyRef Name="Course" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courses_mail_temp">
+          <End Role="mail_temp" Type="Self.mail_temp" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mail_temp">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Courses">
+              <PropertyRef Name="Template" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -492,6 +584,30 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
             </Principal>
             <Dependent Role="Req">
               <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Services1" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Services1">
+              <PropertyRef Name="Parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServMem_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="1" />
+          <End Role="ServMem" Type="Self.ServMem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ServMem">
+              <PropertyRef Name="ServID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -742,16 +858,21 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
         </Function>
         <Function Name="user_details" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="train" />
         <EntityContainer Name="StaffModelStoreContainer">
+          <EntitySet Name="Boroughs" EntityType="Self.Boroughs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cohorts" EntityType="Self.Cohorts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cost_Centres" EntityType="Self.Cost_Centres" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjectives" EntityType="Self.Subjectives" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="train" store:Type="Tables" />
+          <EntitySet Name="BoroughMem" EntityType="Self.BoroughMem" Schema="train" store:Type="Tables" />
           <EntitySet Name="CourseReq" EntityType="Self.CourseReq" Schema="train" store:Type="Tables" />
           <EntitySet Name="Courses" EntityType="Self.Courses" Schema="train" store:Type="Tables" />
           <EntitySet Name="Locations" EntityType="Self.Locations" Schema="train" store:Type="Tables" />
+          <EntitySet Name="mail_temp" EntityType="Self.mail_temp" Schema="train" store:Type="Tables" />
           <EntitySet Name="RA" EntityType="Self.RA" Schema="train" store:Type="Tables" />
           <EntitySet Name="Req" EntityType="Self.Req" Schema="train" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="train" store:Type="Tables" />
+          <EntitySet Name="ServMem" EntityType="Self.ServMem" Schema="train" store:Type="Tables" />
           <EntitySet Name="Sess" EntityType="Self.Sess" Schema="train" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="train" store:Type="Tables" />
           <EntitySet Name="Statuses" EntityType="Self.Statuses" Schema="train" store:Type="Tables" />
@@ -803,6 +924,10 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
             <End Role="Statuses" EntitySet="Statuses" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
+          <AssociationSet Name="FK_BoroughMem_Boroughs" Association="Self.FK_BoroughMem_Boroughs">
+            <End Role="Boroughs" EntitySet="Boroughs" />
+            <End Role="BoroughMem" EntitySet="BoroughMem" />
+          </AssociationSet>
           <AssociationSet Name="FK_CourseReq_Course_PreReq" Association="Self.FK_CourseReq_Course_PreReq">
             <End Role="Courses" EntitySet="Courses" />
             <End Role="CourseReq" EntitySet="CourseReq" />
@@ -810,6 +935,10 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
           <AssociationSet Name="FK_CourseReq_Courses" Association="Self.FK_CourseReq_Courses">
             <End Role="Courses" EntitySet="Courses" />
             <End Role="CourseReq" EntitySet="CourseReq" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courses_mail_temp" Association="Self.FK_Courses_mail_temp">
+            <End Role="mail_temp" EntitySet="mail_temp" />
+            <End Role="Courses" EntitySet="Courses" />
           </AssociationSet>
           <AssociationSet Name="FK_RA_ESR_Updated" Association="Self.FK_RA_ESR_Updated">
             <End Role="Statuses" EntitySet="Statuses" />
@@ -838,6 +967,14 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
           <AssociationSet Name="FK_Req_Statuses" Association="Self.FK_Req_Statuses">
             <End Role="Statuses" EntitySet="Statuses" />
             <End Role="Req" EntitySet="Req" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Services" Association="Self.FK_Services_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Services1" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServMem_Services" Association="Self.FK_ServMem_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="ServMem" EntitySet="ServMem" />
           </AssociationSet>
           <AssociationSet Name="FK_Sess_Courses" Association="Self.FK_Sess_Courses">
             <End Role="Courses" EntitySet="Courses" />
@@ -1405,6 +1542,27 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
             <Parameter Name="hasMembers" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="user_details" ReturnType="Collection(StaffModel.user_details_Result)" />
+          <EntitySet Name="Boroughs" EntityType="StaffModel.Borough" />
+          <EntitySet Name="BoroughMems" EntityType="StaffModel.BoroughMem" />
+          <EntitySet Name="mail_temp" EntityType="StaffModel.mail_temp" />
+          <EntitySet Name="Services" EntityType="StaffModel.Service" />
+          <EntitySet Name="ServMems" EntityType="StaffModel.ServMem" />
+          <AssociationSet Name="FK_BoroughMem_Boroughs" Association="StaffModel.FK_BoroughMem_Boroughs">
+            <End Role="Borough" EntitySet="Boroughs" />
+            <End Role="BoroughMem" EntitySet="BoroughMems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courses_mail_temp" Association="StaffModel.FK_Courses_mail_temp">
+            <End Role="mail_temp" EntitySet="mail_temp" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Services" Association="StaffModel.FK_Services_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Service1" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServMem_Services" Association="StaffModel.FK_ServMem_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="ServMem" EntitySet="ServMems" />
+          </AssociationSet>
         </EntityContainer>
         <EnumType Name="Genders" UnderlyingType="Byte">
           <Member Name="Male" Value="1" />
@@ -1586,6 +1744,7 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
           <NavigationProperty Name="StaffReqs" Relationship="StaffModel.FK_Req_Courses" FromRole="Cours" ToRole="Req" />
           <NavigationProperty Name="Sesses" Relationship="StaffModel.FK_Sess_Courses" FromRole="Cours" ToRole="Sess" />
           <Property Name="Child_Health" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="mail_temp" Relationship="StaffModel.FK_Courses_mail_temp" FromRole="Course" ToRole="mail_temp" />
         </EntityType>
         <EntityType Name="Req">
           <Key>
@@ -1843,6 +2002,109 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
           <Property Type="Int32" Name="cm" Nullable="true" />
           <Property Type="Int32" Name="id" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Borough">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BoroughName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="LongName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BoroughMems" Relationship="StaffModel.FK_BoroughMem_Boroughs" FromRole="Borough" ToRole="BoroughMem" />
+        </EntityType>
+        <EntityType Name="BoroughMem">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="BoroughID" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Borough" Relationship="StaffModel.FK_BoroughMem_Boroughs" FromRole="BoroughMem" ToRole="Borough" />
+        </EntityType>
+        <EntityType Name="mail_temp">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Template_Name" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="First_Line" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Courses" Relationship="StaffModel.FK_Courses_mail_temp" FromRole="mail_temp" ToRole="Course" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="Int16" />
+          <Property Name="Display" Type="Boolean" Nullable="false" />
+          <Property Name="Parent" Type="Int32" />
+          <NavigationProperty Name="ChildServices" Relationship="StaffModel.FK_Services_Services" FromRole="Service" ToRole="Service1" />
+          <NavigationProperty Name="ParentService" Relationship="StaffModel.FK_Services_Services" FromRole="Service1" ToRole="Service" />
+          <NavigationProperty Name="ServMems" Relationship="StaffModel.FK_ServMem_Services" FromRole="Service" ToRole="ServMem" />
+        </EntityType>
+        <EntityType Name="ServMem">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ServID" Type="Int32" Nullable="false" />
+          <Property Name="Main" Type="Boolean" Nullable="false" />
+          <Property Name="Pri" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Service" Relationship="StaffModel.FK_ServMem_Services" FromRole="ServMem" ToRole="Service" />
+        </EntityType>
+        <Association Name="FK_BoroughMem_Boroughs">
+          <End Type="StaffModel.Borough" Role="Borough" Multiplicity="1" />
+          <End Type="StaffModel.BoroughMem" Role="BoroughMem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Borough">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BoroughMem">
+              <PropertyRef Name="BoroughID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courses_mail_temp">
+          <End Type="StaffModel.mail_temp" Role="mail_temp" Multiplicity="1" />
+          <End Type="StaffModel.Course" Role="Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mail_temp">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="Template" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Services">
+          <End Type="StaffModel.Service" Role="Service" Multiplicity="0..1" />
+          <End Type="StaffModel.Service" Role="Service1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Service1">
+              <PropertyRef Name="Parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServMem_Services">
+          <End Type="StaffModel.Service" Role="Service" Multiplicity="1" />
+          <End Type="StaffModel.ServMem" Role="ServMem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ServMem">
+              <PropertyRef Name="ServID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2133,6 +2395,59 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Boroughs">
+            <EntityTypeMapping TypeName="StaffModel.Borough">
+              <MappingFragment StoreEntitySet="Boroughs">
+                <ScalarProperty Name="ShortName" ColumnName="Short" />
+                <ScalarProperty Name="LongName" ColumnName="Long" />
+                <ScalarProperty Name="BoroughName" ColumnName="Borough" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BoroughMems">
+            <EntityTypeMapping TypeName="StaffModel.BoroughMem">
+              <MappingFragment StoreEntitySet="BoroughMem">
+                <ScalarProperty Name="BoroughID" ColumnName="Borough" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mail_temp">
+            <EntityTypeMapping TypeName="StaffModel.mail_temp">
+              <MappingFragment StoreEntitySet="mail_temp">
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="First_Line" ColumnName="First_Line" />
+                <ScalarProperty Name="Template_Name" ColumnName="Template_Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="StaffModel.Service">
+              <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Display" ColumnName="Display" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="ServiceName" ColumnName="Service" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServMems">
+            <EntityTypeMapping TypeName="StaffModel.ServMem">
+              <MappingFragment StoreEntitySet="ServMem">
+                <ScalarProperty Name="Pri" ColumnName="Pri" />
+                <ScalarProperty Name="Main" ColumnName="Main" />
+                <ScalarProperty Name="ServID" ColumnName="ServID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

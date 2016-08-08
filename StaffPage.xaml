@@ -273,7 +273,13 @@
                             <Border BorderThickness="5" Grid.Column="1" Grid.Row="1">
                                 <StackPanel>
                                     <TextBlock Text="MH/Community" />
-                                    <ListBox MinHeight="30"/>
+                                    <ListBox MinHeight="30" ItemsSource="{Binding MHCMemberships}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Service.ServiceName}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="5" Grid.Column="2">
@@ -306,14 +312,41 @@
                             </Border>
                             <Border BorderThickness="5" Grid.Column="3">
                                 <StackPanel>
-                                    <TextBlock Text="Borough" />
-                                    <ListBox MinHeight="75" />
+                                    <DockPanel>
+                                        <TextBlock Text="Borough" DockPanel.Dock="Left" Margin="0,0,10,0"/>
+                                        <Button DockPanel.Dock="Right" Visibility="{Binding RemoveTeamButtonVis}" Command="{Binding RemoveBoroughCommand, Mode=OneWay}">
+                                            <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
+                                        </Button>
+                                        <Button DockPanel.Dock="Right" Visibility="{Binding AddTeamButtonVis}" Command="{Binding AddBoroughCommand, Mode=OneWay}" >
+                                            <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="14" />
+                                        </Button>
+                                        <ComboBox ItemsSource="{Binding Boroughs}" Visibility="{Binding AddTeamButtonVis}" SelectedItem="{Binding BoroughToAdd}" >
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding BoroughName}" FontSize="10"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <ListBox MinHeight="75" ItemsSource="{Binding BoroughMemberships}" SelectedItem="{Binding SelectedBorough}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Borough.BoroughName}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="5" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
                                 <StackPanel>
                                     <TextBlock Text="Service" />
-                                    <ListBox MinHeight="30" />
+                                    <ListBox MinHeight="30" ItemsSource="{Binding ServiceMemberships}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Service.ServiceName}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="5" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3">

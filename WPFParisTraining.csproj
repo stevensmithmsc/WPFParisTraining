@@ -79,6 +79,12 @@
     <Compile Include="Entity\Attendance.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Borough.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BoroughMem.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Cohort.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
@@ -98,6 +104,9 @@
     <Compile Include="Entity\Location.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\mail_temp.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\RA.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
@@ -114,6 +123,12 @@
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\search_team_Result.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Service.cs">
+      <DependentUpon>TrainDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\ServMem.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Sess.cs">

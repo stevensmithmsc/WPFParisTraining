@@ -45,6 +45,11 @@ namespace WPFParisTraining.Entity
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Req> Reqs { get; set; }
         public virtual DbSet<Sess> Sesses { get; set; }
+        public virtual DbSet<Borough> Boroughs { get; set; }
+        public virtual DbSet<BoroughMem> BoroughMems { get; set; }
+        public virtual DbSet<mail_temp> mail_temp { get; set; }
+        public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<ServMem> ServMems { get; set; }
     
         public virtual ObjectResult<Course> search_course(string name, Nullable<bool> paris, Nullable<bool> ch, Nullable<bool> ext, Nullable<bool> obs)
         {
