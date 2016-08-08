@@ -167,6 +167,7 @@
     <Compile Include="Entity\user_details_Result.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BooltoCollapsed.cs" />
     <Compile Include="Helpers\BooltoFontStyle.cs" />
     <Compile Include="Helpers\BooltoFontWeight.cs" />
     <Compile Include="LocationsPage.xaml.cs">
