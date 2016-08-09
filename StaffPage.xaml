@@ -46,7 +46,12 @@
                     <TextBlock Text=" Search Staff" DockPanel.Dock="Left" MinWidth="1200"/>
                 </DockPanel>
             </Expander.Header>
-            <DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.9*"/>
+                    <ColumnDefinition Width="0.05*"/>
+                    <ColumnDefinition Width="0.05*"/>
+                </Grid.ColumnDefinitions>
                 <WrapPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Staff Code:"/>
@@ -62,15 +67,33 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Mental Health/Community:"/>
-                        <TextBox Text="{Binding MHCSearch}" MinWidth="20" Margin="5,0,10,0"/>
+                        <ComboBox ItemsSource="{Binding MHCs}" SelectedItem="{Binding MHCSearch}" MinWidth="80" Margin="5,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ServiceName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Borough:"/>
-                        <TextBox Text="{Binding BoroughSearch}" MinWidth="20" Margin="5,0,10,0"/>
+                        <ComboBox ItemsSource="{Binding Boroughs}" SelectedItem="{Binding BoroughSearch}" MinWidth="50" Margin="5,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding BoroughName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Service:"/>
-                        <TextBox Text="{Binding ServiceSearch}" MinWidth="20" Margin="5,0,10,0"/>
+                        <ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding ServiceSearch}" MinWidth="100" Margin="5,0,10,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ServiceName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Team:"/>
@@ -106,19 +129,19 @@
                     <CheckBox IsChecked="{Binding ExternalSearch}" Content="External" Margin="0,0,10,0" IsThreeState="True" />
 
                 </WrapPanel>
-                <Button Command="{Binding ResetCommand, Mode=OneWay}" DockPanel.Dock="Right">
-                    <StackPanel>
+                <Button Command="{Binding ResetCommand, Mode=OneWay}" Grid.Column="2" >
+                    <StackPanel HorizontalAlignment="Center">
                         <fa:FontAwesome Icon="Undo" FontSize="16" />
-                        <TextBlock Text="Reset" />
+                        <TextBlock Text="Reset" MinWidth="50" />
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding SearchCommand, Mode=OneWay}" DockPanel.Dock="Right">
-                    <StackPanel>
+                <Button Command="{Binding SearchCommand, Mode=OneWay}" Grid.Column="1" >
+                    <StackPanel HorizontalAlignment="Center">
                         <fa:FontAwesome Icon="Search" FontSize="16" Foreground="Green"/>
-                        <TextBlock Text="Go !" />
+                        <TextBlock Text="Go !" MinWidth="50" />
                     </StackPanel>
                 </Button>
-            </DockPanel>
+            </Grid>
         </Expander>
         <DataGrid Grid.Row="1" ItemsSource="{Binding StaffList}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedStaff}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
@@ -272,8 +295,23 @@
                             </Border>
                             <Border BorderThickness="5" Grid.Column="1" Grid.Row="1">
                                 <StackPanel>
-                                    <TextBlock Text="MH/Community" />
-                                    <ListBox MinHeight="30" ItemsSource="{Binding MHCMemberships}">
+                                    <DockPanel>
+                                        <TextBlock Text="MH/Community" DockPanel.Dock="Left" Margin="0,0,10,0"/>
+                                        <Button DockPanel.Dock="Right" Visibility="{Binding RemoveTeamButtonVis}" Command="{Binding RemoveMHCCommand, Mode=OneWay}" >
+                                            <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
+                                        </Button>
+                                        <Button DockPanel.Dock="Right" Visibility="{Binding AddTeamButtonVis}" Command="{Binding AddMHCCommand, Mode=OneWay}" >
+                                            <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="14" />
+                                        </Button>
+                                        <ComboBox ItemsSource="{Binding MHCs}" Visibility="{Binding AddTeamButtonVis}" SelectedItem="{Binding MHCToAdd}" >
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ServiceName}" FontSize="10"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <ListBox MinHeight="30" ItemsSource="{Binding MHCMemberships}" SelectedItem="{Binding SelectedMHC}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Service.ServiceName}"/>
@@ -339,8 +377,23 @@
                             </Border>
                             <Border BorderThickness="5" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
                                 <StackPanel>
-                                    <TextBlock Text="Service" />
-                                    <ListBox MinHeight="30" ItemsSource="{Binding ServiceMemberships}">
+                                    <DockPanel>
+                                        <TextBlock Text="Service" DockPanel.Dock="Left" Margin="0,0,10,0"/>
+                                        <Button DockPanel.Dock="Right" Visibility="{Binding RemoveTeamButtonVis}" Command="{Binding RemoveServiceCommand, Mode=OneWay}" >
+                                            <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
+                                        </Button>
+                                        <Button DockPanel.Dock="Right" Visibility="{Binding AddTeamButtonVis}" Command="{Binding AddServiceCommand, Mode=OneWay}"  >
+                                            <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="14" />
+                                        </Button>
+                                        <ComboBox ItemsSource="{Binding Services}" Visibility="{Binding AddTeamButtonVis}" SelectedItem="{Binding ServiceToAdd}" >
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ServiceName}" FontSize="10"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <ListBox MinHeight="30" ItemsSource="{Binding ServiceMemberships}" SelectedItem="{Binding SelectedService}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Service.ServiceName}"/>

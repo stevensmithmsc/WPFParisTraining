@@ -35,8 +35,16 @@ namespace WPFParisTraining.ViewModels
 
         private IEnumerable<ServMem> _serviceMemberships;
         private IEnumerable<ServMem> _mhcMemberships;
+        private ServMem _selectedService;
+        private ServMem _selectedMHC;
+        private Service _serivceToAdd;
+        private Service _mhcToAdd;
         public IEnumerable<ServMem> ServiceMemberships { get { return _serviceMemberships; } set { _serviceMemberships = value; NotifyPropertyChanged(); } }
         public IEnumerable<ServMem> MHCMemberships { get { return _mhcMemberships; } set { _mhcMemberships = value; NotifyPropertyChanged(); } }
+        public ServMem SelectedService { get { return _selectedService; } set { _selectedService = value;  NotifyPropertyChanged(); } }
+        public ServMem SelectedMHC { get { return _selectedMHC; } set { _selectedMHC = value;  NotifyPropertyChanged(); } }
+        public Service ServiceToAdd { get { return _serivceToAdd; } set { _serivceToAdd = value; NotifyPropertyChanged(); } }
+        public Service MHCToAdd { get { return _mhcToAdd; } set { _mhcToAdd = value; NotifyPropertyChanged(); } }
 
         private RA _staffRA;
         public RA StaffRA { get { return _staffRA; } set { _staffRA = value;  NotifyPropertyChanged(); } }
@@ -71,6 +79,8 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Team> Teams { get; private set; }
         public IEnumerable<Course> Courses { get; private set; }
         public IEnumerable<Borough> Boroughs { get; private set; }
+        public IEnumerable<Service> Services { get; private set; }
+        public IEnumerable<Service> MHCs { get; private set; }
 
         public IEnumerable<Status> TNAOutcomes { get; private set; }
         public IEnumerable<Status> StatusESRUp { get; private set; }
@@ -83,9 +93,9 @@ namespace WPFParisTraining.ViewModels
         private string _staffCodeSearch;
         private string _nameSearch;
         private string _jobTitleSearch;
-        private int? _mhcSearch;
-        private string _boroughSearch;
-        private int? _serviceSearch;
+        private Service _mhcSearch;
+        private Borough _boroughSearch;
+        private Service _serviceSearch;
         private Team _teamSearch;
         private Staff _lineManSearch;
         private Cohort _cohortSearch;
@@ -95,9 +105,9 @@ namespace WPFParisTraining.ViewModels
         public string StaffCodeSearch { get { return _staffCodeSearch; } set { _staffCodeSearch = value; NotifyPropertyChanged(); } }
         public string NameSearch { get { return _nameSearch; } set { _nameSearch = value;  NotifyPropertyChanged(); } }
         public string JobTitleSearch { get { return _jobTitleSearch; } set { _jobTitleSearch = value; NotifyPropertyChanged(); } }
-        public int? MHCSearch { get { return _mhcSearch; } set { _mhcSearch = value; NotifyPropertyChanged(); } }
-        public string BoroughSearch { get { return _boroughSearch; } set { _boroughSearch = value; NotifyPropertyChanged(); } }
-        public int? ServiceSearch { get { return _serviceSearch; } set { _serviceSearch = value; NotifyPropertyChanged(); } }
+        public Service MHCSearch { get { return _mhcSearch; } set { _mhcSearch = value; NotifyPropertyChanged(); } }
+        public Borough BoroughSearch { get { return _boroughSearch; } set { _boroughSearch = value; NotifyPropertyChanged(); } }
+        public Service ServiceSearch { get { return _serviceSearch; } set { _serviceSearch = value; NotifyPropertyChanged(); } }
         public Team TeamSearch { get { return _teamSearch; } set { _teamSearch = value; NotifyPropertyChanged(); } }
         public Staff LineManSearch { get { return _lineManSearch; } set { _lineManSearch = value;  NotifyPropertyChanged(); } }
         public Cohort CohortSearch { get { return _cohortSearch; } set { _cohortSearch = value; NotifyPropertyChanged(); } }
@@ -114,6 +124,10 @@ namespace WPFParisTraining.ViewModels
         public ICommand RemoveTeamCommand { get; private set; }
         public ICommand AddBoroughCommand { get; private set; }
         public ICommand RemoveBoroughCommand { get; private set; }
+        public ICommand AddServiceCommand { get; private set; }
+        public ICommand AddMHCCommand { get; private set; }
+        public ICommand RemoveServiceCommand { get; private set; }
+        public ICommand RemoveMHCCommand { get; private set; }
 
         //Control Display Settings
         private Visibility _addStaffButtonVis;
@@ -203,7 +217,11 @@ namespace WPFParisTraining.ViewModels
             db.Boroughs.Load();
             Boroughs = db.Boroughs.Local.OrderBy(b => b.BoroughName);
             NotifyPropertyChanged("Boroughs");
-            db.Services.Load();
+            db.Services.Where(s => (s.Level == 1 || s.Level == 5) && s.Display == true).Load();
+            Services = db.Services.Local.Where(s => s.Level == 5 && s.Display == true).OrderBy(s => s.ServiceName).ToList();
+            NotifyPropertyChanged("Services");
+            MHCs = db.Services.Local.Where(s => s.Level == 1 && s.Display == true).OrderBy(s => s.ServiceName).ToList();
+            NotifyPropertyChanged("MHCs");
         }
 
         protected override void LoadInitalData()
@@ -230,6 +248,10 @@ namespace WPFParisTraining.ViewModels
             SaveCommand = new DelegateCommand<object>(SaveStaffChanges);
             AddBoroughCommand = new DelegateCommand<object>(AddBorough);
             RemoveBoroughCommand = new DelegateCommand<object>(RemoveBorough);
+            AddServiceCommand = new DelegateCommand<object>(AddService);
+            AddMHCCommand = new DelegateCommand<object>(AddMHC);
+            RemoveServiceCommand = new DelegateCommand<object>(RemoveService);
+            RemoveMHCCommand = new DelegateCommand<object>(RemoveMHC);
         }
 
         protected override void InitalDisplayState()
@@ -354,7 +376,10 @@ namespace WPFParisTraining.ViewModels
             int? TeamSearchID = (TeamSearch == null) ? 0 : TeamSearch.ID;
             int? LineManSearchID = (LineManSearch == null) ? 0 : LineManSearch.ID;
             int? CohortSearchID = (CohortSearch == null) ? 0 : CohortSearch.ID;
-            StaffList = db.search_staff(StaffCodeSearch, NameSearch, JobTitleSearch, MHCSearch, BoroughSearch, ServiceSearch, TeamSearchID, LineManSearchID, CohortSearchID, LeftTrustSearch, ExternalSearch).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
+            int? MHCSearchID = (MHCSearch == null) ? 0 : MHCSearch.ID;
+            int? ServiceSearchID = (ServiceSearch == null) ? 0 : ServiceSearch.ID;
+            string BoroSearchID = (BoroughSearch == null) ? null : BoroughSearch.ID;
+            StaffList = db.search_staff(StaffCodeSearch, NameSearch, JobTitleSearch, MHCSearchID, BoroSearchID, ServiceSearchID, TeamSearchID, LineManSearchID, CohortSearchID, LeftTrustSearch, ExternalSearch).OrderBy(s => s.Sname).ThenBy(s => s.Fname).ToList();
             SelectedStaff = StaffList.FirstOrDefault();
         }
 
@@ -513,6 +538,80 @@ namespace WPFParisTraining.ViewModels
                 db.BoroughMems.Remove(SelectedBorough);
                 BoroughMemberships = db.BoroughMems.Local.Where(b => b.ID == SelectedStaff.ID && b.Type == "S").OrderBy(b => b.Borough.BoroughName).ToList();
                 SelectedBorough = null;
+                NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void AddService(object Parameter)
+        {
+            if (ServiceToAdd != null)
+            {
+                var existing = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.ServID == ServiceToAdd.ID);
+
+                if (existing.Count() >= 1)
+                {
+                    MessageBox.Show("This person is already associated with " + ServiceToAdd.ServiceName, "Training Database", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                else
+                {
+                    ServMem newservmem = new ServMem();
+                    newservmem.Type = "S";
+                    newservmem.ID = SelectedStaff.ID;
+                    newservmem.Service = ServiceToAdd;
+                    newservmem.Main = false;
+                    newservmem.Pri = false;
+                    db.ServMems.Add(newservmem);
+                    ServiceMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == false).OrderBy(s => s.Service.ServiceName).ToList();
+                    SelectedService = newservmem;
+                    NotifyPropertyChanged("Changed");
+                }
+            }
+        }
+
+        private void AddMHC(object Parameter)
+        {
+            if (MHCToAdd != null)
+            {
+                var existing = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.ServID == MHCToAdd.ID);
+
+                if (existing.Count() >= 1)
+                {
+                    MessageBox.Show("This person is already associated with " + MHCToAdd.ServiceName, "Training Database", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                else
+                {
+                    ServMem newservmem = new ServMem();
+                    newservmem.Type = "S";
+                    newservmem.ID = SelectedStaff.ID;
+                    newservmem.Service = MHCToAdd;
+                    newservmem.Main = true;
+                    newservmem.Pri = false;
+                    db.ServMems.Add(newservmem);
+                    MHCMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == true).OrderBy(s => s.Service.ServiceName).ToList();
+                    SelectedMHC = newservmem;
+                    NotifyPropertyChanged("Changed");
+                }
+            }
+        }
+
+        private void RemoveService(object Parameter)
+        {
+            if (SelectedService != null && (MessageBox.Show("Are you sure you want to delete association with " + SelectedService.Service.ServiceName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                db.ServMems.Remove(SelectedService);
+                ServiceMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == false).OrderBy(s => s.Service.ServiceName).ToList();
+                SelectedService = null;
+                NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void RemoveMHC(object Parameter)
+        {
+            if (SelectedMHC != null && (MessageBox.Show("Are you sure you want to delete association with " + SelectedMHC.Service.ServiceName, "Training Database", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
+            {
+                db.ServMems.Remove(SelectedMHC);
+                MHCMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == true).OrderBy(s => s.Service.ServiceName).ToList();
+                SelectedMHC = null;
                 NotifyPropertyChanged("Changed");
             }
         }
