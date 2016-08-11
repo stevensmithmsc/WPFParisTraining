@@ -98,24 +98,34 @@
                                 <Button ToolTip="Add PreReq" DockPanel.Dock="Right" Command="{Binding AddPreReqCommand, Mode=OneWay}" Visibility="{Binding AddPreReqButtonVis}" >
                                     <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="16" />
                                 </Button>
-                                <Button ToolTip="Remove Selected PreReq" DockPanel.Dock="Right" Command="{Binding RemovePreReqCommand, Mode=OneWay}" Visibility="{Binding RemovePreReqButtonVis}"  >
+                                <Button ToolTip="Remove Selected PreReq" DockPanel.Dock="Right" Command="{Binding RemovePreReqCommand, Mode=OneWay}" Visibility="Collapsed"  >
                                     <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="16" />
                                 </Button>
+                                <ComboBox ItemsSource="{Binding AllCourses}"  SelectedItem="{Binding PreReqToAdd}" MinWidth="150" DockPanel.Dock="Right" Visibility="{Binding AddPreReqButtonVis}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CourseName}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                                 <TextBlock Text="PreReqs" DockPanel.Dock="Left" MinWidth="1200"/>
                             </DockPanel>
                         </Expander.Header>
                         <ListBox ItemsSource="{Binding PreReqs}" SelectedItem="{Binding SelectedPreReq}" MinHeight="30">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding DataContext.AllCourses, RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  SelectedItem="{Binding PreReq}" MinWidth="300">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding CourseName}" />
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
+                                    <TextBlock Text="{Binding PreReq.CourseName}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
+                            <ListBox.ContextMenu>
+                                <ContextMenu Visibility="{Binding RemovePreReqButtonVis}">
+                                    <MenuItem Header="Remove PreReq" Command="{Binding RemovePreReqCommand, Mode=OneWay}" >
+                                        <MenuItem.Icon>
+                                            <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                         </ListBox>
                     </Expander>
                     <Expander>

@@ -76,6 +76,7 @@ namespace WPFParisTraining.ViewModels
         public ICommand AddMHCCommand { get; private set; }
         public ICommand RemoveServiceCommand { get; private set; }
         public ICommand RemoveMHCCommand { get; private set; }
+        public ICommand SetPrimaryServiceCommand { get; private set; }
 
         //Control Display Settings
         private Visibility _addTeamButtonVis;
@@ -132,6 +133,7 @@ namespace WPFParisTraining.ViewModels
             AddMHCCommand = new DelegateCommand<object>(AddMHC);
             RemoveServiceCommand = new DelegateCommand<object>(RemoveService);
             RemoveMHCCommand = new DelegateCommand<object>(RemoveMHC);
+            SetPrimaryServiceCommand = new DelegateCommand<object>(SetPrimaryService);
         }
 
         protected override void InitalDisplayState()
@@ -335,6 +337,19 @@ namespace WPFParisTraining.ViewModels
                 MHCMembership = db.ServMems.Local.Where(s => s.ID == SelectedTeam.ID && s.Type == "T" && s.Main == true).OrderBy(s => s.Service.ServiceName).ToList();
                 SelectedMHC = null;
                 NotifyPropertyChanged("Changed");
+            }
+        }
+
+        private void SetPrimaryService(object Parameter)
+        {
+            if (SelectedService != null)
+            {
+                foreach (ServMem s in ServiceMembership)
+                {
+                    if (s.Pri != (s == SelectedService)) s.Pri = (s == SelectedService);
+                }
+                NotifyPropertyChanged("Changed");
+                ServiceMembership = db.ServMems.Local.Where(s => s.ID == SelectedTeam.ID && s.Type == "T" && s.Main == false).OrderBy(s => s.Service.ServiceName).ToList();
             }
         }
     }

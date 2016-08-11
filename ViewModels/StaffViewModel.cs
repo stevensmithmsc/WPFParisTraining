@@ -22,9 +22,11 @@ namespace WPFParisTraining.ViewModels
         public Title SelTitle { get { return (_selectedStaff != null) ? _selectedStaff.Title : null; } set { _selectedStaff.Title = value; NotifyPropertyChanged(); UpdateGenders(true); NotifyPropertyChanged("Changed"); } }
 
         private IEnumerable<TeamMem> _teamMemberships;
-        public IEnumerable<TeamMem> TeamMemberships { get { return _teamMemberships; } set { _teamMemberships = value;  NotifyPropertyChanged(); } }
         private TeamMem _selectedTeam;
+        private Team _teamToAdd;
+        public IEnumerable<TeamMem> TeamMemberships { get { return _teamMemberships; } set { _teamMemberships = value;  NotifyPropertyChanged(); } }
         public TeamMem SelectedTeam { get { return _selectedTeam; } set { _selectedTeam = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
+        public Team TeamToAdd { get { return _teamToAdd; } set { _teamToAdd = value;  NotifyPropertyChanged(); } }
 
         private IEnumerable<BoroughMem> _boroughMemberships;
         private BoroughMem _selectedBorough;
@@ -128,6 +130,9 @@ namespace WPFParisTraining.ViewModels
         public ICommand AddMHCCommand { get; private set; }
         public ICommand RemoveServiceCommand { get; private set; }
         public ICommand RemoveMHCCommand { get; private set; }
+        public ICommand SetPrimaryServiceCommand { get; private set; }
+        public ICommand SetMainTeamCommand { get; private set; }
+        public ICommand ToggleTeamActiveCommand { get; private set; }
 
         //Control Display Settings
         private Visibility _addStaffButtonVis;
@@ -252,6 +257,9 @@ namespace WPFParisTraining.ViewModels
             AddMHCCommand = new DelegateCommand<object>(AddMHC);
             RemoveServiceCommand = new DelegateCommand<object>(RemoveService);
             RemoveMHCCommand = new DelegateCommand<object>(RemoveMHC);
+            SetPrimaryServiceCommand = new DelegateCommand<object>(SetPrimaryService);
+            SetMainTeamCommand = new DelegateCommand<object>(SetMainTeam);
+            ToggleTeamActiveCommand = new DelegateCommand<object>(ToggleTeamActive);
         }
 
         protected override void InitalDisplayState()
@@ -443,14 +451,18 @@ namespace WPFParisTraining.ViewModels
 
         private void AddTeamMembership(object parameter)
         {
-            TeamMem newTeamMem = new TeamMem();
-            newTeamMem.StaffID = SelectedStaff.ID;
-            newTeamMem.Active = true;
-            newTeamMem.Main = SelectedStaff.TeamMems.Count() == 0 ? true : false;
-            db.TeamMems.Add(newTeamMem);
-            TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).ToList();
-            SelectedTeam = newTeamMem;
-            NotifyPropertyChanged("Changed");
+            if (TeamToAdd != null)
+            {
+                TeamMem newTeamMem = new TeamMem();
+                newTeamMem.StaffID = SelectedStaff.ID;
+                newTeamMem.Active = true;
+                newTeamMem.Main = SelectedStaff.TeamMems.Count() == 0 ? true : false;
+                newTeamMem.Team = TeamToAdd;
+                db.TeamMems.Add(newTeamMem);
+                TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
+                SelectedTeam = newTeamMem;
+                NotifyPropertyChanged("Changed");
+            }
         }
 
         private void RemoveTeamMembership(object parameter)
@@ -559,7 +571,7 @@ namespace WPFParisTraining.ViewModels
                     newservmem.ID = SelectedStaff.ID;
                     newservmem.Service = ServiceToAdd;
                     newservmem.Main = false;
-                    newservmem.Pri = false;
+                    newservmem.Pri = db.ServMems.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == false).Count() == 0 ? true : false;
                     db.ServMems.Add(newservmem);
                     ServiceMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == false).OrderBy(s => s.Service.ServiceName).ToList();
                     SelectedService = newservmem;
@@ -622,7 +634,7 @@ namespace WPFParisTraining.ViewModels
             AddStaffButtonVis = Visibility.Hidden;
             RemoveStaffButtonVis = Visibility.Hidden;
             AddTeamButtonVis = Visibility.Hidden;
-            RemoveTeamButtonVis = Visibility.Hidden;
+            RemoveTeamButtonVis = Visibility.Collapsed;
             AddTeamApprovButtonVis = Visibility.Hidden;
             RemoveTeamApprovButtonVis = Visibility.Hidden;
             AddReqButtonVis = Visibility.Hidden;
@@ -634,6 +646,41 @@ namespace WPFParisTraining.ViewModels
             TeamApprovVis = Visibility.Hidden;
             ReqVis = Visibility.Hidden;
             AttendVis = Visibility.Hidden;
+        }
+
+        private void SetPrimaryService(object Parameter)
+        {
+            if (SelectedService != null)
+            {
+                foreach(ServMem s in ServiceMemberships)
+                {
+                    if (s.Pri != (s == SelectedService)) s.Pri = (s == SelectedService);
+                }
+                NotifyPropertyChanged("Changed");
+                ServiceMemberships = db.ServMems.Local.Where(s => s.ID == SelectedStaff.ID && s.Type == "S" && s.Main == false).OrderBy(s => s.Service.ServiceName).ToList();
+            }
+        }
+
+        private void SetMainTeam(object Parameter)
+        {
+            if (SelectedTeam != null)
+            {
+                foreach(TeamMem t in TeamMemberships)
+                {
+                    if (t.Main != (t == SelectedTeam)) t.Main = (t == SelectedTeam);
+                }
+                NotifyPropertyChanged("Changed");
+                TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
+            }
+        }
+
+        private void ToggleTeamActive(object Parameter)
+        {
+            if (SelectedTeam != null)
+            {
+                SelectedTeam.Active = !SelectedTeam.Active;
+                TeamMemberships = db.TeamMems.Local.Where(t => t.StaffID == SelectedStaff.ID).OrderBy(t => t.Team.TeamName).ToList();
+            }
         }
     }
 }

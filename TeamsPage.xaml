@@ -13,6 +13,7 @@
 
     <Page.Resources>
         <Helpers:BooltoVis x:Key="BooltoVis"/>
+        <Helpers:BooltoFontWeight x:Key="BooltoFontWeight"/>
     </Page.Resources>
 
     <Page.DataContext>
@@ -197,7 +198,7 @@
                     </Grid>
                     <DockPanel Grid.Row="1">
                         <TextBlock Text="MH/Community" DockPanel.Dock="Top" />
-                        <Button DockPanel.Dock="Right" Command="{Binding RemoveMHCCommand, Mode=OneWay}" Visibility="{Binding RemoveServicesVis}" >
+                        <Button DockPanel.Dock="Right" Command="{Binding RemoveMHCCommand, Mode=OneWay}" Visibility="Collapsed" >
                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                         </Button>
                         <Button DockPanel.Dock="Right" Command="{Binding AddMHCCommand, Mode=OneWay}" Visibility="{Binding AddServicesVis}">
@@ -213,7 +214,7 @@
                     </DockPanel>
                     <DockPanel Grid.Row="1" Grid.Column="1">
                         <TextBlock Text="Service" DockPanel.Dock="Top"/>
-                        <Button DockPanel.Dock="Right" Command="{Binding RemoveServiceCommand, Mode=OneWay}" Visibility="{Binding RemoveServicesVis}">
+                        <Button DockPanel.Dock="Right" Command="{Binding RemoveServiceCommand, Mode=OneWay}" Visibility="Collapsed">
                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                         </Button>
                         <Button DockPanel.Dock="Right" Command="{Binding AddServiceCommand, Mode=OneWay}" Visibility="{Binding AddServicesVis}">
@@ -229,7 +230,7 @@
                     </DockPanel>
                     <DockPanel Grid.Row="1" Grid.Column="2">
                         <TextBlock Text="Borough" DockPanel.Dock="Top"/>
-                        <Button DockPanel.Dock="Right" Command="{Binding RemoveBoroughCommand, Mode=OneWay}" Visibility="{Binding RemoveServicesVis}" >
+                        <Button DockPanel.Dock="Right" Command="{Binding RemoveBoroughCommand, Mode=OneWay}" Visibility="Collapsed" >
                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                         </Button>
                         <Button DockPanel.Dock="Right" Command="{Binding AddBoroughCommand, Mode=OneWay}" Visibility="{Binding AddServicesVis}">
@@ -249,13 +250,32 @@
                                 <TextBlock Text="{Binding Service.ServiceName}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ContextMenu>
+                            <ContextMenu Visibility="{Binding RemoveServicesVis}">
+                                <MenuItem Header="Remove Entry" Command="{Binding RemoveMHCCommand, Mode=OneWay}" >
+                                    <MenuItem.Icon>
+                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                     </ListBox>
                     <ListBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ServiceMembership}" SelectedItem="{Binding SelectedService}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Service.ServiceName}"/>
+                                <TextBlock Text="{Binding Service.ServiceName}" FontWeight="{Binding Pri, Converter={StaticResource BooltoFontWeight}, Mode=OneWay}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ContextMenu>
+                            <ContextMenu Visibility="{Binding AddServicesVis}">
+                                <MenuItem Header="Make Primary Service" Command="{Binding SetPrimaryServiceCommand, Mode=OneWay}" />
+                                <MenuItem Header="Remove Service" Command="{Binding RemoveServiceCommand, Mode=OneWay}" Visibility="{Binding RemoveServicesVis}">
+                                    <MenuItem.Icon>
+                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                     </ListBox>
                     <ListBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding BoroughMembership}" SelectedItem="{Binding SelectedBorough}">
                         <ListBox.ItemTemplate>
@@ -263,6 +283,15 @@
                                 <TextBlock Text="{Binding Borough.BoroughName}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ContextMenu>
+                            <ContextMenu Visibility="{Binding RemoveServicesVis}">
+                                <MenuItem Header="Remove Borough" Command="{Binding RemoveBoroughCommand, Mode=OneWay}" >
+                                    <MenuItem.Icon>
+                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                     </ListBox>
                 </Grid>
             </Border>

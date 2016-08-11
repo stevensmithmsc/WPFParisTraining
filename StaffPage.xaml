@@ -257,47 +257,46 @@
                             <Border BorderThickness="5" Grid.Column="1">
                                 <StackPanel>
                                     <DockPanel>
+                                        <TextBlock Text="Teams" DockPanel.Dock="Left" Margin="0,0,10,0"/>
                                         <Button DockPanel.Dock="Right" Command="{Binding AddTeamCommand, Mode=OneWay}" Visibility="{Binding AddTeamButtonVis}" >
                                             <fa:FontAwesome Icon="Plus" Foreground="Green" FontSize="14" />
                                         </Button>
-                                        <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" Visibility="{Binding RemoveTeamButtonVis}" >
+                                        <Button DockPanel.Dock="Right" Command="{Binding RemoveTeamCommand, Mode=OneWay}" Visibility="Collapsed" >
                                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                                         </Button>
-                                        <TextBlock Text="Teams" />
+                                        <ComboBox ItemsSource="{Binding Teams}" Visibility="{Binding AddTeamCommand}" SelectedItem="{Binding TeamToAdd}" >
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding TeamName}" FontSize="10"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </DockPanel>
-                                    <DataGrid MinHeight="75" ItemsSource="{Binding TeamMemberships}" SelectedItem="{Binding SelectedTeam}" HeadersVisibility="None" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
-                                        <DataGrid.Columns>
-                                            <DataGridTemplateColumn MinWidth="250">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Team.TeamName}" FontWeight="{Binding Main, Converter={StaticResource BooltoFontWeight}, Mode=OneWay}" FontStyle="{Binding Active, Converter={StaticResource BooltoFontStyle}, Mode=OneWay}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                                <DataGridTemplateColumn.CellEditingTemplate>
-                                                    <DataTemplate>
-                                                        <DockPanel>
-                                                            <CheckBox IsChecked="{Binding Active}" Content="Active"  DockPanel.Dock="Right"/>
-                                                            <CheckBox IsChecked="{Binding Main}" Content="Main" DockPanel.Dock="Right"/>
-                                                            <ComboBox ItemsSource="{Binding DataContext.Teams, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding Team}" >
-                                                                <ComboBox.ItemTemplate>
-                                                                    <DataTemplate>
-                                                                        <TextBlock Text="{Binding TeamName}" />
-                                                                    </DataTemplate>
-                                                                </ComboBox.ItemTemplate>
-                                                            </ComboBox>
-                                                        </DockPanel>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellEditingTemplate>
-                                            </DataGridTemplateColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                    <ListBox MinHeight="75" ItemsSource="{Binding TeamMemberships}" SelectedItem="{Binding SelectedTeam}" >
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Team.TeamName}" FontWeight="{Binding Main, Converter={StaticResource BooltoFontWeight}, Mode=OneWay}" FontStyle="{Binding Active, Converter={StaticResource BooltoFontStyle}, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ContextMenu>
+                                            <ContextMenu Visibility="{Binding AddTeamCommand}">
+                                                <MenuItem Header="Make Main Team" Command="{Binding SetMainTeamCommand, Mode=OneWay}"  />
+                                                <MenuItem Header="Toggle Active" Command="{Binding ToggleTeamActiveCommand, Mode=OneWay}"  />
+                                                <MenuItem Header="Remove Team" Command="{Binding RemoveTeamCommand, Mode=OneWay}" Visibility="{Binding RemoveTeamButtonVis}">
+                                                    <MenuItem.Icon>
+                                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </ListBox.ContextMenu>                                                  
+                                    </ListBox>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="5" Grid.Column="1" Grid.Row="1">
                                 <StackPanel>
                                     <DockPanel>
                                         <TextBlock Text="MH/Community" DockPanel.Dock="Left" Margin="0,0,10,0"/>
-                                        <Button DockPanel.Dock="Right" Visibility="{Binding RemoveTeamButtonVis}" Command="{Binding RemoveMHCCommand, Mode=OneWay}" >
+                                        <Button DockPanel.Dock="Right" Visibility="Collapsed" Command="{Binding RemoveMHCCommand, Mode=OneWay}" >
                                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                                         </Button>
                                         <Button DockPanel.Dock="Right" Visibility="{Binding AddTeamButtonVis}" Command="{Binding AddMHCCommand, Mode=OneWay}" >
@@ -317,6 +316,15 @@
                                                 <TextBlock Text="{Binding Service.ServiceName}"/>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
+                                        <ListBox.ContextMenu>
+                                            <ContextMenu Visibility="{Binding RemoveTeamButtonVis}">
+                                                <MenuItem Header="Remove Entry" Command="{Binding RemoveMHCCommand, Mode=OneWay}" >
+                                                    <MenuItem.Icon>
+                                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </ListBox.ContextMenu>
                                     </ListBox>
                                 </StackPanel>
                             </Border>
@@ -352,7 +360,7 @@
                                 <StackPanel>
                                     <DockPanel>
                                         <TextBlock Text="Borough" DockPanel.Dock="Left" Margin="0,0,10,0"/>
-                                        <Button DockPanel.Dock="Right" Visibility="{Binding RemoveTeamButtonVis}" Command="{Binding RemoveBoroughCommand, Mode=OneWay}">
+                                        <Button DockPanel.Dock="Right" Visibility="Collapsed" Command="{Binding RemoveBoroughCommand, Mode=OneWay}">
                                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                                         </Button>
                                         <Button DockPanel.Dock="Right" Visibility="{Binding AddTeamButtonVis}" Command="{Binding AddBoroughCommand, Mode=OneWay}" >
@@ -372,6 +380,15 @@
                                                 <TextBlock Text="{Binding Borough.BoroughName}" />
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
+                                        <ListBox.ContextMenu>
+                                            <ContextMenu Visibility="{Binding RemoveTeamButtonVis}">
+                                                <MenuItem Header="Remove Borough" Command="{Binding RemoveBoroughCommand, Mode=OneWay}" >
+                                                    <MenuItem.Icon>
+                                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </ListBox.ContextMenu>
                                     </ListBox>
                                 </StackPanel>
                             </Border>
@@ -379,7 +396,7 @@
                                 <StackPanel>
                                     <DockPanel>
                                         <TextBlock Text="Service" DockPanel.Dock="Left" Margin="0,0,10,0"/>
-                                        <Button DockPanel.Dock="Right" Visibility="{Binding RemoveTeamButtonVis}" Command="{Binding RemoveServiceCommand, Mode=OneWay}" >
+                                        <Button DockPanel.Dock="Right" Visibility="Collapsed" Command="{Binding RemoveServiceCommand, Mode=OneWay}" >
                                             <fa:FontAwesome Icon="Times" Foreground="Red" FontSize="14" />
                                         </Button>
                                         <Button DockPanel.Dock="Right" Visibility="{Binding AddTeamButtonVis}" Command="{Binding AddServiceCommand, Mode=OneWay}"  >
@@ -396,9 +413,19 @@
                                     <ListBox MinHeight="30" ItemsSource="{Binding ServiceMemberships}" SelectedItem="{Binding SelectedService}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Service.ServiceName}"/>
+                                                <TextBlock Text="{Binding Service.ServiceName}" FontWeight="{Binding Pri, Converter={StaticResource BooltoFontWeight}, Mode=OneWay}"/>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
+                                        <ListBox.ContextMenu>
+                                            <ContextMenu Visibility="{Binding AddTeamButtonVis}">
+                                                <MenuItem Header="Make Primary Service" Command="{Binding SetPrimaryServiceCommand, Mode=OneWay}" />
+                                                <MenuItem Header="Remove Service" Command="{Binding RemoveServiceCommand, Mode=OneWay}" Visibility="{Binding RemoveTeamButtonVis}">
+                                                    <MenuItem.Icon>
+                                                        <fa:ImageAwesome Icon="Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </ListBox.ContextMenu>
                                     </ListBox>
                                 </StackPanel>
                             </Border>
@@ -621,7 +648,7 @@
                     <Expander Header="Attendances" Visibility="{Binding AttendVis}" IsExpanded="{Binding AttendExpanded}">
                         <DataGrid ItemsSource="{Binding StaffAttendances}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Date" Binding="{Binding Sess.StartDate}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Date" Binding="{Binding Sess.StartDate, StringFormat=dd/MM/yyyy}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Course" Binding="{Binding Sess.Course.CourseName}" IsReadOnly="True"/>
                                 <DataGridTemplateColumn Header="Outcome">
                                     <DataGridTemplateColumn.CellTemplate>

@@ -25,6 +25,9 @@ namespace WPFParisTraining.ViewModels
         private CourseReq _selectedPreReq;
         public CourseReq SelectedPreReq { get { return _selectedPreReq; } set { _selectedPreReq = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Changed"); } }
 
+        private Course _preReqToAdd;
+        public Course PreReqToAdd { get { return _preReqToAdd; } set { _preReqToAdd = value; NotifyPropertyChanged(); } }
+
         private IEnumerable<Sess> _sessionList;
         public IEnumerable<Sess> SessionList { get { return _sessionList; } set { _sessionList = value; NotifyPropertyChanged(); } }
 
@@ -89,7 +92,7 @@ namespace WPFParisTraining.ViewModels
             RequirementStatuses = db.Statuses.Local.ToList();
             NotifyPropertyChanged("RequirementStatuses");
             db.Courses.Load();
-            AllCourses = db.Courses.OrderBy(c => c.CourseName).ToList();
+            AllCourses = db.Courses.Where(c => c.External == false && c.Obselete == false).OrderBy(c => c.CourseName).ToList();
             NotifyPropertyChanged("AllCourses");
         }
 
@@ -183,12 +186,23 @@ namespace WPFParisTraining.ViewModels
 
         private void AddPreReq(object parameter)
         {
-            CourseReq newreq = new CourseReq();
-            newreq.CourseID = SelectedCourse.ID;
-            db.CourseReqs.Add(newreq);
-            PreReqs = db.CourseReqs.Local.Where(p => p.CourseID == SelectedCourse.ID).ToList();
-            SelectedPreReq = newreq;
-            NotifyPropertyChanged("Changed");
+            if (PreReqToAdd != null)
+            {
+                if (PreReqToAdd == SelectedCourse)
+                {
+                    MessageBox.Show("You cannot add a course as it's own prereq!", "Training Database", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                else
+                {
+                    CourseReq newreq = new CourseReq();
+                    newreq.CourseID = SelectedCourse.ID;
+                    newreq.PreReq = PreReqToAdd;
+                    db.CourseReqs.Add(newreq);
+                    PreReqs = db.CourseReqs.Local.Where(p => p.CourseID == SelectedCourse.ID).ToList();
+                    SelectedPreReq = newreq;
+                    NotifyPropertyChanged("Changed");
+                }
+            }
         }
 
         private void RemovePreReq(object parameter)
