@@ -57,6 +57,15 @@
                         <TextBlock Text="Requirements" />
                     </StackPanel>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="TemplateButton" Click="TemplateButton_Click"  >
+                        <fa:ImageAwesome Icon="MailForward" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="E-Mail" />
+                        <TextBlock Text="Templates" />
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </Border>
         <Frame Name="MainFrame" Grid.Column="1" Source="StartPage.xaml"/>

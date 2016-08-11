@@ -76,6 +76,9 @@
     <Compile Include="CoursesPage.xaml.cs">
       <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EMailTemplatesPage.xaml.cs">
+      <DependentUpon>EMailTemplatesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Attendance.cs">
       <DependentUpon>TrainDB.tt</DependentUpon>
     </Compile>
@@ -205,6 +208,7 @@
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\DBViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
+    <Compile Include="ViewModels\EMailTemplateViewModel.cs" />
     <Compile Include="ViewModels\LocationsViewModel.cs" />
     <Compile Include="ViewModels\SessionsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />
@@ -216,6 +220,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CoursesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EMailTemplatesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

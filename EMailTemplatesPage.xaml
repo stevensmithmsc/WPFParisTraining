@@ -1,0 +1,70 @@
+﻿<Page x:Class="WPFParisTraining.EMailTemplatesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:vm="clr-namespace:WPFParisTraining.ViewModels"
+      xmlns:local="clr-namespace:WPFParisTraining"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="EMailTemplatesPage">
+
+    <Page.DataContext>
+        <vm:EMailTemplateViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="Templates" />
+            <ListBox MinHeight="100" ItemsSource="{Binding TemplateList}" SelectedItem="{Binding SelectedTemplate}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Template_Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Template Name: " />
+            <TextBox  Text="{Binding SelectedTemplate.Template_Name}" Grid.Column="1"/>
+            <TextBlock Text="First Line: " Grid.Row="1"/>
+            <TextBox  Text="{Binding SelectedTemplate.First_Line}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap"/>
+            <TextBlock Text="Details: " Grid.Row="2" />
+            <TextBox AcceptsReturn="True" Text="{Binding SelectedTemplate.Details}" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap"/>           
+        </Grid>
+        <StackPanel Grid.Row="2">
+            <TextBlock Text="Used By" />
+            <ScrollViewer>
+                <ListBox MinHeight="100" ItemsSource="{Binding CoursesUsing}" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CourseName}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </StackPanel>
+        <FlowDocumentPageViewer Grid.Column="1" Grid.RowSpan="3">
+            
+        </FlowDocumentPageViewer>
+    </Grid>
+</Page>

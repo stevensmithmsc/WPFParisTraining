@@ -54,5 +54,10 @@ namespace WPFParisTraining
         {
             MainFrame.Navigate(new BulkReq());
         }
+
+        private void TemplateButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new EMailTemplatesPage());
+        }
     }
 }

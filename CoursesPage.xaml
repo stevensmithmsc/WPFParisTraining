@@ -81,7 +81,16 @@
                 <DataTemplate>
                     <Border BorderThickness="5">
                         <StackPanel>
-                            <TextBlock Text="E-mail Template still needs adding!" Foreground="Red"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="E-Mail Template: "/>
+                                <ComboBox ItemsSource="{Binding DataContext.Templates, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" SelectedItem="{Binding mail_temp}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Template_Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>                            
                             <TextBlock Text="Notes:" />
                             <TextBox Text="{Binding Notes}" TextWrapping="Wrap" MinHeight="30" />
                         </StackPanel>

@@ -44,6 +44,7 @@ namespace WPFParisTraining.ViewModels
         public IEnumerable<Location> Locations { get; private set; }
         public IEnumerable<Status> RequirementStatuses { get; private set; }
         public IEnumerable<Course> AllCourses { get; private set; }
+        public IEnumerable<mail_temp> Templates { get; private set; }
 
         //Search Fields
         private string _searchName;
@@ -94,6 +95,8 @@ namespace WPFParisTraining.ViewModels
             db.Courses.Load();
             AllCourses = db.Courses.Where(c => c.External == false && c.Obselete == false).OrderBy(c => c.CourseName).ToList();
             NotifyPropertyChanged("AllCourses");
+            Templates = db.mail_temp.ToList();
+            NotifyPropertyChanged("Templates");
         }
 
         protected override void LoadInitalData()
