@@ -20,9 +20,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="5*" />
             <RowDefinition Height="2*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Text="Templates" />
@@ -49,10 +49,10 @@
             <TextBlock Text="First Line: " Grid.Row="1"/>
             <TextBox  Text="{Binding SelectedTemplate.First_Line}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap"/>
             <TextBlock Text="Details: " Grid.Row="2" />
-            <TextBox AcceptsReturn="True" Text="{Binding SelectedTemplate.Details}" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap"/>           
+            <TextBox AcceptsReturn="True" Text="{Binding SelectedTemplate.Details}" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap"/>
         </Grid>
-        <StackPanel Grid.Row="2">
-            <TextBlock Text="Used By" />
+        <DockPanel Grid.Row="2">
+            <TextBlock Text="Used By" DockPanel.Dock="Top"/>
             <ScrollViewer>
                 <ListBox MinHeight="100" ItemsSource="{Binding CoursesUsing}" >
                     <ListBox.ItemTemplate>
@@ -62,9 +62,25 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </ScrollViewer>
-        </StackPanel>
-        <FlowDocumentPageViewer Grid.Column="1" Grid.RowSpan="3">
-            
+        </DockPanel>
+        <FlowDocumentPageViewer Grid.Column="1" Grid.RowSpan="3"  >
+            <!--Document="{Binding SampleMessage, Mode=OneWay}"-->
+            <FlowDocument xml:space="preserve" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                <Paragraph>Dear ....</Paragraph>
+                <Paragraph><Run Text="{Binding SelectedTemplate.First_Line}" /></Paragraph>
+                <Paragraph>Course Details....</Paragraph>
+                <Paragraph><Run Text="{Binding SelectedTemplate.Details}" /></Paragraph>
+                <Paragraph>Details of where to find the locations can be found via the following link:- </Paragraph>
+                <Paragraph TextAlignment="center">
+                    <Hyperlink NavigateUri="http://portal/ict/css/training/Pages/Paris-Training-Locations.aspx">http://portal/ict/css/training/Pages/Paris-Training-Locations.aspx</Hyperlink>
+                </Paragraph>
+                <Paragraph Foreground="#595959"><Span FontStyle="italic">(Parking is not available at Blenheim so please <Run FontWeight="bold">DO NOT</Run> park in the marked bays surrounding Blenheim. There is a car park opposite which is pay and display at £5 for all day or £3 for 3 hours. If your training is scheduled for Training Room 1 or 2 at Royal Oldham, please note that the location is at Willows Ward, Forest House and <Run FontWeight="bold">NOT</Run> Pennine Acute Training Centre.)</Span></Paragraph>
+                <Paragraph>If for any reason you are unable to attend any part of the training please contact the IT Training Department as soon as possible on 0161 716 3320 or 0161 716 1234</Paragraph>
+                <Paragraph>Kind Regards</Paragraph>
+                <Paragraph FontFamily="bradley hand itc">IT Training</Paragraph>
+            </FlowDocument>
         </FlowDocumentPageViewer>
+
+
     </Grid>
 </Page>
