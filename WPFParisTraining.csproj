@@ -73,6 +73,9 @@
     <Compile Include="BulkReq.xaml.cs">
       <DependentUpon>BulkReq.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CohortsPage.xaml.cs">
+      <DependentUpon>CohortsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CoursesPage.xaml.cs">
       <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
@@ -205,6 +208,7 @@
     </Compile>
     <Compile Include="Helpers\BooltoVis.cs" />
     <Compile Include="ViewModels\BulkReqViewModel.cs" />
+    <Compile Include="ViewModels\CohortsViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\DBViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
@@ -216,6 +220,10 @@
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="BulkReq.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CohortsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

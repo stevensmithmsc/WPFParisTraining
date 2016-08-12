@@ -59,5 +59,15 @@ namespace WPFParisTraining
         {
             MainFrame.Navigate(new EMailTemplatesPage());
         }
+
+        private void WebButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Uri("http://ParisTraining/", UriKind.Absolute));
+        }
+
+        private void CohortsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new CohortsPage());
+        }
     }
 }

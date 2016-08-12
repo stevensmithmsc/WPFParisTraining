@@ -59,12 +59,24 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button Name="TemplateButton" Click="TemplateButton_Click"  >
-                        <fa:ImageAwesome Icon="MailForward" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                        <fa:ImageAwesome Icon="EnvelopeOutline" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
                     </Button>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="E-Mail" />
                         <TextBlock Text="Templates" />
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="CohortsButton" Click="CohortsButton_Click"  >
+                        <fa:ImageAwesome Icon="ObjectGroup" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Cohorts" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="WebButton" Click="WebButton_Click">
+                        <fa:ImageAwesome Icon="Globe" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Website" VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
         </Border>
