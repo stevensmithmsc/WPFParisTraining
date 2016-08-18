@@ -78,6 +78,12 @@
                     </Button>
                     <TextBlock Text="Website" VerticalAlignment="Center"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="RegButton" Click="RegButton_Click" >
+                        <fa:ImageAwesome Icon="Xing" VerticalAlignment="Center" HorizontalAlignment="Center" Width="50"/>
+                    </Button>
+                    <TextBlock Text="Register" VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
         </Border>
         <Frame Name="MainFrame" Grid.Column="1" Source="StartPage.xaml"/>

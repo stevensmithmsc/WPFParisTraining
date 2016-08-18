@@ -69,5 +69,10 @@ namespace WPFParisTraining
         {
             MainFrame.Navigate(new CohortsPage());
         }
+
+        private void RegButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Register());
+        }
     }
 }

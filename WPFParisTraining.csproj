@@ -191,8 +191,12 @@
     <Compile Include="Helpers\BooltoCollapsed.cs" />
     <Compile Include="Helpers\BooltoFontStyle.cs" />
     <Compile Include="Helpers\BooltoFontWeight.cs" />
+    <Compile Include="Helpers\SessionRegister.cs" />
     <Compile Include="LocationsPage.xaml.cs">
       <DependentUpon>LocationsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
     <Compile Include="SessionsPage.xaml.cs">
       <DependentUpon>SessionsPage.xaml</DependentUpon>
@@ -214,6 +218,7 @@
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\EMailTemplateViewModel.cs" />
     <Compile Include="ViewModels\LocationsViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SessionsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />
     <Compile Include="ViewModels\StartVM.cs" />
@@ -251,6 +256,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Register.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SessionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

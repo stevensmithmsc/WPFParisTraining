@@ -9,9 +9,9 @@ using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.ViewModels
 {
-    public abstract class DBViewModel : ViewModel, IDisposable
+    public abstract class DBViewModel : ViewModel
     {
-        protected StaffEntities db;
+        protected static StaffEntities db;
         protected bool _addMode;
 
         public bool Changed { get { return db.ChangeTracker.HasChanges(); } }
@@ -23,7 +23,7 @@ namespace WPFParisTraining.ViewModels
         public DBViewModel()
         {
             //set db context
-            db = new StaffEntities();
+            if (db == null) db = new StaffEntities();
 
             LoadRefData();
             LoadInitalData();
@@ -52,9 +52,5 @@ namespace WPFParisTraining.ViewModels
             } 
         }
 
-        public void Dispose()
-        {
-            db.Dispose();
-        }
     }
 }

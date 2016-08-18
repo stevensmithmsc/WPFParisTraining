@@ -1,0 +1,76 @@
+<!--            <FlowDocument>
+                <Section>
+                    <Table>
+                        <Table.Resources>
+                            <!-- Style for header/footer rows. -->
+                            <Style x:Key="headerFooterRowStyle" TargetType="{x:Type TableRowGroup}">
+                                <Setter Property="FontWeight" Value="DemiBold"/>
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="Background" Value="LightGray"/>
+                            </Style>
+
+                            <!-- Style for data rows. -->
+                            <Style x:Key="dataRowStyle" TargetType="{x:Type TableRowGroup}">
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="FontStyle" Value="Italic"/>
+                            </Style>
+                        </Table.Resources>
+
+                        <Table.Columns>
+                            <TableColumn/>
+                            <TableColumn/>
+                            <TableColumn/>
+                            <TableColumn/>
+                            <TableColumn/>
+                            <TableColumn/>
+                        </Table.Columns>
+
+                        <!-- This TableRowGroup hosts a header row for the table. -->
+                        <TableRowGroup Style="{StaticResource headerFooterRowStyle}">
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>Name</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Job Title</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Main Team</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Signiture</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Declaration Recieved</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Comments</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <!-- This TableRowGroup hosts the main data rows for the table. -->
+                        <TableRowGroup Style="{StaticResource dataRowStyle}">
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph Foreground="Blue">Blue</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>1</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>2</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>3</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>4</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>5</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                </Section>
+            </FlowDocument> -->

@@ -200,13 +200,14 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Search:" Visibility="{Binding PersonSearchVis}" />
                 <TextBox Grid.Column="1" Margin="5,0,0,0" Text="{Binding NameFilter}" Visibility="{Binding PersonSearchVis}"/>
                 <Button Grid.Column="2" Margin="0,0,5,0" Command="{Binding FilterCommand, Mode=OneWay}" Visibility="{Binding PersonSearchVis}">
                     <fa:FontAwesome Icon="Search" FontSize="14" />
                 </Button>
-                <TextBlock Text="Person:" Grid.Column="3" />
+                <TextBlock Text="Person:" Grid.Column="3" Visibility="{Binding PersonSearchVis}"/>
                 <ComboBox Grid.Column="4" ItemsSource="{Binding StaffRequiring}" SelectedItem="{Binding BookStaff}" Visibility="{Binding PersonSearchVis}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -220,7 +221,13 @@
                         <TextBlock Text=" Book Person" />
                     </StackPanel>
                 </Button>
-                <DataGrid Grid.Row="1" Grid.ColumnSpan="6" ItemsSource="{Binding Bookings}" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
+                <Button ToolTip="Print Register for Selected Session" Grid.Column="6" Margin="5,0" Visibility="{Binding PersonSearchVis}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:FontAwesome Icon="Print" FontSize="14" />
+                        <TextBlock Text=" Print Register" />
+                    </StackPanel>
+                </Button>
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="7" ItemsSource="{Binding Bookings}" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Staff" Binding="{Binding Staff.SimpleName}" IsReadOnly="True" SortMemberPath="Staff.Sname"/>
                         <DataGridTemplateColumn Header="Outcome">
