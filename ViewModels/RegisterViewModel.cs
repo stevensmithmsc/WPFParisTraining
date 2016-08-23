@@ -15,6 +15,7 @@ namespace WPFParisTraining.ViewModels
         public RegisterViewModel()
         {
             SampleDoc = new FlowDocument();
+            SampleDoc.PageWidth = 1200;
             SampleDoc.Blocks.Add(SessionRegister.Generate());
             NotifyPropertyChanged("SampleDoc");
         }

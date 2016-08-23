@@ -63,7 +63,7 @@
                 </ListBox>
             </ScrollViewer>
         </DockPanel>
-        <FlowDocumentPageViewer Grid.Column="1" Grid.RowSpan="3"  >
+        <FlowDocumentScrollViewer Grid.Column="1" Grid.RowSpan="3"  >
             <!--Document="{Binding SampleMessage, Mode=OneWay}"-->
             <FlowDocument xml:space="preserve" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                 <Paragraph>Dear ....</Paragraph>
@@ -79,7 +79,7 @@
                 <Paragraph>Kind Regards</Paragraph>
                 <Paragraph FontFamily="bradley hand itc">IT Training</Paragraph>
             </FlowDocument>
-        </FlowDocumentPageViewer>
+        </FlowDocumentScrollViewer>
 
 
     </Grid>

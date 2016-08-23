@@ -14,8 +14,6 @@
     </Page.DataContext>
     
     <Grid>
-        <FlowDocumentPageViewer Document="{Binding SampleDoc}">
-
-        </FlowDocumentPageViewer>
+        <FlowDocumentScrollViewer Document="{Binding SampleDoc}"/>
     </Grid>
 </Page>
