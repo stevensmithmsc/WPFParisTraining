@@ -4,16 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using WPFParisTraining.Entity;
 
 namespace WPFParisTraining.Helpers
 {
     public static class SessionRegister
     {
-        public static Section Generate()
+        public static Section Generate(Sess Session)
         {
             Section reg = new Section();
+
+            Paragraph topBit = new Paragraph();
+            
+            Image parisLogoImage = new Image();
+            parisLogoImage.Source = new BitmapImage(new Uri("C:\\Users\\steven.smith\\Source\\Repos\\WPFParisTraining\\Images\\Paris Logo.png", UriKind.RelativeOrAbsolute));
+            //parisLogoImage.Source = new BitmapImage(new Uri("pack://application:,,,/WPFParisTraining;Images/Paris_Logo", UriKind.RelativeOrAbsolute));
+            parisLogoImage.Width = 100;
+            parisLogoImage.HorizontalAlignment = HorizontalAlignment.Left;
+            // var img = new BitmapImage(new Uri("pack://application:,,,/(your project name);component/Resources/PangoIcon.png", UriKind.RelativeOrAbsolute));
+
+            Image pennineLogoImage = new Image();
+            pennineLogoImage.Source = new BitmapImage(new Uri("C:\\Users\\steven.smith\\Source\\Repos\\WPFParisTraining\\Images\\trust colour logo.png", UriKind.RelativeOrAbsolute));
+            pennineLogoImage.Width = 200;
+            pennineLogoImage.HorizontalAlignment = HorizontalAlignment.Right;
+
+
+
             Table regtable = new Table();
             reg.Blocks.Add(regtable);
 
@@ -32,9 +52,37 @@ namespace WPFParisTraining.Helpers
                 //regtable.Columns[x].Background = (x % 2 == 1) ? Brushes.LightGray : Brushes.White;
             }
 
+            TableRowGroup top = new TableRowGroup();
+            top.Rows.Add(new TableRow());
+            top.Rows[0].Cells.Add(new TableCell(new BlockUIContainer(parisLogoImage)));
+            top.Rows[0].Cells[0].RowSpan = 3;
+            top.Rows[0].Cells.Add(new TableCell(new Paragraph(new Run("Paris Training Register"))));
+            top.Rows[0].Cells[1].ColumnSpan = 4;
+            top.Rows[0].Cells[1].FontWeight = FontWeights.Bold;
+            top.Rows[0].Cells[1].FontSize = 36;
+            top.Rows[0].Cells.Add(new TableCell(new BlockUIContainer(pennineLogoImage)));
+            top.Rows.Add(new TableRow());
+            top.Rows[1].Cells.Add(new TableCell(new Paragraph(new Run(((DateTime)Session.Strt).ToLongDateString()))));
+            top.Rows[1].Cells[0].ColumnSpan = 4;
+            top.Rows[1].Cells.Add(new TableCell(new Paragraph(new Run("Start Time: "))));
+            top.Rows.Add(new TableRow());
+            top.Rows[2].Cells.Add(new TableCell(new Paragraph(new Run(Session.Course.CourseName))));
+            top.Rows[2].Cells[0].ColumnSpan = 4;
+            top.Rows[2].Cells[0].FontSize = 24;
+            top.Rows[2].Cells.Add(new TableCell(new Paragraph(new Run("End Time: "))));
+            top.Rows.Add(new TableRow());
+            top.Rows[3].Cells.Add(new TableCell(new Paragraph(new Run(String.Format("Trainer: {0}",Session.Trainer.SimpleName)))));
+            top.Rows[3].Cells[0].ColumnSpan = 2;
+            top.Rows[3].Cells.Add(new TableCell(new Paragraph(new Run(String.Format("Location: {0}", Session.Location.LocationName)))));
+            top.Rows[3].Cells[1].ColumnSpan = 4;
+            top.Rows.Add(new TableRow());
+            top.Rows[4].Cells.Add(new TableCell());
+
+            regtable.RowGroups.Add(top);
+
             TableRowGroup header = new TableRowGroup();
             header.Rows.Add(new TableRow());
-            header.Rows[0].FontWeight = System.Windows.FontWeights.Bold;
+            header.Rows[0].FontWeight = FontWeights.Bold;
             header.Rows[0].Cells.Add(new TableCell(new Paragraph(new Run("Name"))));
             //header.Rows[0].Cells[0].BorderBrush = Brushes.Red;
             //header.Rows[0].Cells[0].BorderThickness = (Thickness)tc.ConvertFromString("0.02in");
@@ -56,34 +104,49 @@ namespace WPFParisTraining.Helpers
 
             TableRowGroup data = new TableRowGroup();
 
-            int numberOfPeople = 5;
-            for (int x = 0; x < numberOfPeople; x++)
+            int numberOfRows = 0;
+            
+            foreach (Attendance a in Session.Attendances)
             {
                 data.Rows.Add(new TableRow());
-                data.Rows[x].Cells.Add(BodyTableCell(new Paragraph(new Run(String.Format("Idiot {0}", x+1)))));
-                data.Rows[x].Cells.Add(BodyTableCell(new Paragraph(new Run("Idiot"))));
-                data.Rows[x].Cells.Add(BodyTableCell(new Paragraph(new Run("Stupid Team"))));
-                data.Rows[x].Cells.Add(BodyTableCell());
-                data.Rows[x].Cells.Add(BodyTableCell());
-                data.Rows[x].Cells.Add(BodyTableCell(new Paragraph(new Run("An Idiot"))));
-                data.Rows[x].Background = (x%2 == 1)?Brushes.Transparent : Brushes.LightGray;
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell(new Paragraph(new Run(a.Staff.FullName))));
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell(new Paragraph(new Run(a.Staff.JobTitle))));
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell(new Paragraph(new Run((a.Staff.MainTeam==null)?"":a.Staff.MainTeam.TeamName))));
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell(new Paragraph(new Run((a.Outcome!=0)?a.Status.StatusDesc:""))));
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell(new Paragraph(new Run((a.Staff.RA==null||a.Staff.RA.Declaration==null)?"":((DateTime)a.Staff.RA.Declaration).ToShortDateString()))));
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell(new Paragraph(new Run(a.Comments))));
+                data.Rows[numberOfRows].Background = (numberOfRows % 2 == 1)?Brushes.Transparent : Brushes.LightGray;
+                numberOfRows++;
             }
 
-            int numberOfEmptyPlaces = 5;
-            for (int x = 0; x < numberOfEmptyPlaces; x++)
+            
+            for (int x = 0; x < Session.AvailablePlaces; x++)
             {
                 data.Rows.Add(new TableRow());
-                data.Rows[x + numberOfPeople].Cells.Add(BodyTableCell());
-                data.Rows[x + numberOfPeople].Cells.Add(BodyTableCell());
-                data.Rows[x + numberOfPeople].Cells.Add(BodyTableCell());
-                data.Rows[x + numberOfPeople].Cells.Add(BodyTableCell());
-                data.Rows[x + numberOfPeople].Cells.Add(BodyTableCell());
-                data.Rows[x + numberOfPeople].Cells.Add(BodyTableCell());
-                data.Rows[x + numberOfPeople].Background = ((x + numberOfPeople) % 2 == 1) ? Brushes.Transparent : Brushes.LightGray;
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell());
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell());
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell());
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell());
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell());
+                data.Rows[numberOfRows].Cells.Add(BodyTableCell());
+                data.Rows[numberOfRows].Background = (numberOfRows % 2 == 1) ? Brushes.Transparent : Brushes.LightGray;
+                numberOfRows++;
             }
 
             regtable.RowGroups.Add(data);
 
+            TableRowGroup footer = new TableRowGroup();
+            footer.Rows.Add(new TableRow());
+            footer.Rows[0].FontSize = 10;
+            footer.Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(String.Format("Session ID: {0}", Session.ID)))));
+            footer.Rows[0].Cells[0].ColumnSpan = 3;
+            footer.Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(String.Format("Total Places: {0}", Session.MaxP)))));
+            footer.Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(String.Format("Booked: {0}", Session.Bookings)))));
+            footer.Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(String.Format("Available: {0}", Session.AvailablePlaces)))));
+            footer.Rows.Add(new TableRow());
+            footer.Rows[1].Cells.Add(new TableCell());
+
+            regtable.RowGroups.Add(footer);
 
             return reg;
         }
