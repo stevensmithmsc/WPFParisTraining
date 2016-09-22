@@ -143,6 +143,7 @@
           <Property Name="Modified" Type="datetime" />
           <Property Name="Modifier" Type="int" />
           <Property Name="Child_Health" Type="bit" Nullable="false" />
+          <Property Name="BAU" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Locations">
           <Key>
@@ -1745,6 +1746,7 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
           <NavigationProperty Name="Sesses" Relationship="StaffModel.FK_Sess_Courses" FromRole="Cours" ToRole="Sess" />
           <Property Name="Child_Health" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="mail_temp" Relationship="StaffModel.FK_Courses_mail_temp" FromRole="Course" ToRole="mail_temp" />
+          <Property Name="BAU" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Req">
           <Key>
@@ -2332,6 +2334,7 @@ warning 6002: The table/view 'Staff_dev.ESR.Staff_List' does not have a primary 
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="StaffModel.Course">
               <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="BAU" ColumnName="BAU" />
                 <ScalarProperty Name="Child_Health" ColumnName="Child_Health" />
                 <ScalarProperty Name="Obselete" ColumnName="Obselete" />
                 <ScalarProperty Name="EmptyColour" ColumnName="EmptyColour" />

@@ -35,6 +35,7 @@ namespace WPFParisTraining.Entity
         public Nullable<int> EmptyColour { get; set; }
         public bool Obselete { get; set; }
         public bool Child_Health { get; set; }
+        public bool BAU { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseReq> ReqFor { get; set; }

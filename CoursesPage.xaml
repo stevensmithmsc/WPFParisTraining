@@ -74,6 +74,7 @@
                 <DataGridTextColumn Header="Completed" Binding="{Binding NumberCompleted}" IsReadOnly="True" />
                 <DataGridCheckBoxColumn Header="Paris" Binding="{Binding Paris}" />
                 <DataGridCheckBoxColumn Header="Child Health" Binding="{Binding Child_Health}" />
+                <DataGridCheckBoxColumn Header="BAU" Binding="{Binding BAU}" />
                 <DataGridCheckBoxColumn Header="External" Binding="{Binding External}" />
                 <DataGridCheckBoxColumn Header="Obselete" Binding="{Binding Obselete}" />
             </DataGrid.Columns>
